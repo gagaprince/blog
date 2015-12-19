@@ -59,7 +59,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
                 <p>谨言：要有最朴素的生活与最遥远的梦想</p>
                 <ul class="linkmore">
-                    <li><a href="http://www.yangqq.com/" class="talk" title="给我留言"></a></li>
+                    <li id="showQR"><a href="javascript:void(0)"  class="talk" title="给我留言"></a></li>
+                    <div id="myQRFrame" class="myqrframe">
+                        <div class="myqrimg">
+                            <img src="http://gagablog.oss-cn-beijing.aliyuncs.com/peoplecenter/myqr.jpg">
+                            <div class="ti1"></div>
+                        </div>
+                    </div>
+
                     <!--<li><a href="http://www.yangqq.com/" class="address" title="联系地址"></a></li>-->
                     <li><a href="mailto:923731573@qq.com?subject=我有事情要联系你！&body=写下您的建议" class="email" title="给我写信"></a></li>
                     <li><a href="/blog/life" class="photos" title="生活照片"></a></li>
@@ -324,9 +331,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         </div>
     </footer>
     <!-- jQuery仿腾讯回顶部和建议 代码开始 -->
-    <div id="tbox"><a id="togbook" href="http://www.yangqq.com/e/tool/gbook/?bid=1"></a> <a id="gotop"
-                                                                                            href="javascript:void(0)"
-                                                                                            style="display: none;"></a>
+    <div id="tbox"> <a id="gotop" href="javascript:void(0)" style="display: none;"></a>
     </div>
     <!-- 代码结束 -->
 
