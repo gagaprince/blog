@@ -115,23 +115,6 @@
       <version>1.2.17</version>
     </dependency>
 
-
-
-    <dependency>
-      <groupId>com.prince.util</groupId>
-      <artifactId>regUtil</artifactId>
-      <version>1.0-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>com.prince.util</groupId>
-      <artifactId>httpUtil</artifactId>
-      <version>1.0-SNAPSHOT</version>
-    </dependency>
-
-
-
-
-
   </dependencies>
 
   <profiles>
