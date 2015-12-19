@@ -1,0 +1,63 @@
+package com.prince.myproj.blog.models;
+
+import java.util.Date;
+
+/**
+ * Created by gagaprince on 15-12-20.
+ */
+public class DailyModel {
+    private long id;
+    private String title;
+    private String content;
+    private String pic;
+    private String cate;
+    private Date createTime;
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public String getCate() {
+        return cate;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public String getPic() {
+        return pic;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setCate(String cate) {
+        this.cate = cate;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setPic(String pic) {
+        this.pic = pic;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+}
