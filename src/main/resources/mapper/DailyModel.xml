@@ -13,7 +13,7 @@
     </resultMap>
 
     <insert id="save"
-            parameterType="SuggestModel"
+            parameterType="DailyModel"
             useGeneratedKeys="true" keyProperty="id">
         insert into daily(
         <trim suffixOverrides=",">
@@ -45,6 +45,16 @@
             <!--</if>-->
         <!--</where>-->
     <!--</select>-->
+
+    <select id="getDailyById" parameterType="map" resultMap="DailyModelResultMap">
+        select * from daily s
+        <where>
+            1=1
+            <if test="id != null">
+                and s.id = #{id}
+            </if>
+        </where>
+    </select>
 
     <select id="getDailyList" parameterType="map" resultMap="DailyModelResultMap">
         select * from daily s

@@ -12,6 +12,7 @@ public class DailyModel {
     private String pic;
     private String cate;
     private Date createTime;
+    private String createTimeStr;
 
     public Date getCreateTime() {
         return createTime;
@@ -59,5 +60,13 @@ public class DailyModel {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getCreateTimeStr() {
+        return createTimeStr;
+    }
+
+    public void setCreateTimeStr(String createTimeStr) {
+        this.createTimeStr = createTimeStr;
     }
 }

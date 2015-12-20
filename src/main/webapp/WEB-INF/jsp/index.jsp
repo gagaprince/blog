@@ -78,112 +78,99 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <div class="blank"></div>
         <div class="blogs">
             <ul class="bloglist">
-                <li>
-                    <div class="arrow_box">
-                        <div class="ti"></div>
-                        <!--三角形-->
-                        <div class="ci"></div>
-                        <!--圆形-->
-                        <h2 class="title"><a href="http://www.yangqq.com/" target="_blank">我希望我的爱情是这样的</a></h2>
-                        <ul class="textinfo">
-                            <a href="http://www.yangqq.com/"><img src="./images/s1.jpg"></a>
-
-                            <p>
-                                我希望我的爱情是这样的，相濡以沫，举案齐眉，平淡如水。我在岁月中找到他，依靠他，将一生交付给他。做他的妻子，他孩子的母亲，为他做饭，洗衣服，缝一颗掉了的纽扣。然后，我们一起在时光中变老。</p>
-                        </ul>
-                        <ul class="details">
-                            <li class="likes"><a href="http://www.yangqq.com/web/24/#">10</a></li>
-                            <li class="comments"><a href="http://www.yangqq.com/web/24/#">34</a></li>
-                            <li class="icon-time"><a href="http://www.yangqq.com/web/24/#">2013-8-7</a></li>
-                        </ul>
+                <c:forEach var="daily" items="${resultMap.dailys}" varStatus="status">
+                    <li>
+                        <div class="arrow_box">
+                            <div class="ti"></div>
+                            <!--三角形-->
+                            <div class="ci"></div>
+                            <!--圆形-->
+                            <h2 class="title"><a href="/blog/detail?id=${daily.id}" target="_blank">${daily.title}</a></h2>
+                            <ul class="textinfo">
+                                <c:if test="${not empty daily.pic}">
+                                    <a href="/blog/detail?id=${daily.id}"><img src="${daily.pic}"></a>
+                                </c:if>
+                                <p>
+                                    ${daily.content}
+                                </p>
+                            </ul>
+                            <ul class="details">
+                                <li class="icon-time"><a href="javascript:void(0)">${daily.createTimeStr}</a></li>
+                            </ul>
+                        </div>
+                        <!--arrow_box end-->
+                    </li>
+                </c:forEach>
+                <!-- listpage -->
+                <c:set var="listPage" value="${resultMap.listpage}"></c:set>
+                <c:set var="pno" value="${listPage.pno}"></c:set>
+                <c:set var="allPage" value="${listPage.allPage}"></c:set>
+                <c:set var="listpageUri" value="/blog/index?pno="></c:set>
+                <c:if test="${pno-1>=0}">
+                    <c:set var="prepno" value="${pno-1}"></c:set>
+                </c:if>
+                <c:if test="${pno-1<0}">
+                    <c:set var="prepno" value="0"></c:set>
+                </c:if>
+                <c:if test="${pno+1>=allPage}">
+                    <c:set var="nextpno" value="${allPage-1}"></c:set>
+                </c:if>
+                <c:if test="${pno+1<allPage}">
+                    <c:set var="nextpno" value="${pno+1}"></c:set>
+                </c:if>
+                <div class="pagelistfram">
+                    <div class="pagelist h-c">
+                        <a class="pageitem" href="${listpageUri}0">首页</a>
+                        <a class="pageitem" href="${listpageUri}${prepno}">上一页</a>
+                        <c:choose>
+                            <c:when test="${allPage<=6 || (allPage>6 && pno>allPage-5)}">
+                                <c:if test="${allPage<=6}">
+                                    <c:set var="beginPage" value="1"></c:set>
+                                </c:if>
+                                <c:if test="${allPage>6 && pno>allPage-5}">
+                                    <c:set var="beginPage" value="${allPage-5}"></c:set>
+                                </c:if>
+                                <c:set var="endPage" value="${allPage}"></c:set>
+                                <c:forEach var="i" begin="${beginPage}" end="${endPage}" step="1">
+                                    <c:if test="${pno == i-1}">
+                                        <a class="pageitem current">${i}</a>
+                                    </c:if>
+                                    <c:if test="${pno != i-1}">
+                                        <a class="pageitem" href="${listpageUri}${i-1}">${i}</a>
+                                    </c:if>
+                                </c:forEach>
+                            </c:when>
+                            <c:otherwise>
+                                <c:choose>
+                                    <c:when test="${pno>2}">
+                                        <c:set var="beginPage" value="${pno-2}"></c:set>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <c:set var="beginPage" value="0"></c:set>
+                                    </c:otherwise>
+                                </c:choose>
+                                <c:forEach var="i" begin="1" end="6" step="1">
+                                    <c:if test="${i<=3}">
+                                        <c:if test="${pno == beginPage+i-1}">
+                                            <a class="pageitem current">${beginPage+i}</a>
+                                        </c:if>
+                                        <c:if test="${pno != beginPage+i-1}">
+                                            <a class="pageitem" href="${listpageUri}${beginPage+i-1}">${beginPage+i}</a>
+                                        </c:if>
+                                    </c:if>
+                                    <c:if test="${i==4}">
+                                        <a class="pageitem">……</a>
+                                    </c:if>
+                                    <c:if test="${i>4}">
+                                        <a class="pageitem" href="${listpageUri}${allPage-7+i}">${allPage-6+i}</a>
+                                    </c:if>
+                                </c:forEach>
+                            </c:otherwise>
+                        </c:choose>
+                        <a class="pageitem" href="${listpageUri}${nextpno}">下一页</a>
                     </div>
-                    <!--arrow_box end-->
-                </li>
-                <li>
-                    <div class="arrow_box">
-                        <div class="ti"></div>
-                        <!--三角形-->
-                        <div class="ci"></div>
-                        <!--圆形-->
-                        <h2 class="title"><a href="http://www.yangqq.com/" target="_blank">谁更心软，谁就先长大</a></h2>
-                        <ul class="textinfo">
-                            <a href="http://www.yangqq.com/"><img src="./images/s2.jpg"></a>
-
-                            <p>
-                                男人都是孩子，需要用一生时间来长大。女人都想当孩子，却最擅长的角色是妈妈。恋爱一开始，是两个孩子之间的游戏，到后来，成了大人和孩子之间的游戏。恋爱这回事，总要有一个人先长大，对另一半多些包容和宠溺。而通常来看：谁更心软，谁就先长大...</p>
-                        </ul>
-                        <ul class="details">
-                            <li class="likes"><a href="http://www.yangqq.com/web/24/#">102</a></li>
-                            <li class="comments"><a href="http://www.yangqq.com/web/24/#">58</a></li>
-                            <li class="icon-time"><a href="http://www.yangqq.com/web/24/#">2013-8-7</a></li>
-                        </ul>
-                    </div>
-                    <!--arrow_box end-->
-                </li>
-                <li>
-                    <div class="arrow_box">
-                        <div class="ti"></div>
-                        <!--三角形-->
-                        <div class="ci"></div>
-                        <!--圆形-->
-                        <h2 class="title"><a href="http://www.yangqq.com/" target="_blank">Nothing is as sweet as you</a>
-                        </h2>
-                        <ul class="textinfo">
-                            <a href="http://www.yangqq.com/"><img src="./images/s3.jpg"></a>
-
-                            <p> 有时候不是我不理你，其实我也想你了，只是我不知道该对你说什么。不管过去如何，过去的已经过去，最好的总在未来等着你。当我们懂得珍惜平凡的幸福的时候，就已经成了人生的赢家。Nothing
-                                is as sweet as you再没什么，能甜蜜如你。我以为只要很认真的喜欢就能打动一个人...</p>
-                        </ul>
-                        <ul class="details">
-                            <li class="likes"><a href="http://www.yangqq.com/web/24/#">15</a></li>
-                            <li class="comments"><a href="http://www.yangqq.com/web/24/#">2</a></li>
-                            <li class="icon-time"><a href="http://www.yangqq.com/web/24/#">2013-8-7</a></li>
-                        </ul>
-                    </div>
-                    <!--arrow_box end-->
-                </li>
-                <li>
-                    <div class="arrow_box">
-                        <div class="ti"></div>
-                        <!--三角形-->
-                        <div class="ci"></div>
-                        <!--圆形-->
-                        <h2 class="title"><a href="http://www.yangqq.com/" target="_blank">谁更心软，谁就先长大</a></h2>
-                        <ul class="textinfo">
-                            <a href="http://www.yangqq.com/"><img src="./images/s4.jpg"></a>
-
-                            <p>
-                                男人都是孩子，需要用一生时间来长大。女人都想当孩子，却最擅长的角色是妈妈。恋爱一开始，是两个孩子之间的游戏，到后来，成了大人和孩子之间的游戏。恋爱这回事，总要有一个人先长大，对另一半多些包容和宠溺。而通常来看：谁更心软，谁就先长大...</p>
-                        </ul>
-                        <ul class="details">
-                            <li class="likes"><a href="http://www.yangqq.com/web/24/#">102</a></li>
-                            <li class="comments"><a href="http://www.yangqq.com/web/24/#">58</a></li>
-                            <li class="icon-time"><a href="http://www.yangqq.com/web/24/#">2013-8-7</a></li>
-                        </ul>
-                    </div>
-                    <!--arrow_box end-->
-                </li>
-                <li>
-                    <div class="arrow_box">
-                        <div class="ti"></div>
-                        <!--三角形-->
-                        <div class="ci"></div>
-                        <!--圆形-->
-                        <h2 class="title"><a href="http://www.yangqq.com/" target="_blank">趁我们都还年轻</a></h2>
-                        <ul class="textinfo">
-                            <a href="http://www.yangqq.com/"><img src="./images/s5.jpg"></a>
-
-                            <p>
-                                趁我们都还年轻,多走几步路，多欣赏下沿途的风景，不要急于抵达目的地而错过了流年里温暖的人和物；趁我们都还年轻，多说些浪漫的话语，多做些幼稚的事情，不要嫌人笑话错过了生命中最美好的片段和场合；趁我们都还年轻，把距离缩短，把时间延长。趁我们都还年轻，多做些我们想要做的任何事...</p>
-                        </ul>
-                        <ul class="details">
-                            <li class="likes"><a href="http://www.yangqq.com/web/24/#">15</a></li>
-                            <li class="comments"><a href="http://www.yangqq.com/web/24/#">2</a></li>
-                            <li class="icon-time"><a href="http://www.yangqq.com/web/24/#">2013-8-7</a></li>
-                        </ul>
-                    </div>
-                    <!--arrow_box end-->
-                </li>
+                </div>
+                <!-- listpage end -->
             </ul>
             <!--bloglist end-->
             <aside>
@@ -238,25 +225,28 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                         </li>
                     </ol>ƒ
                 </div>
-                <div class="search">
+                <!--<div class="search">
                     <form class="searchform" method="get" action="http://www.yangqq.com/web/24/#">
                         <input type="text" name="s" value="Search" onfocus="this.value=&#39;&#39;"
                                onblur="this.value=&#39;Search&#39;">
                     </form>
-                </div>
-                <div class="viny">
-                    <dl>
-                        <dt class="art"><img src="./images/artwork.png" alt="专辑"></dt>
-                        <dd class="icon-song"><span></span>南方姑娘</dd>
-                        <dd class="icon-artist"><span></span>歌手：赵雷</dd>
-                        <dd class="icon-album"><span></span>所属专辑：《赵小雷》</dd>
-                        <dd class="icon-like"><span></span><a href="http://www.yangqq.com/">喜欢</a></dd>
-                        <dd class="music">
-                            <audio src="images/nf.mp3" controls=""></audio>
-                        </dd>
-                        <!--也可以添加loop属性 音频加载到末尾时，会重新播放-->
-                    </dl>
-                </div>
+                </div>-->
+                <c:if test="${resultMap.music!=null}">
+                    <div class="viny">
+                        <dl>
+                            <dt class="art"><img src="${resultMap.music.bgImg}" alt="专辑"></dt>
+                            <dd class="icon-song"><span></span>${resultMap.music.name}</dd>
+                            <dd class="icon-artist"><span></span>歌手：${resultMap.music.singer}</dd>
+                            <dd class="icon-album"><span></span>所属专辑：${resultMap.music.album}</dd>
+                            <!--<dd class="icon-like"><span></span><a href="http://www.yangqq.com/">喜欢</a></dd>-->
+                            <dd class="music">
+                                <audio src="${resultMap.music.src}" autoplay="autoplay" loop="loop" controls></audio>
+                            </dd>
+                            <!--也可以添加loop属性 音频加载到末尾时，会重新播放-->
+                        </dl>
+                    </div>
+                </c:if>
+
             </aside>
         </div>
         <!--blogs end-->
@@ -267,8 +257,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             <div class="links">
                 <h2>友情链接</h2>
                 <ul>
-                    <li><a href="http://www.yangqq.com/">杨青个人博客</a></li>
-                    <li><a href="http://www.3dst.com/">3DST技术服务中心</a></li>
+                    <c:forEach var="friendLink" items="${resultMap.friendLinks}" varStatus="status">
+                        <li><a href="${friendLink.link}" target="_blank">${friendLink.desc}</a></li>
+                    </c:forEach>
+                    <!--<li><a href="http://www.yangqq.com/">杨青个人博客</a></li>
+                    <li><a href="http://www.3dst.com/">3DST技术服务中心</a></li>-->
                 </ul>
             </div>
             <div class="visitors">
