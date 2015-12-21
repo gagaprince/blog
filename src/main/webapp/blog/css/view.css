@@ -1,14 +1,15 @@
 @charset "gb2312";
 /* view */
-#index_view { width: 640px; float: left; margin: 20px 0; overflow: hidden; color: #333; border-radius: 6px; background:#EAEAEA; padding: 10px; }
+#index_view { width: 640px; float: left; margin: 20px 0; overflow: hidden; color: #333; border-radius: 6px; background:#EAEAEA; padding: 10px 20px; }
 h2.t_nav { border-bottom: #247979 3px solid; font-size: 12px; font-weight: normal; line-height: 48px; height: 40px }
 h2.t_nav a { padding: 10px; }
 h2.t_nav a:first-child { background: #247979; color: #fff; }
 h2.t_nav a:last-child { background: #59BCBC; color: #fff; }
-#index_view ul { padding: 0 30px 15px 30px; overflow:hidden }
+/*#index_view ul { padding: 0 30px 15px 30px; overflow:hidden }
 #index_view ul p { line-height: 24px; margin: 10px 0; text-indent: 2em }
 #index_view ul img {
     _width:expression((document.documentElement.clientWidth||document.body.clientWidth)<570?"570px":""); overflow: hidden; max-width: 570px; text-align: center; display: block; margin: auto; text-indent: 0em }
+*/
 .c_titile { text-align: center; font-size: 22px; margin: 20px 0; color: #000 }
 .box { border: #ccc 1px dashed; text-align: center; padding: 5px 0; margin: 0 30px 10px 30px; color: #666 }
 .box span { margin: 0 10px }

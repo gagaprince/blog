@@ -22,6 +22,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <!--[if lt IE 9]>
         <script src="js/modernizr.js"></script>
         <![endif]-->
+        <script src="js/editor/ueditor.parse.js"></script>
     </head>
     <body>
     <header>
@@ -53,7 +54,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     <p> 爱到浪漫，是刚开始。爱到痛苦，是要分手。爱到平淡，就该结婚。感情发展到不同时期，就要做不同事。没有一辈子的浪漫和甜蜜，真正能长伴你身边的，只是慢慢老去的熟悉。情浓时说的一切都不可信，情淡时的每一天才是真。 </p>
                     <p>只要我们真正相爱，哪怕只有一天，一个小时，我们就不应该再有一刀两断的日子。也许你会在将来不爱我，也许你要离开我，但是我永远对你负有责任，就是你的一切苦难就永远是我的。我觉得我爱了你了，从此以后，不管什么时候，我都不能对你无动于衷。</p>
                     -->
-                    <p>${resultMap.daily.content}</p>
+                    ${resultMap.daily.content}
                 </ul>
                 <div class="otherlink">
                     <h2>相关文章</h2>
@@ -191,5 +192,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <!-- 代码结束 -->
 
     <embed id="xunlei_com_thunder_helper_plugin_d462f475-c18e-46be-bd10-327458d045bd" type="application/thunder_download_plugin" height="0" width="0">
-
-        </body></html>
+    <script>
+        uParse("#index_view ul",{
+            rootPath:'js/editor/'
+        });
+    </script>
+    </body>
+</html>

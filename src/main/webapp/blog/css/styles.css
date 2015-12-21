@@ -118,9 +118,9 @@ footer { background:#1D1D1D; -webkit-box-shadow: 0 -1px 0 rgba(0,0,0,0.55), inse
 .visitors time { color: #066; margin-left: 10px }
 .visitors dt { float: left; }
 .visitors dt img { width: 67px; height: 67px; margin-right: 10px; }
-.links { float: left; margin: 0 100px 0 20px; }/* 友情链接 */
+.links {float: left; margin: 0 20px 0 20px; }/* 友情链接 */
 /* 摄影作品 */
-.flickr { width: 250px; float: right }
+.flickr { width: 400px; /*float: right*/ float:right; }
 .flickr ul li { margin: 0 11px 11px 0; float: left; background: #000; }
 .flickr ul li img { width: 67px; height: 67px; border: #111 solid 1px; }
 .flickr ul li img:hover { opacity: 0.2 }
@@ -195,4 +195,11 @@ footer { background:#1D1D1D; -webkit-box-shadow: 0 -1px 0 rgba(0,0,0,0.55), inse
 }
 .pagelist .current{
     background:#2a2a2a;
+}
+.links ul{
+    width:560px;
+}
+.links ul li{
+    width:180px;
+    float:left;
 }

@@ -10,6 +10,7 @@ import java.util.Map;
  */
 public interface DailyDao {
     public void save(DailyModel dailyModel);
+    public void update(DailyModel dailyModel);
     public List<DailyModel> getDailyList(Map<String,Object> seMap);
     public DailyModel getDailyById(Map<String,Long> idMap);
     public long getAllCount(Map<String,String> cateMap);

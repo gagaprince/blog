@@ -5,7 +5,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-<!-- saved from url=(0029)http://www.yangqq.com/web/24/ -->
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -264,6 +263,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     <li><a href="http://www.3dst.com/">3DST技术服务中心</a></li>-->
                 </ul>
             </div>
+            <!--
             <div class="visitors">
                 <h2>最新评论</h2>
                 <dl>
@@ -304,6 +304,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     <dd>博客色彩丰富，很是好看</dd>
                 </dl>
             </div>
+-->
             <section class="flickr">
                 <h2>摄影作品</h2>
                 <ul>

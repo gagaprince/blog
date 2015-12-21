@@ -6,7 +6,7 @@ import java.util.Date;
  * Created by gagaprince on 15-12-20.
  */
 public class DailyModel {
-    private long id;
+    private Long id;
     private String title;
     private String content;
     private String pic;
@@ -18,7 +18,7 @@ public class DailyModel {
         return createTime;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -50,7 +50,7 @@ public class DailyModel {
         this.createTime = createTime;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

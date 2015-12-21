@@ -29,7 +29,7 @@ public class DetailController {
     public String viewDetail(HttpServletRequest request,HttpServletResponse response,Model model){
         long id = Long.parseLong(utilService.getDefaultWhenNull(request.getParameter("id"), "1"));
         DailyModel daily = detailService.getDailyById(id);
-        daily.setContent(daily.getContent().replaceAll("\n","<br>"));
+//        daily.setContent(daily.getContent());
         Map<String,Object> resultMap = new HashMap<String, Object>();
         resultMap.put("daily",daily);
         model.addAttribute("resultMap",resultMap);

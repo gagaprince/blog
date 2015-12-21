@@ -46,6 +46,16 @@
         <!--</where>-->
     <!--</select>-->
 
+    <update id="update" parameterType="DailyModel">
+        update  daily
+        <trim prefix="set" suffixOverrides=",">
+            <if test="cate != null">cate = #{cate},</if>
+            <if test="content != null"> content = #{content} ,</if>
+            <if test="createTime != null"> create_time = #{createTime} ,</if>
+        </trim>
+        where id = #{id}
+    </update>
+
     <select id="getDailyById" parameterType="map" resultMap="DailyModelResultMap">
         select * from daily s
         <where>
