@@ -50,7 +50,7 @@ public class UtilService {
     }
 
     public String replaceTag(String des){
-        return des.replaceAll("</p>|<br>","\n").replaceAll("<.+?>","");
+        return des.replaceAll("<.+?>","");
     }
 
 }
