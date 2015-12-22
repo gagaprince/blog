@@ -50,6 +50,7 @@
         update  daily
         <trim prefix="set" suffixOverrides=",">
             <if test="cate != null">cate = #{cate},</if>
+            <if test="title != null">title = #{title},</if>
             <if test="content != null"> content = #{content} ,</if>
             <if test="createTime != null"> create_time = #{createTime} ,</if>
         </trim>
