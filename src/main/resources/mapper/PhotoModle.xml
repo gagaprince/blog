@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.prince.myproj.blog.blog.dao.PhotoDao">
+    <resultMap id="PhotoModelResultMap" type="PhotoModel">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="desc" property="desc" jdbcType="VARCHAR" />
+        <result column="pic_url" property="picUrl" jdbcType="VARCHAR" />
+        <result column="photo_folder_id" property="photoFolderId" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime" jdbcType="DATE" />
+    </resultMap>
+
+    <insert id="save"
+            parameterType="PhotoModel"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into photo(
+        <trim suffixOverrides=",">
+            <if test="id != null"> id ,</if>
+            <if test="name != null"> name ,</if>
+            <if test="desc != null"> desc ,</if>
+            <if test="picUrl != null"> pic_url ,</if>
+            <if test="photoFolderId != null"> photo_foler_id ,</if>
+            <if test="createTime != null"> create_time ,</if>
+        </trim>
+        )values(
+        <trim suffixOverrides=",">
+            <if test="id != null"> #{id} ,</if>
+            <if test="name != null"> #{name} ,</if>
+            <if test="desc != null"> #{desc} ,</if>
+            <if test="picUrl != null"> #{picUrl} ,</if>
+            <if test="photoFolderId != null"> #{photoFolderId} ,</if>
+            <if test="createTime != null"> #{createTime} ,</if>
+        </trim>
+        )
+    </insert>
+
+    <!--<update id="update" parameterType="TestModel">
+        update  test
+        <trim prefix="set" suffixOverrides=",">
+            <if test="content != null"> content = #{content} ,</if>
+            <if test="createTime != null"> create_time = #{createTime} ,</if>
+        </trim>
+        where id = #{id}
+    </update>-->
+    <!--<delete id="delete" parameterType="DailyModel">-->
+        <!--delete from daily-->
+        <!--where 1=0-->
+        <!--<if test="id != null">-->
+            <!--or id = #{id}-->
+        <!--</if>-->
+    <!--</delete>-->
+
+    <!--<select id="getDailyById" parameterType="map"  resultMap="DailyModelResultMap">-->
+        <!--select * from daily s-->
+        <!--<where>-->
+            <!--1 = 1-->
+            <!--<if test="id != null">-->
+                <!--and s.id = #{id}-->
+            <!--</if>-->
+        <!--</where>-->
+    <!--</select>-->
+
+    <select id="getPhotoList" parameterType="map"  resultMap="PhotoModelResultMap">-->
+        select * from photo s
+
+        <where>
+            1=1
+            <if test="photoFolderId != null">
+                and s.photo_folder_id = #{photoFolderId}
+            </if>
+        </where>
+
+        order by create_time desc
+        <if test="fromIndex != null and toIndex != null">
+            limit #{fromIndex}, #{toIndex}
+        </if>
+    </select>
+
+    <select id="getAllCount" resultType="Integer" parameterType="map">
+        select count(*) from photo s
+        <where>
+            1=1
+            <if test="photoFolderId != null">
+                and s.photo_folder_id = #{photoFolderId}
+            </if>
+        </where>
+
+    </select>
+
+</mapper>

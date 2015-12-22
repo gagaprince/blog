@@ -46,7 +46,7 @@ public class IndexController {
 
         MusicModel musicModel = indexService.getRandomMusic();
 
-        List<FriendLinkModel> friendLinkModels = friendLinkService.getSomeFriendLink(5);
+        List<FriendLinkModel> friendLinkModels = friendLinkService.getSomeFriendLink(20);
 
 
         indexResult.put("suggest",suggestModel);
