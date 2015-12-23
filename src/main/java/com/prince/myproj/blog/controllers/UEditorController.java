@@ -44,7 +44,6 @@ public class UEditorController {
     public String viewToCtrl(HttpServletRequest request,HttpServletResponse response,Model model){
         ServletContext application = request.getSession().getServletContext();
         String rootPath = application.getRealPath("/");
-        logger.info(rootPath);
         return new ActionEnter( request, rootPath ).exec();
     }
     @RequestMapping("addDaily")

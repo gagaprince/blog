@@ -1,7 +1,8 @@
 package com.prince.myproj.blog.controllers;
 
+import com.prince.myproj.blog.annotations.FooterCommon;
 import com.prince.myproj.blog.models.*;
-import com.prince.myproj.blog.services.FriendLinkService;
+//import com.prince.myproj.blog.services.FriendLinkService;
 import com.prince.myproj.blog.services.IndexService;
 import com.prince.myproj.blog.services.UtilService;
 import org.apache.log4j.Logger;
@@ -29,11 +30,12 @@ public class IndexController {
     private IndexService indexService;
     @Autowired
     private UtilService utilService;
-    @Autowired
-    private FriendLinkService friendLinkService;
+//    @Autowired
+//    private FriendLinkService friendLinkService;
 
     //首页mapping
     @RequestMapping("/index")
+    @FooterCommon
     public String viewIndex(HttpServletRequest request,HttpServletResponse response,Model model){
         Map<String,Object> indexResult = new HashMap<String, Object>();
 
@@ -46,14 +48,14 @@ public class IndexController {
 
         MusicModel musicModel = indexService.getRandomMusic();
 
-        List<FriendLinkModel> friendLinkModels = friendLinkService.getSomeFriendLink(20);
+//        List<FriendLinkModel> friendLinkModels = friendLinkService.getSomeFriendLink(20);
 
 
         indexResult.put("suggest",suggestModel);
         indexResult.put("listpage", listPage);
         indexResult.put("dailys",dailys);
         indexResult.put("music",musicModel);
-        indexResult.put("friendLinks",friendLinkModels);
+//        indexResult.put("friendLinks",friendLinkModels);
 
         model.addAttribute("resultMap", indexResult);
         return "index";

@@ -4,7 +4,7 @@
             <div class="links">
                 <h2>友情链接</h2>
                 <ul>
-                    <c:forEach var="friendLink" items="${resultMap.friendLinks}" varStatus="status">
+                    <c:forEach var="friendLink" items="${footerResultMap.friendLinks}" varStatus="status">
                         <li><a href="${friendLink.link}" target="_blank">${friendLink.desc}</a></li>
                     </c:forEach>
                     <!--<li><a href="http://www.yangqq.com/">杨青个人博客</a></li>

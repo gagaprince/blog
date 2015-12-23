@@ -1,5 +1,6 @@
 package com.prince.myproj.blog.controllers;
 
+import com.prince.myproj.blog.annotations.FooterCommon;
 import com.prince.myproj.blog.models.DailyModel;
 import com.prince.myproj.blog.services.DetailService;
 import com.prince.myproj.blog.services.UtilService;
@@ -26,6 +27,7 @@ public class DetailController {
     private UtilService utilService;
 
     @RequestMapping("/detail")
+    @FooterCommon
     public String viewDetail(HttpServletRequest request,HttpServletResponse response,Model model){
         long id = Long.parseLong(utilService.getDefaultWhenNull(request.getParameter("id"), "1"));
         DailyModel daily = detailService.getDailyById(id);
