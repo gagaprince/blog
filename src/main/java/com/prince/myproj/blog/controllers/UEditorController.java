@@ -52,6 +52,7 @@ public class UEditorController {
         String idStr = request.getParameter("id");
         String title = utilService.getDefaultWhenNull(request.getParameter("title"),"test");
         String cate = utilService.getDefaultWhenNull(request.getParameter("cate"),"test");
+        String bigCate = utilService.getDefaultWhenNull(request.getParameter("bigCate"),"test");
         String content = utilService.getDefaultWhenNull(request.getParameter("allContent"),"");
         DailyModel dailyModel = new DailyModel();
         if(idStr!=null){
@@ -59,6 +60,7 @@ public class UEditorController {
         }
         dailyModel.setTitle(title);
         dailyModel.setCate(cate);
+        dailyModel.setBigCate(bigCate);
         dailyModel.setContent(content);
         dailyModel.setCreateTime(new Date());
         try {

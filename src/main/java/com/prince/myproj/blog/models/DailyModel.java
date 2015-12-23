@@ -11,6 +11,7 @@ public class DailyModel {
     private String content;
     private String pic;
     private String cate;
+    private String bigCate;
     private Date createTime;
     private String createTimeStr;
 
@@ -68,5 +69,13 @@ public class DailyModel {
 
     public void setCreateTimeStr(String createTimeStr) {
         this.createTimeStr = createTimeStr;
+    }
+
+    public String getBigCate() {
+        return bigCate;
+    }
+
+    public void setBigCate(String bigCate) {
+        this.bigCate = bigCate;
     }
 }

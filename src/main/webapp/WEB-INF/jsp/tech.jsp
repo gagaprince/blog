@@ -9,7 +9,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <meta charset="utf-8">
-        <title>gagaprince的世界</title>
+        <title>gagaprince的技术博客</title>
         <meta name="keywords" content="前端技术,html5,游戏开发,技术教程,技术博客,个人空间,个人简历">
         <meta name="description" content="这是一个个人博客，记录技术日志，解决技术问题，也有生活小记。">
         <link href="./css/styles.css" rel="stylesheet">
@@ -28,44 +28,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <%@include file="common/header.jsp" %>
     <!--header end-->
     <div id="mainbody">
-        <div class="info">
-            <figure><img src="${resultMap.suggest.bg}" alt="Panama Hat">
-                <figcaption>
-                    <strong>${resultMap.suggest.title}</strong>
-                    ${resultMap.suggest.content}
-                </figcaption>
-            </figure>
-            <div class="card">
-                <h1>我的名片</h1>
-
-                <p>网名：gagaprince | 伪装者</p>
-
-                <p>职业：去哪儿网前端工程师</p>
-
-                <p>Email：923731573@qq.com</p>
-
-                <p>谨言：要有最朴素的生活与最遥远的梦想</p>
-                <ul class="linkmore">
-                    <li id="showQR"><a href="javascript:void(0)"  class="talk" title="给我留言"></a></li>
-                    <div id="myQRFrame" class="myqrframe">
-                        <div class="myqrimg">
-                            <img src="http://gagablog.oss-cn-beijing.aliyuncs.com/peoplecenter/myqr.jpg">
-                            <div class="ti1"></div>
-                        </div>
-                    </div>
-
-                    <!--<li><a href="http://www.yangqq.com/" class="address" title="联系地址"></a></li>-->
-                    <li><a href="mailto:923731573@qq.com?subject=我有事情要联系你！&body=写下您的建议" class="email" title="给我写信"></a></li>
-                    <li><a href="/blog/life" class="photos" title="生活照片"></a></li>
-                    <!--<li><a href="http://www.yangqq.com/" class="heart" title="关注我"></a></li>-->
-                </ul>
-            </div>
-        </div>
         <!--info end-->
         <div class="blank"></div>
         <div class="blogs">
             <ul class="bloglist">
-                <c:forEach var="daily" items="${resultMap.dailys}" varStatus="status">
+                <c:forEach var="daily" items="${techResultMap.dailys}" varStatus="status">
                     <li>
                         <div class="arrow_box">
                             <div class="ti"></div>
@@ -89,7 +56,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     </li>
                 </c:forEach>
                 <!-- listpage -->
-                <c:set var="listPage" value="${resultMap.listpage}"></c:set>
+                <c:set var="listPage" value="${techResultMap.listpage}"></c:set>
                 <c:set var="pno" value="${listPage.pno}"></c:set>
                 <c:set var="allPage" value="${listPage.allPage}"></c:set>
                 <c:set var="listpageUri" value="/blog/index?pno="></c:set>

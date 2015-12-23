@@ -9,6 +9,7 @@
         <result column="title" property="title" jdbcType="VARCHAR" />
         <result column="pic" property="pic" jdbcType="VARCHAR" />
         <result column="cate" property="cate" jdbcType="VARCHAR" />
+        <result column="bigcate" property="bigCate" jdbcType="VARCHAR" />
         <result column="create_time" property="createTime" jdbcType="VARCHAR" />
     </resultMap>
 
@@ -21,6 +22,7 @@
             <if test="content != null"> content ,</if>
             <if test="title != null"> title ,</if>
             <if test="cate != null"> cate ,</if>
+            <if test="bigCate != null"> bigcate ,</if>
             <if test="createTime != null"> create_time ,</if>
             <if test="pic != null"> pic ,</if>
         </trim>
@@ -30,6 +32,7 @@
             <if test="content != null"> #{content} ,</if>
             <if test="title != null"> #{title} ,</if>
             <if test="cate != null"> #{cate} ,</if>
+            <if test="bigCate != null"> #{bigCate} ,</if>
             <if test="createTime != null"> #{createTime} ,</if>
             <if test="pic != null"> #{pic} ,</if>
         </trim>
@@ -50,6 +53,7 @@
         update  daily
         <trim prefix="set" suffixOverrides=",">
             <if test="cate != null">cate = #{cate},</if>
+            <if test="bigCate != null">bigcate = #{bigCate},</if>
             <if test="title != null">title = #{title},</if>
             <if test="content != null"> content = #{content} ,</if>
             <if test="createTime != null"> create_time = #{createTime} ,</if>
@@ -71,8 +75,8 @@
         select * from daily s
         <where>
             1=1
-            <if test="cate != null">
-                and s.cate = #{cate}
+            <if test="bigCate != null">
+                and s.bigcate = #{bigCate}
             </if>
         </where>
         order by create_time desc
@@ -85,8 +89,8 @@
         select count(1) from daily s
         <where>
             1=1
-            <if test="cate != null">
-                and s.cate = #{cate}
+            <if test="bigCate != null">
+                and s.bigcate = #{bigCate}
             </if>
         </where>
     </select>

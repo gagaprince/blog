@@ -26,19 +26,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <%@ include file="common/tongji.jsp"%>
     </head>
     <body>
-    <header>
-        <nav id="nav">
-            <ul>
-                <li><a href="/blog/index">我的首页</a></li>
-                <li><a href="/blog/tech" title="技术博客">技术博客</a></li>
-                <li><a href="/blog/video" title="视频教程">视频教程</a></li>
-                <li><a href="/blog/fe" title="前端特效">前端特效</a></li>
-                <li><a href="/blog/life" title="微生活">微生活</a></li>
-                <li><a href="/blog/words" title="碎言碎语">碎言碎语</a></li>
-            </ul>
-            <!--获取当前页导航 高亮显示标题-->
-        </nav>
-    </header>
+    <%@include file="common/header.jsp" %>
     <!--header end-->
     <div id="mainbody">
         <div class="blogs">

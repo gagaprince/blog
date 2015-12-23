@@ -10,6 +10,9 @@ function initUE(){
     if(typeof nowcate!="undefined"){
         $("#cate").val(nowcate);
     }
+    if(typeof nowbigCate!="undefined"){
+        $("#bigcate").val(nowbigCate);
+    }
     ue.ready(function(){
         //alert(content)
     });
@@ -19,16 +22,18 @@ function initListener(){
     $("#submit").click(function(){
         var title = $("#title").val().trim();
         var cate = $("#cate").val().trim();
+        var bigcate = $("#bigcate").val().trim();
         var allContent = ue.getContent();
-        addOrUpdate(title,cate,allContent);
+        addOrUpdate(title,cate,bigcate,allContent);
     });
 }
 
-function addOrUpdate(title,cate,allContent){
+function addOrUpdate(title,cate,bigcate,allContent){
     var nowId = window.nowId;
     var data = {
         title:title,
         cate:cate,
+        bigCate:bigcate,
         allContent:allContent
     };
     if(nowId){
