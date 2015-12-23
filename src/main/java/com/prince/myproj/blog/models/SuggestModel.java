@@ -9,15 +9,12 @@ public class SuggestModel {
     private String bg;
     //谨言的title
     private String title;
+
     //谨言的内容
     private String content;
 
     public String getBg() {
         return bg;
-    }
-
-    public String getContent() {
-        return content;
     }
 
     public String getTitle() {
@@ -26,6 +23,10 @@ public class SuggestModel {
 
     public void setBg(String bg) {
         this.bg = bg;
+    }
+
+    public String getContent() {
+        return content;
     }
 
     public void setContent(String content) {
