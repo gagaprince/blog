@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
@@ -41,11 +42,10 @@ public class UEditorController {
     @RequestMapping("/ctrl")
     @ResponseBody
     public String viewToCtrl(HttpServletRequest request,HttpServletResponse response,Model model){
-        String rootPath = request.getServletContext().getRealPath("/");
-//        logger.info(rootPath);
-        String html = new ActionEnter( request, rootPath ).exec();
-//        String html = "";
-        return html;
+        ServletContext application = request.getSession().getServletContext();
+        String rootPath = application.getRealPath("/");
+        logger.info(rootPath);
+        return new ActionEnter( request, rootPath ).exec();
     }
     @RequestMapping("addDaily")
     @ResponseBody
