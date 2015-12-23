@@ -10,8 +10,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <meta http-equiv="Content-Type" content="text/html; charset=GBK">
         <meta charset="gb2312">
         <title>${resultMap.daily.title}</title>
-        <meta name="keywords" content="黑色模板,个人网站模板,个人博客模板,博客模板,css3,html5,网站模板">
-        <meta name="description" content="这是一个有关黑色时间轴的css3 html5 网站模板">
+        <meta name="keywords" content="前端技术,html5,游戏开发,技术教程,技术博客,个人空间,个人简历">
+        <meta name="description" content="这是一个个人博客，记录技术日志，解决技术问题，也有生活小记。">
         <link href="./css/styles.css" rel="stylesheet">
         <link href="./css/view.css" rel="stylesheet">
         <!-- 返回顶部调用 begin -->
