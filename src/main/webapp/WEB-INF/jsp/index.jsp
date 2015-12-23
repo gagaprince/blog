@@ -22,6 +22,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <!--[if lt IE 9]>
         <script src="./js/modernizr.js"></script>
         <![endif]-->
+        <%@ include file="common/tongji.jsp"%>
     </head>
     <body>
     <header>
