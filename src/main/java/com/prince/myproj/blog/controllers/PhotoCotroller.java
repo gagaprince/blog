@@ -32,26 +32,26 @@ public class PhotoCotroller {
 
     @RequestMapping("/folder")
     public String viewToPhotoFolder(HttpServletRequest request,HttpServletResponse response,Model model){
-        String pnoStr = utilService.getDefaultWhenNull(request.getParameter("pno"),"0");
-        int pno = Integer.parseInt(pnoStr);
-
-        String psizeStr = utilService.getDefaultWhenNull(request.getParameter("psize"), "9");
-        int psize = Integer.parseInt(psizeStr);
-
-        List<PhotoFolderModel> photoFolderModels = photoService.giveMePhotoFolders(pno, psize);
-
-        int allCount = photoService.giveMeAllcountPhotoFolder();
-        ListPageModel listPageModel = new ListPageModel();
-        listPageModel.setPno(pno);
-        listPageModel.setPsize(psize);
-        listPageModel.setAllCount(allCount);
-        listPageModel.setAllPage((allCount - 1) / psize + 1);
-
-        Map<String,Object> indexResult = new HashMap<String, Object>();
-        indexResult.put("photoFolders",photoFolderModels);
-        indexResult.put("listPage",listPageModel);
-
-        model.addAttribute("resultMap",indexResult);
+//        String pnoStr = utilService.getDefaultWhenNull(request.getParameter("pno"),"0");
+//        int pno = Integer.parseInt(pnoStr);
+//
+//        String psizeStr = utilService.getDefaultWhenNull(request.getParameter("psize"), "9");
+//        int psize = Integer.parseInt(psizeStr);
+//
+//        List<PhotoFolderModel> photoFolderModels = photoService.giveMePhotoFolders(pno, psize);
+//
+//        int allCount = photoService.giveMeAllcountPhotoFolder();
+//        ListPageModel listPageModel = new ListPageModel();
+//        listPageModel.setPno(pno);
+//        listPageModel.setPsize(psize);
+//        listPageModel.setAllCount(allCount);
+//        listPageModel.setAllPage((allCount - 1) / psize + 1);
+//
+//        Map<String,Object> indexResult = new HashMap<String, Object>();
+//        indexResult.put("photoFolders",photoFolderModels);
+//        indexResult.put("listPage",listPageModel);
+//
+//        model.addAttribute("resultMap",indexResult);
         return "photo/photoFolder";
     }
 

@@ -2,6 +2,7 @@ package com.prince.myproj.blog.services;
 
 import com.prince.myproj.blog.dao.PhotoDao;
 import com.prince.myproj.blog.dao.PhotoFolderDao;
+import com.prince.myproj.blog.models.ListPageModel;
 import com.prince.myproj.blog.models.PhotoFolderModel;
 import com.prince.myproj.blog.models.PhotoModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,13 +23,26 @@ public class PhotoService {
     @Autowired
     private PhotoDao photoDao;
 
-    public List<PhotoFolderModel> giveMePhotoFolders(int pno,int psize){
+    private List<PhotoFolderModel> giveMePhotoFolders(int pno,int psize){
         int begin = pno * psize;
         int length = psize;
         Map<String,Object> limitMap = new HashMap<String, Object>();
         limitMap.put("fromIndex",begin);
         limitMap.put("toIndex",length);
         return photoFolderDao.getPhotoFolders(limitMap);
+    }
+
+    public List<PhotoFolderModel> giveMePhotoFolders(ListPageModel listPageModel){
+        int pno = listPageModel.getPno();
+        int psize = listPageModel.getPsize();
+
+        long allConunt = photoFolderDao.getAllCount();
+        long allPage = (allConunt-1)/psize+1;
+        listPageModel.setAllCount(allConunt);
+        listPageModel.setAllPage(allPage);
+
+        return giveMePhotoFolders(pno, psize);
+
     }
 
     public int giveMeAllcountPhotoFolder(){
@@ -51,5 +65,18 @@ public class PhotoService {
         return photoDao.getAllCount(limitMap);
     }
 
+
+    public List<PhotoModel> giveMePhotosByFolder(ListPageModel listPageModel,int folderId){
+        int pno = listPageModel.getPno();
+        int psize = listPageModel.getPsize();
+
+        int allCount = giveAllPhotoByFolder(folderId);
+        int allPage = (allCount-1)/psize+1;
+        listPageModel.setAllCount(allCount);
+        listPageModel.setAllPage(allPage);
+
+        return giveMePhotosByFolder(pno,psize,folderId);
+
+    }
 
 }
