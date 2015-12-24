@@ -9,7 +9,7 @@
             <li><a href="/blog/life" title="微生活">微生活</a></li>
             <li><a href="/blog/words" title="碎言碎语">碎言碎语</a></li>
         </ul>
-        <script src="./js/silder.js"></script>
+        <script src="/blog/js/silder.js"></script>
         <!--获取当前页导航 高亮显示标题-->
     </nav>
 </header>

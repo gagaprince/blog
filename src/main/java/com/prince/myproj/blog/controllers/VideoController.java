@@ -1,5 +1,6 @@
 package com.prince.myproj.blog.controllers;
 
+import com.prince.myproj.blog.annotations.FooterCommon;
 import com.prince.myproj.blog.models.ListPageModel;
 import com.prince.myproj.blog.models.VideoModel;
 import com.prince.myproj.blog.services.PageService;
@@ -31,10 +32,13 @@ public class VideoController {
     private PageService pageService;
 
     @RequestMapping("/video")
+    @FooterCommon
     public String viewToVideo(HttpServletRequest request,HttpServletResponse response,Model model){
         //导向视频教程
         ListPageModel listPageModel = pageService.preparedListPage(request,9);
         List<VideoModel> videos = videoService.getVideosByPage(listPageModel, "");
+        videoService.filterVideos(videos);
+
 
         Map<String,Object> resultMap = new HashMap<String, Object>();
         resultMap.put("videos",videos);
@@ -43,8 +47,17 @@ public class VideoController {
 
         return "video";
     }
-
+    @RequestMapping("/video/detail")
+    @FooterCommon
     public String viewToVideoDetail(HttpServletRequest request,HttpServletResponse response,Model model){
+        String idStr = utilService.getDefaultWhenNull(request.getParameter("id"),"1");
+        long id = Long.parseLong(idStr);
+        VideoModel video = videoService.getVideoById(id);
+
+        Map<String,Object> videoResultMap = new HashMap<String, Object>();
+        videoResultMap.put("video", video);
+        model.addAttribute("videoResultMap",videoResultMap);
+
         return "videoDetail";
     }
 }

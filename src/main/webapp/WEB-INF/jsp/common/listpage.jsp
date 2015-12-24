@@ -1,7 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <c:set var="pno" value="${listPage.pno}"></c:set>
 <c:set var="allPage" value="${listPage.allPage}"></c:set>
-<c:set var="listpageUri" value="/blog/index?pno="></c:set>
 <c:if test="${pno-1>=0}">
     <c:set var="prepno" value="${pno-1}"></c:set>
 </c:if>

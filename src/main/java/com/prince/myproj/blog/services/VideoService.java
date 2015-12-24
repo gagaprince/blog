@@ -34,6 +34,12 @@ public class VideoService {
         return videos;
     }
 
+    public VideoModel getVideoById(long id){
+        Map<String,Object> idMap = new HashMap<String, Object>();
+        idMap.put("id",id);
+        return videoDao.getVideoById(idMap);
+    }
+
     private List<VideoModel> getVideosByPage(int pno,int psize,String cate){
         int begin = pno * psize;
         int length = psize;
@@ -53,6 +59,18 @@ public class VideoService {
         }
         long count = videoDao.getAllCount(cateMap);
         return count;
+    }
+
+    public void filterVideos(List<VideoModel> videoModels){
+        int size = videoModels.size();
+        for(int i=0;i<size;i++){
+            VideoModel videoModel = videoModels.get(i);
+            String desc = videoModel.getDesc();
+            if(desc!=null&&desc.length()>30){
+                desc = desc.substring(0,30)+"...";
+                videoModel.setDesc(desc);
+            }
+        }
     }
 
 }

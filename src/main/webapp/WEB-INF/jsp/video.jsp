@@ -32,52 +32,29 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <div class="blank"></div>
         <div class="blogs">
             <ul class="video-list">
-                <li>
-                    <a class="cover"><img src="http://gagablog.oss-cn-beijing.aliyuncs.com/video/default.png"></a>
-                    <img class="playbtn" src="http://gagablog.oss-cn-beijing.aliyuncs.com/video/play.png">
-                    <a class="desc" href="javascript:void(0)">
-                        <span class="titlefont"><font>这是视频描title</font></span>
-                        <span class="descfont"><font>这是视频描述这是视频描述这是视频描述这是视频描述这是视频描述</font></span>
-                    </a>
-                </li>
-                <li>
-                    video
-                </li>
-                <li>
-                    video
-                </li>
-                <li>
-                    video
-                </li>
-                <li>
-                    video
-                </li>
-
-                <c:forEach var="daily" items="${techResultMap.dailys}" varStatus="status">
+                <c:forEach var="video" items="${videoResultMap.videos}" varStatus="status">
                     <li>
-                        <div class="arrow_box">
-                            <div class="ti"></div>
-                            <!--三角形-->
-                            <div class="ci"></div>
-                            <!--圆形-->
-                            <h2 class="title"><a href="/blog/detail?id=${daily.id}" target="_blank">${daily.title}</a></h2>
-                            <ul class="textinfo">
-                                <c:if test="${not empty daily.pic}">
-                                    <a href="/blog/detail?id=${daily.id}"><img src="${daily.pic}"></a>
-                                </c:if>
-                                <p>
-                                    ${daily.content}
-                                </p>
-                            </ul>
-                            <ul class="details">
-                                <li class="icon-time"><a href="javascript:void(0)">${daily.createTimeStr}</a></li>
-                            </ul>
-                        </div>
-                        <!--arrow_box end-->
+                        <a class="cover">
+                        <c:if test="${not empty video.cover}">
+                            <img src="${video.cover}">
+                        </c:if>
+                        <c:if test="${empty video.cover}">
+                            <img src="http://gagablog.oss-cn-beijing.aliyuncs.com/video/default.png">
+                        </c:if>
+
+
+                        </a>
+                        <img class="playbtn" src="http://gagablog.oss-cn-beijing.aliyuncs.com/video/play.png">
+                        <a class="desc" href="/blog/video/detail?id=${video.id}" target="_blank">
+                            <span class="titlefont"><font>${video.title}</font></span>
+                            <span class="descfont"><font>${video.desc}</font></span>
+                        </a>
                     </li>
                 </c:forEach>
+
                 <!-- listpage -->
                 <c:set var="listPage" value="${videoResultMap.listpage}"></c:set>
+                <c:set var="listpageUri" value="/blog/video?pno="></c:set>
                 <%@ include file="common/listpage.jsp"%>
             </ul>
 

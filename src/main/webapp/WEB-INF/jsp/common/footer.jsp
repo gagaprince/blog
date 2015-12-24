@@ -15,7 +15,7 @@
             <div class="visitors">
                 <h2>最新评论</h2>
                 <dl>
-                    <dt><img src="./images/s8.jpg">
+                    <dt><img src="/blog/images/s8.jpg">
                     </dt>
                     <dt>
                     </dt>
@@ -28,7 +28,7 @@
                     <dd>文章非常详细，我很喜欢.前端的工程师很少，我记得几年前yahoo花高薪招聘前端也招不到</dd>
                 </dl>
                 <dl>
-                    <dt><img src="./images/s7.jpg">
+                    <dt><img src="/blog/images/s7.jpg">
                     </dt>
                     <dt>
                     </dt>
@@ -39,7 +39,7 @@
                     <dd>我手机里面也有这样一个号码存在</dd>
                 </dl>
                 <dl>
-                    <dt><img src="./images/s6.jpg">
+                    <dt><img src="/blog/images/s6.jpg">
                     </dt>
                     <dt>
                     </dt>
@@ -56,15 +56,15 @@
             <section class="flickr">
                 <h2>摄影作品</h2>
                 <ul>
-                    <li><a href="http://www.yangqq.com/"><img src="./images/01.jpg"></a></li>
-                    <li><a href="http://www.yangqq.com/"><img src="./images/02.jpg"></a></li>
-                    <li><a href="http://www.yangqq.com/"><img src="./images/03.jpg"></a></li>
-                    <li><a href="http://www.yangqq.com/"><img src="./images/04.jpg"></a></li>
-                    <li><a href="http://www.yangqq.com/"><img src="./images/05.jpg"></a></li>
-                    <li><a href="http://www.yangqq.com/"><img src="./images/06.jpg"></a></li>
-                    <li><a href="http://www.yangqq.com/"><img src="./images/07.jpg"></a></li>
-                    <li><a href="http://www.yangqq.com/"><img src="./images/08.jpg"></a></li>
-                    <li><a href="http://www.yangqq.com/"><img src="./images/09.jpg"></a></li>
+                    <li><a href="http://www.yangqq.com/"><img src="/blog/images/01.jpg"></a></li>
+                    <li><a href="http://www.yangqq.com/"><img src="/blog/images/02.jpg"></a></li>
+                    <li><a href="http://www.yangqq.com/"><img src="/blog/images/03.jpg"></a></li>
+                    <li><a href="http://www.yangqq.com/"><img src="/blog/images/04.jpg"></a></li>
+                    <li><a href="http://www.yangqq.com/"><img src="/blog/images/05.jpg"></a></li>
+                    <li><a href="http://www.yangqq.com/"><img src="/blog/images/06.jpg"></a></li>
+                    <li><a href="http://www.yangqq.com/"><img src="/blog/images/07.jpg"></a></li>
+                    <li><a href="http://www.yangqq.com/"><img src="/blog/images/08.jpg"></a></li>
+                    <li><a href="http://www.yangqq.com/"><img src="/blog/images/09.jpg"></a></li>
                 </ul>
             </section>
         </div>

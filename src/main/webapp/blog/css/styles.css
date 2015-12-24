@@ -280,3 +280,15 @@ footer { background:#1D1D1D; -webkit-box-shadow: 0 -1px 0 rgba(0,0,0,0.55), inse
     margin-top:2px;
     display:block;
 }
+.video-detail{
+    text-align:center;
+    width:680px;
+    float:left;
+    margin-top:25px;
+}
+.video-detail li{
+    text-align:left;
+    color:#fff;
+    padding-left:40px;
+    margin:5px 0 20px 0;
+}
