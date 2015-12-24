@@ -4,6 +4,7 @@ import com.prince.myproj.blog.annotations.FooterCommon;
 import com.prince.myproj.blog.models.*;
 //import com.prince.myproj.blog.services.FriendLinkService;
 import com.prince.myproj.blog.services.DailyService;
+import com.prince.myproj.blog.services.PageService;
 import com.prince.myproj.blog.services.SuggestService;
 import com.prince.myproj.blog.services.UtilService;
 import org.apache.log4j.Logger;
@@ -33,6 +34,8 @@ public class IndexController {
     private DailyService dailyService;
     @Autowired
     private UtilService utilService;
+    @Autowired
+    private PageService pageService;
 //    @Autowired
 //    private FriendLinkService friendLinkService;
 
@@ -44,42 +47,20 @@ public class IndexController {
 
         SuggestModel suggestModel = suggestService.getRandomSuggestModel();
 
-        ListPageModel listPage = new ListPageModel();
+        ListPageModel listPage = pageService.preparedListPage(request,5);
 
-        List<DailyModel> dailys = preparedDailys(request, listPage);
+        List<DailyModel> dailys = dailyService.getDailyListByPage(listPage, "");
         dailyService.filterDailys(dailys);
 
         MusicModel musicModel = dailyService.getRandomMusic();
-
-//        List<FriendLinkModel> friendLinkModels = friendLinkService.getSomeFriendLink(20);
 
 
         indexResult.put("suggest", suggestModel);
         indexResult.put("listpage", listPage);
         indexResult.put("dailys", dailys);
         indexResult.put("music", musicModel);
-//        indexResult.put("friendLinks",friendLinkModels);
 
         model.addAttribute("resultMap", indexResult);
         return "index";
-    }
-
-    private List<DailyModel> preparedDailys(HttpServletRequest request,ListPageModel listPage){
-        String pnoStr = utilService.getDefaultWhenNull(request.getParameter("pno"), "0");
-        int pno = Integer.parseInt(pnoStr);
-        String psizeStr = utilService.getDefaultWhenNull(request.getParameter("psize"), "5");
-        int psize = Integer.parseInt(psizeStr);
-
-        listPage.setPno(pno);
-        listPage.setPsize(psize);
-        long allConunt = dailyService.getCountByCate("");
-        long allPage = (allConunt-1)/psize+1;
-        listPage.setAllCount(allConunt);
-        listPage.setAllPage(allPage);
-
-
-
-//        String cate = utilService.getDefaultWhenNull(request.getParameter("cate"))
-        return dailyService.getDailyListByPage(pno, psize, "");
     }
 }

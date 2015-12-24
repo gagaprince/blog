@@ -4,6 +4,7 @@ import com.prince.myproj.blog.dao.DailyDao;
 import com.prince.myproj.blog.dao.MusicDao;
 import com.prince.myproj.blog.dao.SuggestDao;
 import com.prince.myproj.blog.models.DailyModel;
+import com.prince.myproj.blog.models.ListPageModel;
 import com.prince.myproj.blog.models.MusicModel;
 import com.prince.myproj.blog.models.SuggestModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ public class DailyService {
 
 
 
-    public List<DailyModel> getDailyListByPage(int pno,int psize,String bigCate){
+    private List<DailyModel> getDailyListByPage(int pno,int psize,String bigCate){
         int begin = pno*psize;
         int end = psize;//limit 是 长度
         Map<String,Object> seMap = new HashMap<String, Object>();
@@ -43,7 +44,20 @@ public class DailyService {
         return dailyList;
     }
 
-    public long getCountByCate(String cate){
+    public List<DailyModel> getDailyListByPage(ListPageModel listPage,String bigCate){
+        int pno = listPage.getPno();
+        int psize = listPage.getPsize();
+        List<DailyModel> dailyList = getDailyListByPage(pno, psize, bigCate);
+
+        long allConunt =getCountByCate("");
+        long allPage = (allConunt-1)/psize+1;
+        listPage.setAllCount(allConunt);
+        listPage.setAllPage(allPage);
+
+        return dailyList;
+    }
+
+    private long getCountByCate(String cate){
         Map<String,String> cateMap = new HashMap<String, String>();
         if(!"".equals(cate)){
             cateMap.put("bigCate",cate);

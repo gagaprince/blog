@@ -4,6 +4,7 @@ import com.prince.myproj.blog.annotations.FooterCommon;
 import com.prince.myproj.blog.models.DailyModel;
 import com.prince.myproj.blog.models.ListPageModel;
 import com.prince.myproj.blog.services.DailyService;
+import com.prince.myproj.blog.services.PageService;
 import com.prince.myproj.blog.services.UtilService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,21 +29,18 @@ public class TechController {
 
     @Autowired
     private DailyService dailyService;
+    @Autowired
+    private PageService pageService;
 
     @RequestMapping("/tech")
     @FooterCommon
     public String viewToTech(HttpServletRequest request,HttpServletResponse response ,Model model){
         //导向技术博客
         String bigCate = "tech";
-        String pnoStr = utilService.getDefaultWhenNull(request.getParameter("pno"), "0");
-        int pno = Integer.parseInt(pnoStr);
-        String psizeStr = utilService.getDefaultWhenNull(request.getParameter("psize"), "7");
-        int psize = Integer.parseInt(psizeStr);
 
-        List<DailyModel> dailyModels = dailyService.getDailyListByPage(pno, psize, bigCate);
+        ListPageModel listPageModel = pageService.preparedListPage(request, 7);
+        List<DailyModel> dailyModels = dailyService.getDailyListByPage(listPageModel, bigCate);
         dailyService.filterDailys(dailyModels);
-
-        ListPageModel listPageModel = preparedListPage(pno,psize,bigCate);
 
         Map<String,Object> techResultMap = new HashMap<String, Object>();
         techResultMap.put("dailys",dailyModels);
@@ -51,16 +49,5 @@ public class TechController {
         model.addAttribute("techResultMap",techResultMap);
 
         return "tech";
-    }
-
-    private ListPageModel preparedListPage(int pno,int psize,String bigCate){
-        ListPageModel listPage = new ListPageModel();
-        listPage.setPno(pno);
-        listPage.setPsize(psize);
-        long allConunt = dailyService.getCountByCate(bigCate);
-        long allPage = (allConunt-1)/psize+1;
-        listPage.setAllCount(allConunt);
-        listPage.setAllPage(allPage);
-        return listPage;
     }
 }
