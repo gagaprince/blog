@@ -14,7 +14,7 @@
 <c:if test="${pno+1<allPage}">
     <c:set var="nextpno" value="${pno+1}"></c:set>
 </c:if>
-<div class="pagelistfram">
+<div class="pagelistfram cl">
     <div class="pagelist h-c">
         <a class="pageitem" href="${listpageUri}0">首页</a>
         <a class="pageitem" href="${listpageUri}${prepno}">上一页</a>

@@ -43,4 +43,8 @@ public class VideoController {
 
         return "video";
     }
+
+    public String viewToVideoDetail(HttpServletRequest request,HttpServletResponse response,Model model){
+        return "videoDetail";
+    }
 }

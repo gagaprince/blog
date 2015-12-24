@@ -31,7 +31,28 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <!--info end-->
         <div class="blank"></div>
         <div class="blogs">
-            <ul class="bloglist">
+            <ul class="video-list">
+                <li>
+                    <a class="cover"><img src="http://gagablog.oss-cn-beijing.aliyuncs.com/video/default.png"></a>
+                    <img class="playbtn" src="http://gagablog.oss-cn-beijing.aliyuncs.com/video/play.png">
+                    <a class="desc" href="javascript:void(0)">
+                        <span class="titlefont"><font>这是视频描title</font></span>
+                        <span class="descfont"><font>这是视频描述这是视频描述这是视频描述这是视频描述这是视频描述</font></span>
+                    </a>
+                </li>
+                <li>
+                    video
+                </li>
+                <li>
+                    video
+                </li>
+                <li>
+                    video
+                </li>
+                <li>
+                    video
+                </li>
+
                 <c:forEach var="daily" items="${techResultMap.dailys}" varStatus="status">
                     <li>
                         <div class="arrow_box">
@@ -59,6 +80,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 <c:set var="listPage" value="${videoResultMap.listpage}"></c:set>
                 <%@ include file="common/listpage.jsp"%>
             </ul>
+
             <!--bloglist end-->
 
             <!-- aside include -->
