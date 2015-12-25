@@ -3,7 +3,7 @@ package com.prince.myproj.blog.intercepters;
 import com.prince.myproj.blog.models.FontLinkModel;
 import com.prince.myproj.blog.models.FriendLinkModel;
 import com.prince.myproj.blog.services.FontLinkService;
-import com.prince.myproj.blog.services.FriendLinkService;
+import org.apache.log4j.Logger;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,16 +22,15 @@ import java.util.Map;
  */
 @Aspect
 @Component
-public class FooterCommonAdvice {
-    @Pointcut("@annotation(com.prince.myproj.blog.annotations.FooterCommon)")
-    public void footerCommon(){}
+public class SliderCommonAdvice {
+    public static final Logger logger = Logger.getLogger(SliderCommonAdvice.class);
 
-    @Autowired
-    private FriendLinkService friendLinkService;
+    @Pointcut("@annotation(com.prince.myproj.blog.annotations.FooterCommon)")
+    public void sliderCommon(){}
+
     @Autowired
     private FontLinkService fontLinkService;
-
-    @Around("footerCommon()")
+    @Around("sliderCommon()")
     public Object doAround(ProceedingJoinPoint joinPoint)throws Throwable{
         //先拿到httprequest
         Object[] args = joinPoint.getArgs();
@@ -42,14 +40,18 @@ public class FooterCommonAdvice {
                 HttpServletRequest request = (HttpServletRequest)maybeReq;
 //                HttpServletResponse response = (HttpServletResponse)maybeRes;
 
-                List<FriendLinkModel> friendLinkModels = friendLinkService.getSomeFriendLink(20);
+                List<FontLinkModel> updateModels = fontLinkService.giveMeUpdateLink();
+                List<FontLinkModel> photoFontModels = fontLinkService.giveMePhotoFontLink();
+                List<FontLinkModel> hotClickModels = fontLinkService.giveMeHotClick();
 
-                List<FontLinkModel> photoModels = fontLinkService.giveMePhotoLink();
+                logger.info(photoFontModels.size());
 
-                Map<String,Object> footerResult = new HashMap<String, Object>();
-                footerResult.put("friendLinks",friendLinkModels);
-                footerResult.put("photoModels",photoModels);
-                request.setAttribute("footerResultMap",footerResult);
+                Map<String,Object> sliderResult = new HashMap<String, Object>();
+                sliderResult.put("updateModels",updateModels);
+                sliderResult.put("photoFontModels",photoFontModels);
+
+                sliderResult.put("hotClickModels",hotClickModels);
+                request.setAttribute("sliderResult",sliderResult);
             }
         }
         return joinPoint.proceed();

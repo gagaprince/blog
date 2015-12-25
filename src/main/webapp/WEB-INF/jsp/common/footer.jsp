@@ -53,20 +53,16 @@
                 </dl>
             </div>
 -->
+            <c:if test="${not empty footerResultMap.photoModels}">
             <section class="flickr">
                 <h2>摄影作品</h2>
                 <ul>
-                    <li><a href="http://www.yangqq.com/"><img src="/blog/images/01.jpg"></a></li>
-                    <li><a href="http://www.yangqq.com/"><img src="/blog/images/02.jpg"></a></li>
-                    <li><a href="http://www.yangqq.com/"><img src="/blog/images/03.jpg"></a></li>
-                    <li><a href="http://www.yangqq.com/"><img src="/blog/images/04.jpg"></a></li>
-                    <li><a href="http://www.yangqq.com/"><img src="/blog/images/05.jpg"></a></li>
-                    <li><a href="http://www.yangqq.com/"><img src="/blog/images/06.jpg"></a></li>
-                    <li><a href="http://www.yangqq.com/"><img src="/blog/images/07.jpg"></a></li>
-                    <li><a href="http://www.yangqq.com/"><img src="/blog/images/08.jpg"></a></li>
-                    <li><a href="http://www.yangqq.com/"><img src="/blog/images/09.jpg"></a></li>
+                    <c:forEach var="photoModel" items="${footerResultMap.photoModels}" varStatus="status">
+                        <li><a href="${photoModel.link}"><img src="${photoModel.cover}"></a></li>
+                    </c:forEach>
                 </ul>
             </section>
+            </c:if>
         </div>
         <!--<div class="footer-bottom">
             <p>Copyright 2013 Design by <a href="http://www.yangqq.com/">DanceSmile</a></p>
