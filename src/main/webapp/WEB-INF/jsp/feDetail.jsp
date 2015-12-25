@@ -39,7 +39,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 <div class="fe-frame">
                     <iframe id="preview" src="${feModel.url}" frameborder="0" noresize="noresize"></iframe>
                 </div>
-                <div class="desc">
+                <div class="fedesc">
                     <h2>${feModel.desc}</h2>
                 </div>
             </ul>

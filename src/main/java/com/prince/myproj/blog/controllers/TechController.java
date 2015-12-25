@@ -9,6 +9,7 @@ import com.prince.myproj.blog.services.UtilService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,11 +33,10 @@ public class TechController {
     @Autowired
     private PageService pageService;
 
-    @RequestMapping("/tech")
+    @RequestMapping("/cate/{bigCate}")
     @FooterCommon
-    public String viewToTech(HttpServletRequest request,HttpServletResponse response ,Model model){
-        //导向技术博客
-        String bigCate = "tech";
+    public String viewToTech(HttpServletRequest request,HttpServletResponse response ,Model model,@PathVariable String bigCate){
+        //导向对应博客
 
         ListPageModel listPageModel = pageService.preparedListPage(request, 7);
         List<DailyModel> dailyModels = dailyService.getDailyListByPage(listPageModel, bigCate);
@@ -48,6 +48,6 @@ public class TechController {
 
         model.addAttribute("techResultMap",techResultMap);
 
-        return "tech";
+        return bigCate;
     }
 }
