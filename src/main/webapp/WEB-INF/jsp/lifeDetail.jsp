@@ -16,8 +16,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <link href="/blog/css/animation.css" rel="stylesheet">
         <!-- 返回顶部调用 begin -->
         <link href="/blog/css/lrtk.css" rel="stylesheet">
+        <link href="/blog/photoutil/photoview.css" rel="stylesheet">
         <script type="text/javascript" src="/blog/js/jquery.js"></script>
         <script type="text/javascript" src="/blog/js/js.js"></script>
+        <script type="text/javascript" src="/blog/photoutil/photoview.js"></script>
+        <script src="/blog/js/photo/photoinit.js">
         <!-- 返回顶部调用 end-->
         <!--[if lt IE 9]>
         <script src="/blog/js/modernizr.js"></script>
@@ -34,7 +37,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             <ul class="video-list">
                 <c:forEach var="photo" items="${photoResultMap.photos}" varStatus="status">
                     <li>
-                        <a class="cover">
+                        <a class="cover" data-index="${status.index}">
                             <img src="${photo.picUrl}">
                         </a>
                     </li>
