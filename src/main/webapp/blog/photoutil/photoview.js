@@ -69,9 +69,9 @@
 
       elem.view=createElement("div", "photoview-view", elem.container);
       elem.prev1 = createElement("a", "photoview-prev1", elem.view);
-      elem.arrow1 = createElement("span", "left", elem.prev1);
+      elem.prev1 = createElement("span", "left", elem.prev1);
       elem.next1 = createElement("a", "photoview-next1", elem.view);
-      elem.arrow2 = createElement("span", "right", elem.next1);
+      elem.next1 = createElement("span", "right", elem.next1);
       elem.viewCache=createElement("img");
       // 控制栏
       elem.control=createElement("div", "photoview-control", elem.wrap);
@@ -382,12 +382,12 @@
           _this.$adapt();
         };
         // 上一张
-        elem.prev.onclick=function () {
+        elem.prev1.onclick=elem.prev.onclick=function () {
           if(!_this.queue.length) return;
           _this.aim(_this.index-1);
         };
         // 下一张
-        elem.next.onclick=function () {
+        elem.next1.onclick = elem.next.onclick=function () {
           if(!_this.queue.length) return;
           _this.aim(_this.index+1);
         };

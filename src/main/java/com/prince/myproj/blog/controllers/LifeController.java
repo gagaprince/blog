@@ -51,7 +51,7 @@ public class LifeController {
     @FooterCommon
     public String viewToLifeDetail(HttpServletRequest request,HttpServletResponse response,Model model){
 
-        ListPageModel listPageModel = pageService.preparedListPage(request,12);
+        ListPageModel listPageModel = pageService.preparedListPage(request,999);
         String folderIdStr = utilService.getDefaultWhenNull(request.getParameter("id"), "1");
         int folderId = Integer.parseInt(folderIdStr);
 

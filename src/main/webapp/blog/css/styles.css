@@ -293,3 +293,20 @@ footer { background:#1D1D1D; -webkit-box-shadow: 0 -1px 0 rgba(0,0,0,0.55), inse
     padding-left:40px;
     margin:5px 0 20px 0;
 }
+.video-list .fe-frame{
+    width:100%;
+    text-align:center;
+
+}
+.video-list .title{
+    padding:5px 0 10px 36px;
+    color:#fff;
+}
+.video-list .desc{
+    color:#fff;
+    padding:10px 36px 0 36px;
+}
+.video-list .fe-frame iframe{
+    width:90%;
+    min-height:500px;
+}

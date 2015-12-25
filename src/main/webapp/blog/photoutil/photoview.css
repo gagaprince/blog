@@ -78,29 +78,42 @@
 
 .photoview-container .photoview-prev1,.photoview-container .photoview-next1{
   position:absolute;
-  width:100px;
+  width:70px;
   height:100%;
 }
 .photoview-container .photoview-prev1{
-  margin-left:-100px;
+  margin-left:-70px;
 }
 .photoview-container .photoview-next1{
-  right:-100px;
+  right:-70px;
 }
+
+.photoview-container .photoview-prev1:hover,.photoview-container .photoview-next1:hover{
+  /*background:rgba(204,204,204,0.5);*/
+}
+
 .photoview-container .photoview-prev1 .left{
   position:absolute;
   top:38%;
-  right:5px;
+  right:15px;
   width: 42px;
   height: 72px;
+  cursor: pointer;
   background:url(http://gagablog.oss-cn-beijing.aliyuncs.com/photo/slider_btn_icon.png) no-repeat 0 -87px;
+}
+.photoview-container .photoview-prev1:hover .left{
+  background-position:-46px -87px;
 }
 .photoview-container .photoview-next1 .right{
   position:absolute;
   top:38%;
-  margin-left:5px;
+  margin-left:15px;
   width: 42px;
   height: 72px;
+  cursor: pointer;
   background:url(http://gagablog.oss-cn-beijing.aliyuncs.com/photo/slider_btn_icon.png) no-repeat 0 0;
+}
+.photoview-container .photoview-next1:hover .right{
+  background-position:-46px 0;
 }
 

@@ -9,21 +9,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <meta charset="utf-8">
-        <title>gagaprince的微生活</title>
+        <title>gagaprince的视频教程</title>
         <meta name="keywords" content="前端技术,html5,游戏开发,技术教程,技术博客,个人空间,个人简历">
         <meta name="description" content="这是一个个人博客，记录技术日志，解决技术问题，也有生活小记。">
-        <link href="/blog/css/styles.css" rel="stylesheet">
-        <link href="/blog/css/animation.css" rel="stylesheet">
+        <link href="./css/styles.css" rel="stylesheet">
+        <link href="./css/animation.css" rel="stylesheet">
         <!-- 返回顶部调用 begin -->
-        <link href="/blog/css/lrtk.css" rel="stylesheet">
-        <link href="/blog/photoutil/photoview.css" rel="stylesheet">
-        <script type="text/javascript" src="/blog/js/jquery.js"></script>
-        <script type="text/javascript" src="/blog/js/js.js"></script>
-        <script type="text/javascript" src="/blog/photoutil/photoview.js"></script>
-        <script src="/blog/js/photo/photoinit.js">
+        <link href="./css/lrtk.css" rel="stylesheet">
+        <script type="text/javascript" src="./js/jquery.js"></script>
+        <script type="text/javascript" src="./js/js.js"></script>
         <!-- 返回顶部调用 end-->
         <!--[if lt IE 9]>
-        <script src="/blog/js/modernizr.js"></script>
+        <script src="./js/modernizr.js"></script>
         <![endif]-->
         <%@ include file="common/tongji.jsp"%>
     </head>
@@ -35,18 +32,29 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <div class="blank"></div>
         <div class="blogs">
             <ul class="video-list">
-                <c:forEach var="photo" items="${photoResultMap.photos}" varStatus="status">
+                <c:forEach var="feModel" items="${feResultMap.feModels}" varStatus="status">
                     <li>
-                        <a class="cover" data-index="${status.index}">
-                            <img src="${photo.picUrl}">
+                        <a class="cover">
+                        <c:if test="${not empty feModel.cover}">
+                            <img src="${feModel.cover}">
+                        </c:if>
+                        <c:if test="${empty feModel.cover}">
+                            <img src="http://gagablog.oss-cn-beijing.aliyuncs.com/video/default.png">
+                        </c:if>
+
+
+                        </a>
+                        <a class="desc" href="/blog/fe/detail?id=${feModel.id}" target="_blank">
+                            <span class="titlefont"><font>${feModel.name}</font></span>
+                            <span class="descfont"><font>${feModel.desc}</font></span>
                         </a>
                     </li>
                 </c:forEach>
 
                 <!-- listpage -->
-                <!--<c:set var="listPage" value="${photoResultMap.listpage}"></c:set>
-                <c:set var="listpageUri" value="/blog/life/detail?pno="></c:set>
-                <%@ include file="common/listpage.jsp"%>-->
+                <c:set var="listPage" value="${feResultMap.listpage}"></c:set>
+                <c:set var="listpageUri" value="/blog/fe?pno="></c:set>
+                <%@ include file="common/listpage.jsp"%>
             </ul>
 
             <!--bloglist end-->
