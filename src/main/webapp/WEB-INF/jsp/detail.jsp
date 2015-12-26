@@ -36,16 +36,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 <ul>
                     ${resultMap.daily.content}
                 </ul>
-                <div class="otherlink">
-                    <h2>相关文章</h2>
-                    <ul>
-                        <li><a href="http://www.yangqq.com/newstalk/mood/2013-07-24/518.html" title="我希望我的爱情是这样的">我希望我的爱情是这样的有种情谊，不是爱情，也算不得友情有种情谊，不是爱情，也算不得友情</a></li>
-                        <li><a href="http://www.yangqq.com/newstalk/mood/2013-07-02/335.html" title="有种情谊，不是爱情，也算不得友情">有种情谊，不是爱情，也算不得友情有种情谊，不是爱情，也算不得友情有种情谊，不是爱情，也算不得友情</a></li>
-                        <li><a href="http://www.yangqq.com/newstalk/mood/2013-07-01/329.html" title="世上最美好的爱情">世上最美好的爱情</a></li>
-                        <li><a href="http://www.yangqq.com/news/read/2013-06-11/213.html" title="爱情没有永远，地老天荒也走不完">爱情没有永远，地老天荒也走不完</a></li>
-                        <li><a href="http://www.yangqq.com/news/s/2013-06-06/24.html" title="爱情的背叛者">爱情的背叛者</a></li>
-                    </ul>
-                </div>
+                <c:if test="${not empty resultMap.relativeDailys}">
+                    <div class="otherlink">
+                        <h2>相关文章</h2>
+                        <ul>
+                            <c:forEach var="relativeDaily" items="${resultMap.relativeDailys}" varStatus="status">
+                                <li><a href="/blog/detail?id=${relativeDaily.id}" title="${relativeDaily.title}">${relativeDaily.title}</a></li>
+                            </c:forEach>
+                            <!--
+                            <li><a href="http://www.yangqq.com/newstalk/mood/2013-07-02/335.html" title="有种情谊，不是爱情，也算不得友情">有种情谊，不是爱情，也算不得友情有种情谊，不是爱情，也算不得友情有种情谊，不是爱情，也算不得友情</a></li>
+                            <li><a href="http://www.yangqq.com/newstalk/mood/2013-07-01/329.html" title="世上最美好的爱情">世上最美好的爱情</a></li>
+                            <li><a href="http://www.yangqq.com/news/read/2013-06-11/213.html" title="爱情没有永远，地老天荒也走不完">爱情没有永远，地老天荒也走不完</a></li>
+                            <li><a href="http://www.yangqq.com/news/s/2013-06-06/24.html" title="爱情的背叛者">爱情的背叛者</a></li>-->
+                        </ul>
+                    </div>
+                </c:if>
             </div>
             <!--bloglist end-->
             <!-- aside include -->

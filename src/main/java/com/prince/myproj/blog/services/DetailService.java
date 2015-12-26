@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -22,5 +23,29 @@ public class DetailService {
         Map<String,Long> idMap = new HashMap<String, Long>();
         idMap.put("id",dailyId);
         return dailyDao.getDailyById(idMap);
+    }
+
+    public List<DailyModel> getRelativeDailys(String cate,long currentId){
+        Map<String,Object> cateMap = new HashMap<String, Object>();
+        cateMap.put("cate",cate);
+        cateMap.put("fromIndex",0);
+        cateMap.put("toIndex",6);
+        List<DailyModel> dailys = dailyDao.getSimpleDailyList(cateMap);
+        filterDailys(dailys,currentId);
+        if(dailys.size()>0){
+            return dailys;
+        }
+        return null;
+    }
+
+    private void filterDailys(List<DailyModel> dailys,long id){
+        int size = dailys.size();
+        for(int i=0;i<size;i++){
+            DailyModel daily = dailys.get(i);
+            long idIn = daily.getId();
+            if(id==idIn){
+                dailys.remove(i);
+            }
+        }
     }
 }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -31,9 +32,12 @@ public class DetailController {
     public String viewDetail(HttpServletRequest request,HttpServletResponse response,Model model){
         long id = Long.parseLong(utilService.getDefaultWhenNull(request.getParameter("id"), "1"));
         DailyModel daily = detailService.getDailyById(id);
+        List<DailyModel> relativeDailys = detailService.getRelativeDailys(daily.getCate(),daily.getId());
+
 //        daily.setContent(daily.getContent());
         Map<String,Object> resultMap = new HashMap<String, Object>();
         resultMap.put("daily",daily);
+        resultMap.put("relativeDailys",relativeDailys);
         model.addAttribute("resultMap",resultMap);
         return "detail";
     }
