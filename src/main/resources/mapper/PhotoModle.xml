@@ -35,15 +35,17 @@
         </trim>
         )
     </insert>
-
-    <!--<update id="update" parameterType="TestModel">
-        update  test
+    <update id="update" parameterType="PhotoModel">
+        update  photo
         <trim prefix="set" suffixOverrides=",">
-            <if test="content != null"> content = #{content} ,</if>
+            <if test="name != null"> name = #{name} ,</if>
+            <if test="desc != null"> desc = #{desc} ,</if>
+            <if test="picUrl != null"> pic_url = #{picUrl} ,</if>
+            <if test="photoFolderId != null"> photo_folder_id = #{photoFolderId} ,</if>
             <if test="createTime != null"> create_time = #{createTime} ,</if>
         </trim>
         where id = #{id}
-    </update>-->
+    </update>
     <!--<delete id="delete" parameterType="DailyModel">-->
         <!--delete from daily-->
         <!--where 1=0-->

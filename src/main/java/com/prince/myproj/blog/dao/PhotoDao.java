@@ -10,6 +10,7 @@ import java.util.Map;
  */
 public interface PhotoDao {
     public void save(PhotoModel photoModel);
+    public void update(PhotoModel photoModel);
     public List<PhotoModel> getPhotoList(Map<String,Object> limitMap);
     public int getAllCount(Map<String,Object> folderIdMap);
 }

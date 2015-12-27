@@ -135,6 +135,23 @@
       <version>1.1.2</version>
     </dependency>
 
+    <dependency>
+      <groupId>com.prince.util</groupId>
+      <artifactId>HttpUtil</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>com.prince.util</groupId>
+      <artifactId>ossUtil</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jsoup</groupId>
+      <artifactId>jsoup</artifactId>
+      <version>1.8.3</version>
+    </dependency>
+
   </dependencies>
 
   <profiles>

@@ -33,7 +33,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <div class="blogs">
             <ul class="video-list">
                 <c:forEach var="folder" items="${lifeResultMap.folders}" varStatus="status">
-                    <li>
+                    <li style="overflow:hidden;">
                         <a class="cover">
                         <c:if test="${not empty folder.cover}">
                             <img src="${folder.cover}">
