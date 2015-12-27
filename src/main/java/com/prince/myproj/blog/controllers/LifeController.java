@@ -36,7 +36,7 @@ public class LifeController {
     @FooterCommon
     public String viewToLife(HttpServletRequest request,HttpServletResponse response,Model model){
 
-        ListPageModel listPageModel = pageService.preparedListPage(request,9);
+        ListPageModel listPageModel = pageService.preparedListPage(request,18);
         List<PhotoFolderModel> folders = photoService.giveMePhotoFolders(listPageModel);
 
         Map<String,Object> lifeResultMap = new HashMap<String, Object>();

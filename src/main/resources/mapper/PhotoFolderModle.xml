@@ -63,7 +63,6 @@
 
     <select id="getPhotoFolders" parameterType="map"  resultMap="PhotoFolderModelResultMap">
         select * from photofolder s
-        order by create_time desc
         <if test="fromIndex != null and toIndex != null">
             limit #{fromIndex}, #{toIndex}
         </if>
