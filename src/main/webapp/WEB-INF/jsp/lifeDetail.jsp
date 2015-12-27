@@ -36,7 +36,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <div class="blogs">
             <ul class="video-list">
                 <c:forEach var="photo" items="${photoResultMap.photos}" varStatus="status">
-                    <li>
+                    <li style="overflow: hidden;">
                         <a class="cover" data-index="${status.index}">
                             <img src="${photo.picUrl}">
                         </a>
