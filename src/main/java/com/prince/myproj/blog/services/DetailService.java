@@ -45,6 +45,7 @@ public class DetailService {
             long idIn = daily.getId();
             if(id==idIn){
                 dailys.remove(i);
+                break;
             }
         }
     }
