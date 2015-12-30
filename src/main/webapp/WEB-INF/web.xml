@@ -68,6 +68,10 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>default</servlet-name>
+        <url-pattern>*.plist</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
         <url-pattern>*.eot</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
