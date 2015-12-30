@@ -31,7 +31,52 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <!--info end-->
         <div class="blank"></div>
         <div class="blogs">
-            <ul class="video-list">
+            <ul class="blog-img-list">
+                <c:forEach var="folder" items="${lifeResultMap.folders}" varStatus="status">
+                    <li>
+                        <a href="/blog/life/detail?id=${folder.id}" target="_blank">
+                            <div class="blog-img-item">
+                                <span class="title"><font>${folder.name}</font></span>
+
+                                <c:if test="${not empty folder.cover}">
+                                    <span class="img"><img src="${folder.cover}"></span>
+                                </c:if>
+                                <c:if test="${empty folder.cover}">
+                                    <span class="img"><img src="http://gagablog.oss-cn-beijing.aliyuncs.com/video/default.png"></span>
+                                </c:if>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/blog/life/detail?id=${folder.id}" target="_blank">
+                            <div class="blog-img-item">
+                                <span class="title"><font>${folder.name}</font></span>
+
+                                <c:if test="${not empty folder.cover}">
+                                    <span class="img"><img src="${folder.cover}"></span>
+                                </c:if>
+                                <c:if test="${empty folder.cover}">
+                                    <span class="img"><img src="http://gagablog.oss-cn-beijing.aliyuncs.com/video/default.png"></span>
+                                </c:if>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/blog/life/detail?id=${folder.id}" target="_blank">
+                            <div class="blog-img-item">
+                                <span class="title"><font>${folder.name}</font></span>
+
+                                <c:if test="${not empty folder.cover}">
+                                    <span class="img"><img src="${folder.cover}"></span>
+                                </c:if>
+                                <c:if test="${empty folder.cover}">
+                                    <span class="img"><img src="http://gagablog.oss-cn-beijing.aliyuncs.com/video/default.png"></span>
+                                </c:if>
+                            </div>
+                        </a>
+                    </li>
+                </c:forEach>
+                    <!--
                 <c:forEach var="folder" items="${lifeResultMap.folders}" varStatus="status">
                     <li style="overflow:hidden;">
                         <a class="cover">
@@ -50,7 +95,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                         </a>
                     </li>
                 </c:forEach>
-
+-->
                 <!-- listpage -->
                 <c:set var="listPage" value="${lifeResultMap.listpage}"></c:set>
                 <c:set var="listpageUri" value="/blog/life?pno="></c:set>
