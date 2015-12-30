@@ -304,7 +304,7 @@ footer {min-height: 200px; background:#1D1D1D; -webkit-box-shadow: 0 -1px 0 rgba
 }
 .video-list .fedesc{
     color:#fff;
-    padding:10px 36px 0 36px;
+    padding:10px 36px 10px 36px;
 }
 .video-list .fe-frame iframe{
     width:90%;
