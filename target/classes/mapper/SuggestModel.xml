@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.prince.myproj.blog.dao.SuggestDao">
+    <resultMap id="SuggestModelResultMap" type="SuggestModel">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="content" property="content" jdbcType="VARCHAR" />
+        <result column="title" property="title" jdbcType="VARCHAR" />
+        <result column="background" property="bg" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <insert id="save"
+            parameterType="SuggestModel"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into suggest(
+        <trim suffixOverrides=",">
+            <if test="id != null"> id ,</if>
+            <if test="content != null"> content ,</if>
+            <if test="title != null"> title ,</if>
+            <if test="bg != null"> background ,</if>
+        </trim>
+        )values(
+        <trim suffixOverrides=",">
+            <if test="id != null"> #{id} ,</if>
+            <if test="content != null"> #{content} ,</if>
+            <if test="title != null"> #{title} ,</if>
+            <if test="bg != null"> #{bg} ,</if>
+        </trim>
+        )
+    </insert>
+
+    <!--<select id="getDailyById" parameterType="map"  resultMap="DailyModelResultMap">-->
+        <!--select * from daily s-->
+        <!--<where>-->
+            <!--1 = 1-->
+            <!--<if test="id != null">-->
+                <!--and s.id = #{id}-->
+            <!--</if>-->
+        <!--</where>-->
+    <!--</select>-->
+
+    <select id="getAllSuggest" resultMap="SuggestModelResultMap">
+        select * from suggest s
+        order by id desc
+    </select>
+
+    <select id="getAllCount" resultType="Integer">
+        select count(*) from suggest
+    </select>
+
+</mapper>

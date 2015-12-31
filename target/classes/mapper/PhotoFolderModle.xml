@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.prince.myproj.blog.dao.PhotoFolderDao">
+    <resultMap id="PhotoFolderModelResultMap" type="PhotoFolderModel">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="desc" property="desc" jdbcType="VARCHAR" />
+        <result column="cover" property="cover" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="DATE" />
+    </resultMap>
+
+    <insert id="save"
+            parameterType="PhotoFolderModel"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into photofolder(
+        <trim suffixOverrides=",">
+            <if test="id != null"> id ,</if>
+            <if test="name != null"> name ,</if>
+            <if test="desc != null"> desc ,</if>
+            <if test="cover != null"> cover ,</if>
+            <if test="createTime != null"> create_time ,</if>
+        </trim>
+        )values(
+        <trim suffixOverrides=",">
+            <if test="id != null"> #{id} ,</if>
+            <if test="name != null"> #{name} ,</if>
+            <if test="desc != null"> #{desc} ,</if>
+            <if test="cover != null"> #{cover} ,</if>
+            <if test="createTime != null"> #{createTime} ,</if>
+        </trim>
+        )
+    </insert>
+
+    <update id="update" parameterType="PhotoFolderModel">
+        update  photofolder
+        <trim prefix="set" suffixOverrides=",">
+            <if test="name != null"> name = #{name} ,</if>
+            <if test="desc != null"> desc = #{desc} ,</if>
+            <if test="cover != null"> cover = #{cover} ,</if>
+            <if test="createTime != null"> create_time = #{createTime} ,</if>
+        </trim>
+        where id = #{id}
+    </update>
+    <!--<delete id="delete" parameterType="DailyModel">-->
+        <!--delete from daily-->
+        <!--where 1=0-->
+        <!--<if test="id != null">-->
+            <!--or id = #{id}-->
+        <!--</if>-->
+    <!--</delete>-->
+
+    <!--<select id="getDailyById" parameterType="map"  resultMap="DailyModelResultMap">-->
+        <!--select * from daily s-->
+        <!--<where>-->
+            <!--1 = 1-->
+            <!--<if test="id != null">-->
+                <!--and s.id = #{id}-->
+            <!--</if>-->
+        <!--</where>-->
+    <!--</select>-->
+
+    <select id="getPhotoFolders" parameterType="map"  resultMap="PhotoFolderModelResultMap">
+        select * from photofolder s
+        <if test="fromIndex != null and toIndex != null">
+            limit #{fromIndex}, #{toIndex}
+        </if>
+    </select>
+
+    <select id="getAllCount" resultType="Integer">
+        select count(*) from photofolder s
+    </select>
+
+</mapper>

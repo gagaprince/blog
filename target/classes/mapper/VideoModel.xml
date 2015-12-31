@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.prince.myproj.blog.dao.VideoDao">
+    <resultMap id="VideoModelResultMap" type="VideoModel">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="title" property="title" jdbcType="VARCHAR" />
+        <result column="desc" property="desc" jdbcType="VARCHAR" />
+        <result column="src" property="src" jdbcType="VARCHAR" />
+        <result column="cate" property="cate" jdbcType="VARCHAR" />
+        <result column="cover" property="cover" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <insert id="save"
+            parameterType="VideoModel"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into video(
+        <trim suffixOverrides=",">
+            <if test="id != null"> id ,</if>
+            <if test="title != null"> title ,</if>
+            <if test="desc != null"> desc ,</if>
+            <if test="src != null"> src ,</if>
+            <if test="cate != null"> cate ,</if>
+            <if test="cover != null"> cover ,</if>
+            <if test="createTime != null"> create_time ,</if>
+        </trim>
+        )values(
+        <trim suffixOverrides=",">
+            <if test="id != null"> #{id} ,</if>
+            <if test="title != null"> #{title} ,</if>
+            <if test="desc != null"> #{desc} ,</if>
+            <if test="src != null"> #{src} ,</if>
+            <if test="cate != null"> #{cate} ,</if>
+            <if test="cover != null"> #{cover} ,</if>
+            <if test="createTime != null"> #{createTime} ,</if>
+        </trim>
+        )
+    </insert>
+
+    <!--<select id="getDailyById" parameterType="map"  resultMap="DailyModelResultMap">-->
+        <!--select * from daily s-->
+        <!--<where>-->
+            <!--1 = 1-->
+            <!--<if test="id != null">-->
+                <!--and s.id = #{id}-->
+            <!--</if>-->
+        <!--</where>-->
+    <!--</select>-->
+
+    <update id="update" parameterType="VideoModel">
+        update  video
+        <trim prefix="set" suffixOverrides=",">
+            <if test="cate != null">cate = #{cate},</if>
+            <if test="cover != null">cover = #{cover},</if>
+            <if test="desc != null">desc = #{desc},</if>
+            <if test="src != null">src = #{src},</if>
+            <if test="title != null">title = #{title},</if>
+            <if test="createTime != null"> create_time = #{createTime} ,</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <select id="getVideoById" parameterType="map" resultMap="VideoModelResultMap">
+        select * from video s
+        <where>
+            1=1
+            <if test="id != null">
+                and s.id = #{id}
+            </if>
+        </where>
+    </select>
+
+    <select id="getVideos" parameterType="map" resultMap="VideoModelResultMap">
+        select * from video s
+        <where>
+            1=1
+            <if test="cate != null">
+                and s.cate = #{cate}
+            </if>
+        </where>
+        order by create_time desc
+        <if test="fromIndex != null and toIndex != null">
+        limit #{fromIndex}, #{toIndex}
+        </if>
+    </select>
+
+    <select id="getAllCount" parameterType="map" resultType="Long">
+        select count(1) from video s
+        <where>
+            1=1
+            <if test="cate != null">
+                and s.cate = #{cate}
+            </if>
+        </where>
+    </select>
+
+</mapper>
