@@ -318,6 +318,7 @@ footer {min-height: 200px; background:#1D1D1D; -webkit-box-shadow: 0 -1px 0 rgba
 }
 .blog-img-list li{
     display: inline-block;
+    float:left;
     margin-left: 12.5px;
     width:210px;
 

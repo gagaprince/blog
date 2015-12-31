@@ -16,6 +16,17 @@
     <context:property-placeholder location="classpath:*.properties" />
     <context:component-scan base-package="com.prince.myproj.blog" />
     <mvc:annotation-driven>
+        <mvc:message-converters>
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>text/plain;charset=UTF-8</value>
+                        <value>text/html;charset=UTF-8</value>
+                        <value>application/json;charset=UTF-8</value>
+                    </list>
+                </property>
+            </bean>
+        </mvc:message-converters>
     </mvc:annotation-driven>
     <aop:aspectj-autoproxy proxy-target-class="true" />
 

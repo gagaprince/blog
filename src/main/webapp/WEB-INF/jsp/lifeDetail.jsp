@@ -4,6 +4,7 @@ String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -34,19 +35,23 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <!--info end-->
         <div class="blank"></div>
         <div class="blogs">
-            <ul class="video-list">
-                <c:forEach var="photo" items="${photoResultMap.photos}" varStatus="status">
-                    <li style="overflow: hidden;">
-                        <a class="cover" data-index="${status.index}">
-                            <img src="${photo.picUrl}">
-                        </a>
+            <ul class="blog-img-list">
+                <c:set var="photosList" value="${photoResultMap.puBuListModel.pubuList}"></c:set>
+                <c:set var="photolieCount" value="${fn:length(photosList)}"></c:set>
+                <c:forEach var="photos" items="${photosList}" varStatus="status">
+                    <li id="pubu${status.index}" class="pubuitem">
+                        <c:forEach var="photo" items="${photos}" varStatus="status1">
+                            <a class="cover" data-index="${photolieCount*status1.index+status.index}">
+                                <div class="blog-img-item">
+                                    <!--<span class="title"><font>${folder.name}</font></span>-->
+                                    <span class="title"><font></font></span>
+                                    <span class="img"><img src="${photo.picUrl}" data-index="${photolieCount*status1.index+status.index}"></span>
+                                </div>
+                            </a>
+                        </c:forEach>
                     </li>
-                </c:forEach>
 
-                <!-- listpage -->
-                <!--<c:set var="listPage" value="${photoResultMap.listpage}"></c:set>
-                <c:set var="listpageUri" value="/blog/life/detail?pno="></c:set>
-                <%@ include file="common/listpage.jsp"%>-->
+                </c:forEach>
             </ul>
 
             <!--bloglist end-->

@@ -1,10 +1,13 @@
 package com.prince.myproj.blog.services;
 
+import com.prince.myproj.blog.models.PuBuListModel;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by gagaprince on 15-12-20.
@@ -51,6 +54,23 @@ public class UtilService {
 
     public String replaceTag(String des){
         return des.replaceAll("<.+?>","");
+    }
+
+    public PuBuListModel splitList(List list,int num){
+        PuBuListModel puBuListModel = new PuBuListModel();
+        int size = list.size();
+        List[] lists = new List[num];
+        for (int i=0;i<size;i++){
+            int index = i%num;
+            if(null==lists[index]){
+                lists[index] = new ArrayList();
+            }
+            lists[index].add(list.get(i));
+        }
+        for (List listTemp:lists){
+            puBuListModel.addPubuToList(listTemp);
+        }
+        return puBuListModel;
     }
 
 }

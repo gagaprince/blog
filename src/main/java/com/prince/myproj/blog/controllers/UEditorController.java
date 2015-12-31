@@ -57,12 +57,15 @@ public class UEditorController {
         DailyModel dailyModel = new DailyModel();
         if(idStr!=null){
             dailyModel.setId(Long.parseLong(idStr));
+            dailyModel.setCreateTime(new Date());
+        }else{
+            dailyModel = ueService.getDaily(Long.parseLong(idStr));
         }
         dailyModel.setTitle(title);
         dailyModel.setCate(cate);
         dailyModel.setBigCate(bigCate);
         dailyModel.setContent(content);
-        dailyModel.setCreateTime(new Date());
+
         try {
             ueService.saveOrUpdate(dailyModel);
         }catch (Exception e){
