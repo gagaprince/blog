@@ -11,6 +11,7 @@ public class PhotoFolderModel {
     private String cover;
     private Date createTime;
     private String desc;
+    private long rank;
 
     public Date getCreateTime() {
         return createTime;
@@ -50,5 +51,13 @@ public class PhotoFolderModel {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public long getRank() {
+        return rank;
+    }
+
+    public void setRank(long rank) {
+        this.rank = rank;
     }
 }

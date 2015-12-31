@@ -330,6 +330,7 @@ footer {min-height: 200px; background:#1D1D1D; -webkit-box-shadow: 0 -1px 0 rgba
     box-shadow: 0px 1px 0px rgba(255,255,255,.1), inset 0px 1px 1px rgba(0,0,0,.7);
     background: #222;
     border-radius: 6px;
+    position: relative;
 }
 .blog-img-list .title{
     font-size: 14px;
@@ -352,4 +353,26 @@ footer {min-height: 200px; background:#1D1D1D; -webkit-box-shadow: 0 -1px 0 rgba
 .blog-img-list .img img{
     width:80%;
     margin: auto;
+}
+
+.blog-img-list .blog-img-item .addbtn{
+    width:50px;
+    height: 50px;
+    display: none;
+    position: absolute;
+    color:#fff;
+    text-align: center;
+    line-height:50px;
+    background: #666;
+    border-radius:4px;
+    top:50px;
+}
+.blog-img-list .blog-img-item .add{
+    right:0;
+}
+.blog-img-list .blog-img-item .rank{
+    left: 40%;
+}
+.selectitem:hover .addbtn{
+    display:block;
 }

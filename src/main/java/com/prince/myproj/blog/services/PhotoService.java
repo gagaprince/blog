@@ -75,8 +75,18 @@ public class PhotoService {
         listPageModel.setAllCount(allCount);
         listPageModel.setAllPage(allPage);
 
-        return giveMePhotosByFolder(pno,psize,folderId);
+        return giveMePhotosByFolder(pno, psize, folderId);
 
+    }
+
+    public PhotoFolderModel getPhotoFolderById(long id){
+        Map<String,Object> idMap = new HashMap<String, Object>();
+        idMap.put("id", id);
+        return photoFolderDao.getPhotoFolderById(idMap);
+    }
+
+    public void updatePhotoFolder(PhotoFolderModel photoFolderModel){
+        photoFolderDao.update(photoFolderModel);
     }
 
 }

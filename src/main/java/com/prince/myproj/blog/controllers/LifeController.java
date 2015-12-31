@@ -53,6 +53,52 @@ public class LifeController {
 
         return "life";
     }
+    @RequestMapping("/life/editor")
+    @FooterCommon
+    public String viewToLifeEditor(HttpServletRequest request,HttpServletResponse response,Model model){
+
+        ListPageModel listPageModel = pageService.preparedListPage(request,18);
+        List<PhotoFolderModel> folders = photoService.giveMePhotoFolders(listPageModel);
+
+        PuBuListModel puBuListModel = utilService.splitList(folders,3);
+
+        Map<String,Object> lifeResultMap = new HashMap<String, Object>();
+        lifeResultMap.put("listpage",listPageModel);
+//        lifeResultMap.put("folders",folders);
+        lifeResultMap.put("puBuListModel",puBuListModel);
+
+        model.addAttribute("lifeResultMap",lifeResultMap);
+
+        return "editor/life";
+    }
+
+    @RequestMapping("/life/addRank")
+    @ResponseBody
+    public String addRankForLifePhoto(HttpServletRequest request,HttpServletResponse response){
+        String idstr = utilService.getDefaultWhenNull(request.getParameter("id"),"-1");
+        long id = Long.parseLong(idstr);
+        String rankStr = utilService.getDefaultWhenNull(request.getParameter("rank"), "100");
+        int rank = Integer.parseInt(rankStr);
+        ResultModel resultModel = new ResultModel();
+        if(id==-1){
+            resultModel.getBstatus().setCode(-2);
+            resultModel.getBstatus().setDesc("id error!");
+        }else{
+            try{
+                PhotoFolderModel photoFolderModel = photoService.getPhotoFolderById(id);
+                photoFolderModel.setRank(photoFolderModel.getRank()+rank);
+                photoService.updatePhotoFolder(photoFolderModel);
+                resultModel.getBstatus().setCode(0);
+                resultModel.setData(photoFolderModel);
+            }catch (Exception e){
+                resultModel.getBstatus().setCode(-3);
+                resultModel.getBstatus().setDesc("update error!");
+            }
+        }
+
+        return JSON.toJSONString(resultModel);
+    }
+
     @RequestMapping("/lifeJson")
     @ResponseBody
     public String lifeJson(HttpServletRequest request,HttpServletResponse response){

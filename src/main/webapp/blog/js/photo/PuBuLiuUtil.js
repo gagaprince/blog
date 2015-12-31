@@ -1,11 +1,11 @@
 var gaga = gaga||{};
 gaga.PubuUtil = gaga.UtilBase.extend({
     pubuItemTpl:['<a href="/blog/life/detail?id=@=id@" target="_blank">',
-            '                                <div class="blog-img-item">',
-            '                                    <span class="title"><font>@=name@</font></span>',
-            '                                    <span class="img"><img src="@=cover@"></span>',
-            '                                </div>',
-            '                            </a>'].join(""),
+        '                                <div class="blog-img-item">',
+        '                                    <span class="title"><font>@=name@</font></span>',
+        '                                    <span class="img"><img src="@=cover@"></span>',
+        '                                </div>',
+        '                            </a>'].join(""),
 
     listNum:0,
     pno:1,
@@ -27,7 +27,7 @@ gaga.PubuUtil = gaga.UtilBase.extend({
                 onAllDataReturn.call(this);
             }
         }
-        //¼ÓÔØÊý¾Ý
+        //åŠ è½½æ•°æ®
         this.loadLock = true;
         var url = this.dataUrl;
         var _this = this;
@@ -86,13 +86,20 @@ gaga.PubuUtil = gaga.UtilBase.extend({
 
     initListener:function(){
         var _this = this;
+        var timeOut = null;
         $(document).scroll(function(){
-            var winHeight = $(window).height();
-            var allHeight = $(document).height();
-            var scrollTop = $(document).scrollTop();
-            if(winHeight+scrollTop>=allHeight-50){
-                _this.loadNext();
+            if(timeOut!=null){
+                clearTimeout(timeOut);
             }
+            timeOut = setTimeout(function(){
+                var winHeight = $(window).height();
+                var allHeight = $(document).height();
+                var scrollTop = $(document).scrollTop();
+                if(winHeight+scrollTop>=allHeight-50){
+                    _this.loadNext();
+                }
+            },100);
+
         });
     }
 });

@@ -45,19 +45,21 @@ gaga.Class.extend=function(prop){
             //三种条件都满足的开启递归调用模式
 
             desc.value=(function(name,propCall){
-                var tmp = this._super;
-                //此处的this指向子类对象  暂存_super指向
-                this._super = _prototype[name];
-                //_super指向父类同名方法
-                var ret = propCall.apply(this,arguments);
-                //调用子类目标方法
-                //（目标方法中会调用this._super 而此时_super已经指向父类同名方法）;
-                this._super = tmp;
-                //将_super指针还原，这点很重要，
-                //因为父类中方法也可能会调用父类的父类方法，如果不还原，
-                //可能会造成指针混乱，这一点大家自己去思考
-                return ret;
-                //返回结果集
+                return function(){
+                    var tmp = this._super;
+                    //此处的this指向子类对象  暂存_super指向
+                    this._super = _superProp[name];
+                    //_super指向父类同名方法
+                    var ret = propCall.apply(this,arguments);
+                    //调用子类目标方法
+                    //（目标方法中会调用this._super 而此时_super已经指向父类同名方法）;
+                    this._super = tmp;
+                    //将_super指针还原，这点很重要，
+                    //因为父类中方法也可能会调用父类的父类方法，如果不还原，
+                    //可能会造成指针混乱，这一点大家自己去思考
+                    return ret;
+                    //返回结果集
+                }
             })(name,prop[name]);
             //一定要使用闭包，这个地方的原因可以参考
             //问题：每隔一秒钟输出i每次输出i+1 的闭包写法
