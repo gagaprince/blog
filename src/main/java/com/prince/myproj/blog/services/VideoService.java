@@ -40,7 +40,7 @@ public class VideoService {
         return videoDao.getVideoById(idMap);
     }
 
-    private List<VideoModel> getVideosByPage(int pno,int psize,String cate){
+    public List<VideoModel> getVideosByPage(int pno,int psize,String cate){
         int begin = pno * psize;
         int length = psize;
         Map<String,Object> limitMap = new HashMap<String, Object>();

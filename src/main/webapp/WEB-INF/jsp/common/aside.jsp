@@ -1,10 +1,18 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <aside>
-    <!--<div class="search">
-        <form class="searchform" method="get" action="http://www.yangqq.com/web/24/view.html#">
-            <input type="text" name="s" value="Search" onfocus="this.value=&#39;&#39;" onblur="this.value=&#39;Search&#39;">
+    <div class="search">
+        <form class="searchform" name="blogSearch" method="get" action="/blog/search">
+            <input id="blogSearchInput" type="text" name="key" placeholder="输入您要搜索的内容" value="">
         </form>
-    </div>-->
+        <script>
+            $("#blogSearchInput").onkeydown(function(e){
+                var e = event || window.event || arguments.callee.caller.arguments[0];
+                if(e && e.keyCode==13){
+                    blogSearch.submit();
+                }
+            });
+        </script>
+    </div>
     <!--<div class="sunnav">
         <ul>
             <li><a href="http://www.yangqq.com/web/" target="_blank" title="网站建设">网站建设</a></li>

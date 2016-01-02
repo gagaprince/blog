@@ -18,7 +18,7 @@ public class FeService {
     @Autowired
     private FeDao feDao;
 
-    private List<FeModel> getFeListByPage(int pno,int psize){
+    public List<FeModel> getFeListByPage(int pno,int psize){
         int begin = pno*psize;
         int length = psize;
         Map<String,Object> limitMap = new HashMap<String, Object>();

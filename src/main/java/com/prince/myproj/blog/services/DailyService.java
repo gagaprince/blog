@@ -31,7 +31,7 @@ public class DailyService {
 
 
 
-    private List<DailyModel> getDailyListByPage(int pno,int psize,String bigCate){
+    public List<DailyModel> getDailyListByPage(int pno,int psize,String bigCate){
         int begin = pno*psize;
         int end = psize;//limit 是 长度
         Map<String,Object> seMap = new HashMap<String, Object>();

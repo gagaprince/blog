@@ -15,6 +15,7 @@
 
     <import resource="app-context.xml" />
     <import resource="app-db.xml" />
+    <import resource="app-lucene.xml" />
     <!--     <import resource="app-template.xml" />
 
         <import resource="app-consumer.xml"/>
