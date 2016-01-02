@@ -57,7 +57,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 </c:forEach>
                 <!-- listpage -->
                 <c:set var="listPage" value="${searchResultMap.listpage}"></c:set>
-                <c:set var="listpageUri" value="/blog/tech?pno="></c:set>
+                <c:set var="listpageUri" value="/blog/search?key=${param.key}&pno="></c:set>
                 <%@ include file="common/listpage.jsp"%>
                 <!-- listpage end -->
             </ul>
