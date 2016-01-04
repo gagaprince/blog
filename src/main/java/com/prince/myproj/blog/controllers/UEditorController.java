@@ -56,10 +56,9 @@ public class UEditorController {
         String content = utilService.getDefaultWhenNull(request.getParameter("allContent"),"");
         DailyModel dailyModel = new DailyModel();
         if(idStr!=null){
-            dailyModel.setId(Long.parseLong(idStr));
-            dailyModel.setCreateTime(new Date());
-        }else{
             dailyModel = ueService.getDaily(Long.parseLong(idStr));
+        }else{
+            dailyModel.setCreateTime(new Date());
         }
         dailyModel.setTitle(title);
         dailyModel.setCate(cate);
