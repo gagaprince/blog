@@ -10,15 +10,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <meta name="baidu-site-verification" content="IlBwkvnFa1" />
         <%@ include file="common/meta.jsp"%>
         <title>gagaprince的世界</title>
-        <link href="./css/styles.css" rel="stylesheet">
-        <link href="./css/animation.css" rel="stylesheet">
+        <link href="/blog/css/styles.css" rel="stylesheet">
+        <link href="/blog/css/animation.css" rel="stylesheet">
         <!-- 返回顶部调用 begin -->
-        <link href="./css/lrtk.css" rel="stylesheet">
-        <script type="text/javascript" src="./js/jquery.js"></script>
-        <script type="text/javascript" src="./js/js.js"></script>
+        <link href="/blog/css/lrtk.css" rel="stylesheet">
+        <script type="text/javascript" src="/blog/js/jquery.js"></script>
+        <script type="text/javascript" src="/blog/js/js.js"></script>
         <!-- 返回顶部调用 end-->
         <!--[if lt IE 9]>
-        <script src="./js/modernizr.js"></script>
+        <script src="/blog/js/modernizr.js"></script>
         <![endif]-->
         <%@ include file="common/tongji.jsp"%>
     </head>
@@ -70,10 +70,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                             <!--三角形-->
                             <div class="ci"></div>
                             <!--圆形-->
-                            <h2 class="title"><a href="/blog/detail?id=${daily.id}" target="_blank">${daily.title}</a></h2>
+                            <h2 class="title"><a href="/blog/detail/${daily.id}" target="_blank">${daily.title}</a></h2>
                             <ul class="textinfo">
                                 <c:if test="${not empty daily.pic}">
-                                    <a href="/blog/detail?id=${daily.id}"><img src="${daily.pic}"></a>
+                                    <a href="/blog/detail/${daily.id}"><img src="${daily.pic}"></a>
                                 </c:if>
                                 <p>
                                     ${daily.content}
@@ -88,7 +88,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 </c:forEach>
                 <!-- listpage -->
                 <c:set var="listPage" value="${resultMap.listpage}"></c:set>
-                <c:set var="listpageUri" value="/blog/index?pno="></c:set>
+                <c:set var="listpageUri" value="/blog/index/"></c:set>
                 <%@ include file="common/listpage.jsp"%>
             </ul>
             <!--bloglist end-->

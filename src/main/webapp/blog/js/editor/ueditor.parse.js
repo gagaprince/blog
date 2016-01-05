@@ -333,7 +333,6 @@
         })
     }
 })();
-
 UE.parse.register('insertcode',function(utils){
     var pres = this.root.getElementsByTagName('pre');
     if(pres.length){

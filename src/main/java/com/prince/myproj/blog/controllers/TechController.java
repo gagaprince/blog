@@ -39,6 +39,25 @@ public class TechController {
         //导向对应博客
 
         ListPageModel listPageModel = pageService.preparedListPage(request, 7);
+        preparedTech(listPageModel,bigCate,model);
+        return bigCate;
+    }
+    @RequestMapping("/cate/{bigCate}/{pno}")
+    @FooterCommon
+    public String viewToTech2(HttpServletRequest request,HttpServletResponse response ,Model model,@PathVariable String bigCate,@PathVariable int pno){
+        ListPageModel listPageModel = pageService.preparedListPage(pno,7);
+        preparedTech(listPageModel,bigCate,model);
+        return bigCate;
+    }
+    @RequestMapping("/cate/{bigCate}/{pno}/{psize}")
+    @FooterCommon
+    public String viewToTech3(HttpServletRequest request,HttpServletResponse response ,Model model,@PathVariable String bigCate,@PathVariable int pno,@PathVariable int psize){
+        ListPageModel listPageModel = pageService.preparedListPage(pno,psize);
+        preparedTech(listPageModel,bigCate,model);
+        return bigCate;
+    }
+
+    private void preparedTech(ListPageModel listPageModel,String bigCate,Model model){
         List<DailyModel> dailyModels = dailyService.getDailyListByPage(listPageModel, bigCate);
         dailyService.filterDailys(dailyModels);
 
@@ -47,7 +66,5 @@ public class TechController {
         techResultMap.put("listpage",listPageModel);
 
         model.addAttribute("techResultMap",techResultMap);
-
-        return bigCate;
     }
 }

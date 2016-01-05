@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -40,16 +41,7 @@ public class LifeController {
     public String viewToLife(HttpServletRequest request,HttpServletResponse response,Model model){
 
         ListPageModel listPageModel = pageService.preparedListPage(request,18);
-        List<PhotoFolderModel> folders = photoService.giveMePhotoFolders(listPageModel);
-
-        PuBuListModel puBuListModel = utilService.splitList(folders,3);
-
-        Map<String,Object> lifeResultMap = new HashMap<String, Object>();
-        lifeResultMap.put("listpage",listPageModel);
-//        lifeResultMap.put("folders",folders);
-        lifeResultMap.put("puBuListModel",puBuListModel);
-
-        model.addAttribute("lifeResultMap",lifeResultMap);
+        preparedLife(listPageModel,model);
 
         return "life";
     }
@@ -67,7 +59,7 @@ public class LifeController {
 //        lifeResultMap.put("folders",folders);
         lifeResultMap.put("puBuListModel",puBuListModel);
 
-        model.addAttribute("lifeResultMap",lifeResultMap);
+        model.addAttribute("lifeResultMap", lifeResultMap);
 
         return "editor/life";
     }
@@ -75,7 +67,7 @@ public class LifeController {
     @RequestMapping("/life/addRank")
     @ResponseBody
     public String addRankForLifePhoto(HttpServletRequest request,HttpServletResponse response){
-        String idstr = utilService.getDefaultWhenNull(request.getParameter("id"),"-1");
+        String idstr = utilService.getDefaultWhenNull(request.getParameter("id"), "-1");
         long id = Long.parseLong(idstr);
         String rankStr = utilService.getDefaultWhenNull(request.getParameter("rank"), "100");
         int rank = Integer.parseInt(rankStr);
@@ -142,5 +134,32 @@ public class LifeController {
         model.addAttribute("photoResultMap", photoResultMap);
 
         return "lifeDetail";
+    }
+    @RequestMapping("/life/{pno}")
+    @FooterCommon
+    public String viewToLife2(HttpServletRequest request,HttpServletResponse response,Model model,@PathVariable int pno){
+        ListPageModel listPageModel = pageService.preparedListPage(pno,18);
+        preparedLife(listPageModel, model);
+        return "life";
+    }
+    @RequestMapping("/life/{pno}/{psize}")
+    @FooterCommon
+    public String viewToLife3(HttpServletRequest request,HttpServletResponse response,Model model,@PathVariable int pno,@PathVariable int psize){
+        ListPageModel listPageModel = pageService.preparedListPage(pno,psize);
+        preparedLife(listPageModel,model);
+        return "life";
+    }
+
+    private void preparedLife(ListPageModel listPageModel,Model model){
+        List<PhotoFolderModel> folders = photoService.giveMePhotoFolders(listPageModel);
+
+        PuBuListModel puBuListModel = utilService.splitList(folders,3);
+
+        Map<String,Object> lifeResultMap = new HashMap<String, Object>();
+        lifeResultMap.put("listpage",listPageModel);
+//        lifeResultMap.put("folders",folders);
+        lifeResultMap.put("puBuListModel",puBuListModel);
+
+        model.addAttribute("lifeResultMap",lifeResultMap);
     }
 }

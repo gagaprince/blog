@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * Created by zidong.wang on 2015/12/24.
@@ -26,6 +27,13 @@ public class PageService {
         listPageModel.setPno(pno);
         listPageModel.setPsize(psize);
 
+        return listPageModel;
+    }
+
+    public ListPageModel preparedListPage(int pno,int psize){
+        ListPageModel listPageModel = new ListPageModel();
+        listPageModel.setPno(pno);
+        listPageModel.setPsize(psize);
         return listPageModel;
     }
 }

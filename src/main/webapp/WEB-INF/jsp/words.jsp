@@ -36,10 +36,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                             <!--三角形-->
                             <div class="ci"></div>
                             <!--圆形-->
-                            <h2 class="title"><a href="/blog/detail?id=${daily.id}" target="_blank">${daily.title}</a></h2>
+                            <h2 class="title"><a href="/blog/detail/${daily.id}" target="_blank">${daily.title}</a></h2>
                             <ul class="textinfo">
                                 <c:if test="${not empty daily.pic}">
-                                    <a href="/blog/detail?id=${daily.id}"><img src="${daily.pic}"></a>
+                                    <a href="/blog/detail/${daily.id}"><img src="${daily.pic}"></a>
                                 </c:if>
                                 <p>
                                     ${daily.content}
@@ -54,7 +54,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 </c:forEach>
                 <!-- listpage -->
                 <c:set var="listPage" value="${techResultMap.listpage}"></c:set>
-                <c:set var="listpageUri" value="/blog/tech?pno="></c:set>
+                <c:set var="listpageUri" value="/blog/cate/words/"></c:set>
                 <%@ include file="common/listpage.jsp"%>
                 <!-- listpage end -->
             </ul>
