@@ -44,6 +44,7 @@ public class LuceneService {
         IndexWriter indexWriter = null;
         try {
             indexWriter = blogLuceneConfiger.getIndexWriter();
+            deleteAllIndex(indexWriter);
             createBlogIndex(preparedDailyIndex(), indexWriter);
             createBlogIndex(preparedFeIndex(), indexWriter);
             createBlogIndex(preparedVideoIndex(), indexWriter);
@@ -61,6 +62,11 @@ public class LuceneService {
             }
         }
 
+    }
+
+    public void deleteAllIndex(IndexWriter indexWriter) throws IOException {
+        indexWriter.deleteAll();
+        indexWriter.forceMergeDeletes();
     }
 
     public List<BlogIndexModel> preparedDailyIndex(){
@@ -126,6 +132,7 @@ public class LuceneService {
             doc.add(fieldLink);
             indexWriter.addDocument(doc);
         }
+        indexWriter.commit();
     }
 
     public List<BlogIndexModel> searchBlog(String key,ListPageModel listPageModel) throws ParseException, IOException {

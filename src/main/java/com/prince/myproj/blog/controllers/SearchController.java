@@ -91,10 +91,11 @@ public class SearchController {
         try {
             String path = luceneConfiger.getIndexPath();
 
-            FileUtil fileUtil = FileUtil.getInstance();
-
-            fileUtil.deleteFile(path);
-            fileUtil.createPathFile(path);
+//            FileUtil fileUtil = FileUtil.getInstance();
+//
+//            fileUtil.deleteFile(path);
+//            fileUtil.createPathFile(path);
+            //实时索引要求必须由lucene操作索引 而不能使用file去删除索引
 
             luceneService.createIndex();
             resultModel.getBstatus().setCode(0);
