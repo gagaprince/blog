@@ -33,11 +33,13 @@ public class DetailController {
         long id = Long.parseLong(utilService.getDefaultWhenNull(request.getParameter("id"), "1"));
         DailyModel daily = detailService.getDailyById(id);
         List<DailyModel> relativeDailys = detailService.getRelativeDailys(daily.getCate(),daily.getId());
+        List<String> tags = detailService.analysisTags(daily);
 
 //        daily.setContent(daily.getContent());
         Map<String,Object> resultMap = new HashMap<String, Object>();
         resultMap.put("daily",daily);
         resultMap.put("relativeDailys",relativeDailys);
+        resultMap.put("dailyTags",tags);
         model.addAttribute("resultMap",resultMap);
         return "detail";
     }

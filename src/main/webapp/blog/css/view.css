@@ -28,3 +28,25 @@ h2.t_nav a:last-child { background: #59BCBC; color: #fff; }
 .otherlink li { line-height: 24px; height: 24px; float: left; margin-right: 20px; }
 .otherlink li a { color: #333; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; width: 270px; display: block; }
 .otherlink li a:hover { color: #000; text-decoration: underline }
+
+.otherlink{
+    position:relative;
+}
+.otherlink a:hover{
+    margin-top:-2px;
+}
+.otherlink .detail-tag{
+    position:absolute;
+    right:5px;
+    top:15px;
+}
+.otherlink .detail-tag span{
+    padding:5px;
+    border: #ccc 1px solid;
+}
+.otherlink .detail-tag a{
+    color:#333;
+}
+.otherlink .detail-tag a:hover{
+    color:#000;
+}

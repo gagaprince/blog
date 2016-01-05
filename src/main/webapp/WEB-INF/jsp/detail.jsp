@@ -39,6 +39,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 <c:if test="${not empty resultMap.relativeDailys}">
                     <div class="otherlink">
                         <h2>相关文章</h2>
+                        <div class="detail-tag">
+                        <c:forEach var="tag" items="${resultMap.dailyTags}" varStatus="status">
+                            <span><a href="/blog/search?key=${tag}">${tag}</a></span>
+                        </c:forEach>
+                        </div>
                         <ul>
                             <c:forEach var="relativeDaily" items="${resultMap.relativeDailys}" varStatus="status">
                                 <li><a href="/blog/detail?id=${relativeDaily.id}" title="${relativeDaily.title}">${relativeDaily.title}</a></li>

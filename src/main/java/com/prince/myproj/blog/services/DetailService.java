@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +32,7 @@ public class DetailService {
         cateMap.put("fromIndex",0);
         cateMap.put("toIndex",6);
         List<DailyModel> dailys = dailyDao.getSimpleDailyList(cateMap);
-        filterDailys(dailys,currentId);
+        filterDailys(dailys, currentId);
         if(dailys.size()>0){
             return dailys;
         }
@@ -48,5 +49,17 @@ public class DetailService {
                 break;
             }
         }
+    }
+
+    public List<String> analysisTags(DailyModel dailyModel){
+        List<String> tags = new ArrayList<String>();
+        String tagAll = dailyModel.getTag();
+        String[] tagsplits = tagAll.split(",");
+        if(tagsplits.length>0){
+            for (int i=0;i<tagsplits.length&&i<3;i++){
+                tags.add(tagsplits[i]);
+            }
+        }
+        return tags;
     }
 }
