@@ -11,8 +11,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <meta charset="utf-8">
         <title>gagaprince的微生活</title>
-        <meta name="keywords" content="前端技术,html5,游戏开发,技术教程,技术博客,个人空间,个人简历">
-        <meta name="description" content="这是一个个人博客，记录技术日志，解决技术问题，也有生活小记。">
+        <%@ include file="common/meta.jsp"%>
         <link href="/blog/css/styles.css" rel="stylesheet">
         <link href="/blog/css/animation.css" rel="stylesheet">
         <!-- 返回顶部调用 begin -->

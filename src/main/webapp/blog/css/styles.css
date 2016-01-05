@@ -26,7 +26,7 @@ header nav ul li a:hover, #nav_current { color: #fff; background: rgba(20, 20, 2
 .info figure:hover figcaption { opacity: 1; } /* 用opacity 设置鼠标放上去显示文字的效果 */
 .info figcaption strong { display: block; line-height: 40px }
 /* card */
-.card { box-shadow: 0px 1px 0px rgba(255,255,255,.1), inset 0px 1px 1px rgba(0,0,0,.7); border-radius: 6px; background: url(../images/quote-bg.png) no-repeat top right rgba(42,42,42,1); width: 350px; float: right; height: 250px; overflow: hidden }
+.card { box-shadow: 0px 1px 0px rgba(255,255,255,.1), inset 0px 1px 1px rgba(0,0,0,.7); border-radius: 6px; background:rgba(42,42,42,1); width: 350px; float: right; height: 250px; overflow: hidden }
 .card h1 { padding: 10px }
 .card p:first-child { padding: 40px 0 0 40px } /* 结构性伪类选择符 选择第一个p标签，并且设置上、左距离是40px*/
 .card p { padding: 0 0 0 40px; line-height: 28px; text-shadow: 0px 1px 2px rgba(0,0,0,.5); color: #89919a; -webkit-animation: animations2 5s ease-in-out 5s; -moz-animation: animations2 5s ease-in-out 5s; -o-animation: animations2 5s ease-in-out 5s; -ms-animation: animations2 5s ease-in-out 5s; animation: animations2 5s ease-in-out 5s; }
@@ -95,7 +95,7 @@ aside div { box-shadow: 0px 1px 0px rgba(255,255,255,.1), inset 0px 1px 1px rgba
 .searchform input { background: rgba(0, 0, 0, 0.25) url(../images/icons.png) no-repeat 3px -318px; border: 1px solid #111; width: 220px; line-height: 30px; color: #b9b9b9; padding-left: 30px; }
 /* music */
 .viny dl dd { color: #b9b9b9; line-height: 24px; }
-.art { background: url(../images/vinyl.png) no-repeat left; width: 130px; float: left; background-size: 120px; }
+/*.art { background: url(../images/vinyl.png) no-repeat left; width: 130px; float: left; background-size: 120px; }*/
 .viny .art img { width: 90px; height: 90px; margin-left: 11px }
 .viny dd span { width: 12px; height: 24px; margin-right: 7px; float: left; display: block; }
 .icon-song span, .icon-artist span, .icon-album span, .icon-like span { background: url(../images/icons.png) no-repeat }
