@@ -26,6 +26,8 @@
         <br><br>
         cate : <input id="cate" type="text" ><br><br>
         bigcate : <input id="bigcate" type="text" ><br><br>
+        tag:<input id="tag" type="text" ><br><br>
+        description:<input id="description" type="text" ><br><br>
         <button id="submit">提交</button><br>
     </div>
 
@@ -36,6 +38,8 @@
         var nowtitle = "${daily.title}";
         var nowcate = "${daily.cate}";
         var nowbigCate = "${daily.bigCate}";
+        var nowtag = "${daily.tag}";
+        var nowdescription = "${daily.description}";
     </script>
 </c:if>
 

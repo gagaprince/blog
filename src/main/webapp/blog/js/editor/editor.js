@@ -13,6 +13,12 @@ function initUE(){
     if(typeof nowbigCate!="undefined"){
         $("#bigcate").val(nowbigCate);
     }
+    if(typeof nowtag!="undefined"){
+        $("#tag").val(nowtag);
+    }
+    if(typeof nowdescription!="undefined"){
+        $("#description").val(nowdescription);
+    }
     ue.ready(function(){
         //alert(content)
     });
@@ -23,19 +29,27 @@ function initListener(){
         var title = $("#title").val().trim();
         var cate = $("#cate").val().trim();
         var bigcate = $("#bigcate").val().trim();
+        var tag = $("#tag").val().trim();
+        var description = $("#description").val().trim();
         var allContent = ue.getContent();
-        addOrUpdate(title,cate,bigcate,allContent);
+        addOrUpdate(title,cate,bigcate,allContent,tag,description);
     });
 }
 
-function addOrUpdate(title,cate,bigcate,allContent){
+function addOrUpdate(title,cate,bigcate,allContent,tag,description){
     var nowId = window.nowId;
     var data = {
         title:title,
         cate:cate,
         bigCate:bigcate,
-        allContent:allContent
+        allContent:allContent,
     };
+    if(tag!=""){
+        data["tag"]=tag;
+    }
+    if(description!=""){
+        data["description"]=description;
+    }
     if(nowId){
         data["id"]=nowId;
     }

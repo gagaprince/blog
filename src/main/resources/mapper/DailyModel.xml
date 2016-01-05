@@ -10,6 +10,8 @@
         <result column="pic" property="pic" jdbcType="VARCHAR" />
         <result column="cate" property="cate" jdbcType="VARCHAR" />
         <result column="bigcate" property="bigCate" jdbcType="VARCHAR" />
+        <result column="tag" property="tag" jdbcType="VARCHAR" />
+        <result column="description" property="description" jdbcType="VARCHAR" />
         <result column="create_time" property="createTime" jdbcType="VARCHAR" />
     </resultMap>
 
@@ -23,6 +25,8 @@
             <if test="title != null"> title ,</if>
             <if test="cate != null"> cate ,</if>
             <if test="bigCate != null"> bigcate ,</if>
+            <if test="tag != null"> tag ,</if>
+            <if test="description != null"> description ,</if>
             <if test="createTime != null"> create_time ,</if>
             <if test="pic != null"> pic ,</if>
         </trim>
@@ -33,6 +37,8 @@
             <if test="title != null"> #{title} ,</if>
             <if test="cate != null"> #{cate} ,</if>
             <if test="bigCate != null"> #{bigCate} ,</if>
+            <if test="tag != null"> #{tag} ,</if>
+            <if test="description != null"> #{description} ,</if>
             <if test="createTime != null"> #{createTime} ,</if>
             <if test="pic != null"> #{pic} ,</if>
         </trim>
@@ -56,6 +62,8 @@
             <if test="bigCate != null">bigcate = #{bigCate},</if>
             <if test="title != null">title = #{title},</if>
             <if test="content != null"> content = #{content} ,</if>
+            <if test="tag != null"> tag = #{tag} ,</if>
+            <if test="description != null"> description = #{description} ,</if>
             <if test="createTime != null"> create_time = #{createTime} ,</if>
         </trim>
         where id = #{id}

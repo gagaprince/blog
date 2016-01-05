@@ -8,7 +8,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <html>
     <head>
         <title>${resultMap.daily.title}</title>
-        <%@ include file="common/meta.jsp"%>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta charset="utf-8">
+        <meta name="keywords" content="${resultMap.daily.tag}">
+        <meta name="description" content="${resultMap.daily.description}">
         <link href="./css/styles.css" rel="stylesheet">
         <link href="./css/view.css" rel="stylesheet">
         <!-- 返回顶部调用 begin -->

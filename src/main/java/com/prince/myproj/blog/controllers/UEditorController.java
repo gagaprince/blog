@@ -50,10 +50,12 @@ public class UEditorController {
     @ResponseBody
     public String addDaily(HttpServletRequest request,HttpServletResponse response){
         String idStr = request.getParameter("id");
-        String title = utilService.getDefaultWhenNull(request.getParameter("title"),"test");
-        String cate = utilService.getDefaultWhenNull(request.getParameter("cate"),"test");
+        String title = utilService.getDefaultWhenNull(request.getParameter("title"), "test");
+        String cate = utilService.getDefaultWhenNull(request.getParameter("cate"), "test");
         String bigCate = utilService.getDefaultWhenNull(request.getParameter("bigCate"),"test");
         String content = utilService.getDefaultWhenNull(request.getParameter("allContent"),"");
+        String tag = request.getParameter("tag");
+        String description = request.getParameter("description");
         DailyModel dailyModel = new DailyModel();
         if(idStr!=null){
             dailyModel = ueService.getDaily(Long.parseLong(idStr));
@@ -64,6 +66,12 @@ public class UEditorController {
         dailyModel.setCate(cate);
         dailyModel.setBigCate(bigCate);
         dailyModel.setContent(content);
+        if(null!=tag){
+            dailyModel.setTag(tag);
+        }
+        if(null!=description){
+            dailyModel.setDescription(description);
+        }
 
         try {
             ueService.saveOrUpdate(dailyModel);
