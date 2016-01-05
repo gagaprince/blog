@@ -8,6 +8,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta name="baidu-site-verification" content="IlBwkvnFa1" />
         <meta charset="utf-8">
         <title>gagaprince的世界</title>
         <meta name="keywords" content="前端技术,html5,游戏开发,技术教程,技术博客,个人空间,个人简历">
