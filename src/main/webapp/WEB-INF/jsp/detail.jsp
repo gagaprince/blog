@@ -59,7 +59,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     </c:forEach>
                     </div>
                     <!-- 多说评论框 start -->
-                        <div class="ds-thread" data-thread-key="${resultMap.daily.id}" data-title="${resultMap.daily.title}" data-url="<%=basePath%>${requestScope['javax.servlet.forward.request_uri']}"></div>
+                        <div class="ds-thread" data-thread-key="${resultMap.daily.id}" data-title="${resultMap.daily.title}" data-url="http://gagalulu.wang${requestScope['javax.servlet.forward.request_uri']}"></div>
                     <!-- 多说评论框 end -->
                     <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
                     <script type="text/javascript">
