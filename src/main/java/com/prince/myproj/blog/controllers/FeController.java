@@ -45,16 +45,26 @@ public class FeController {
     public String viewToFeDetail(HttpServletRequest request,HttpServletResponse response, Model model){
         String idStr = utilService.getDefaultWhenNull(request.getParameter("id"),"1");
         long id = Long.parseLong(idStr);
+        preparedFeDetail(id,model);
+        return "feDetail";
+    }
 
+    @RequestMapping("/fe/detail/{id}")
+    @FooterCommon
+    public String viewToFeDetail2(HttpServletRequest request,HttpServletResponse response, Model model,@PathVariable long id){
+        preparedFeDetail(id,model);
+        return "feDetail";
+    }
 
+    private void preparedFeDetail(long id,Model model){
         FeModel feModel = feService.getFeModelById(id);
 
         Map<String,Object> feResultMap = new HashMap<String, Object>();
         feResultMap.put("feModel", feModel);
 
         model.addAttribute("feResultMap", feResultMap);
-        return "feDetail";
     }
+
     @RequestMapping("/fe/{pno}")
     @FooterCommon
     public String viewToFe2(HttpServletRequest request,HttpServletResponse response, Model model,@PathVariable int pno){

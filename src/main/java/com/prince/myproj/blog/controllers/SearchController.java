@@ -14,6 +14,7 @@ import org.apache.lucene.queryparser.classic.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -49,6 +50,25 @@ public class SearchController {
     public String viewToSearchPage(HttpServletRequest request,HttpServletResponse response,Model model){
         ListPageModel listPageModel = pageService.preparedListPage(request, 6);
         String key = utilService.getDefaultWhenNull(request.getParameter("key"), "");
+        preparedSearchPage(listPageModel,key,model);
+        return "searchPage";
+    }
+    @RequestMapping("/search/{key}")
+    @FooterCommon
+    public String viewToSearchPage2(HttpServletRequest request,HttpServletResponse response,Model model,@PathVariable String key){
+        ListPageModel listPageModel = pageService.preparedListPage(0, 6);
+        preparedSearchPage(listPageModel,key,model);
+        return "searchPage";
+    }
+    @RequestMapping("/search/{key}/{pno}")
+    @FooterCommon
+    public String viewToSearchPage3(HttpServletRequest request,HttpServletResponse response,Model model,@PathVariable String key,@PathVariable int pno){
+        ListPageModel listPageModel = pageService.preparedListPage(pno,6);
+        preparedSearchPage(listPageModel,key,model);
+        return "searchPage";
+    }
+
+    private void preparedSearchPage(ListPageModel listPageModel,String key,Model model){
         List<BlogIndexModel> blogIndexModels = null;
         if(!"".equals(key)){
             try {
@@ -67,11 +87,12 @@ public class SearchController {
             blogIndexModels = new ArrayList<BlogIndexModel>();
         }
 
+
         Map<String,Object> searchResultMap = new HashMap<String, Object>();
         searchResultMap.put("searchModels",blogIndexModels);
         searchResultMap.put("listpage",listPageModel);
+        searchResultMap.put("key",key);
         model.addAttribute("searchResultMap",searchResultMap);
-        return "searchPage";
     }
 
     private void filterSearchContent(List<BlogIndexModel> blogIndexModels){

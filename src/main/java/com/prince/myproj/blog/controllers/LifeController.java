@@ -124,6 +124,22 @@ public class LifeController {
         String folderIdStr = utilService.getDefaultWhenNull(request.getParameter("id"), "1");
         int folderId = Integer.parseInt(folderIdStr);
 
+        preparedLifeDetail(listPageModel,folderId,model);
+
+        return "lifeDetail";
+    }
+
+    @RequestMapping("/life/detail/{folderId}")
+    @FooterCommon
+    public String viewToLifeDetail2(HttpServletRequest request,HttpServletResponse response,Model model,@PathVariable int folderId){
+        ListPageModel listPageModel = pageService.preparedListPage(0,999);
+
+        preparedLifeDetail(listPageModel,folderId,model);
+
+        return "lifeDetail";
+    }
+
+    private void preparedLifeDetail(ListPageModel listPageModel,int folderId,Model model){
         List<PhotoModel> photos = photoService.giveMePhotosByFolder(listPageModel, folderId);
         PuBuListModel puBuListModel = utilService.splitList(photos, 3);
 
@@ -132,9 +148,8 @@ public class LifeController {
 //        photoResultMap.put("photos",photos);
         photoResultMap.put("puBuListModel",puBuListModel);
         model.addAttribute("photoResultMap", photoResultMap);
-
-        return "lifeDetail";
     }
+
     @RequestMapping("/life/{pno}")
     @FooterCommon
     public String viewToLife2(HttpServletRequest request,HttpServletResponse response,Model model,@PathVariable int pno){

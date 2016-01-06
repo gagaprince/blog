@@ -79,7 +79,7 @@ public class LuceneService {
             blogIndexModel.setTitle(dailyModel.getTitle());
             blogIndexModel.setContent(dailyModel.getContent());
             blogIndexModel.setImg(dailyModel.getPic());
-            blogIndexModel.setLink("/blog/detail?id=" + dailyModel.getId());
+            blogIndexModel.setLink("/blog/detail/" + dailyModel.getId());
             blogIndexModels.add(blogIndexModel);
         }
         return blogIndexModels;
@@ -94,7 +94,7 @@ public class LuceneService {
             blogIndexModel.setTitle(feModel.getName());
             blogIndexModel.setContent(feModel.getDesc());
             blogIndexModel.setImg(feModel.getCover());
-            blogIndexModel.setLink("/blog/fe/detail?id="+feModel.getId());
+            blogIndexModel.setLink("/blog/fe/detail/"+feModel.getId());
             blogIndexModels.add(blogIndexModel);
         }
         return blogIndexModels;
@@ -109,7 +109,7 @@ public class LuceneService {
             blogIndexModel.setTitle(videoModel.getTitle());
             blogIndexModel.setContent(videoModel.getDesc());
             blogIndexModel.setImg(videoModel.getCover());
-            blogIndexModel.setLink("/blog/video/detail?id="+videoModel.getId());
+            blogIndexModel.setLink("/blog/video/detail/"+videoModel.getId());
             blogIndexModels.add(blogIndexModel);
         }
         return blogIndexModels;

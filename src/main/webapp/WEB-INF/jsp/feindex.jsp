@@ -41,7 +41,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 
                         </a>
-                        <a class="desc" href="/blog/fe/detail?id=${feModel.id}" target="_blank">
+                        <a class="desc" href="/blog/fe/detail/${feModel.id}" target="_blank">
                             <span class="titlefont"><font>${feModel.name}</font></span>
                             <span class="descfont"><font>${feModel.desc}</font></span>
                         </a>

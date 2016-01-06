@@ -7,7 +7,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <!DOCTYPE html>
 <html>
     <head>
-        <title>gagaprince的微生活</title>
+        <title>美女校花</title>
         <%@ include file="common/meta.jsp"%>
         <link href="/blog/css/styles.css" rel="stylesheet">
         <link href="/blog/css/animation.css" rel="stylesheet">
@@ -37,7 +37,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 <c:forEach var="folders" items="${folderList}" varStatus="status">
                     <li id="pubu${status.index}">
                         <c:forEach var="folder" items="${folders}" varStatus="status1">
-                            <a href="/blog/life/detail?id=${folder.id}" target="_blank">
+                            <a href="/blog/life/detail/${folder.id}" target="_blank">
                                 <div class="blog-img-item">
                                     <span class="title"><font>${folder.name}</font></span>
                                     <c:if test="${not empty folder.cover}">

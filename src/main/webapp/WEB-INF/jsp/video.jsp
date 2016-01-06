@@ -42,7 +42,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
                         </a>
                         <img class="playbtn" src="http://gagablog.oss-cn-beijing.aliyuncs.com/video/play.png">
-                        <a class="desc" href="/blog/video/detail?id=${video.id}" target="_blank">
+                        <a class="desc" href="/blog/video/detail/${video.id}" target="_blank">
                             <span class="titlefont"><font>${video.title}</font></span>
                             <span class="descfont"><font>${video.desc}</font></span>
                         </a>

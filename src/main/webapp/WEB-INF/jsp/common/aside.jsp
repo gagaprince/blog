@@ -9,7 +9,10 @@
                 $("#blogSearchInput").on("keydown",function(e){
                     var e = event || window.event || arguments.callee.caller.arguments[0];
                     if(e && e.keyCode==13){
-                        blogSearch.submit();
+                        if($("#blogSearchInput").val().trim()!=""){
+                            window.location.href="/blog/search/"+$("#blogSearchInput").val().trim();
+                        }
+                        return false;
                     }
                 });
             });

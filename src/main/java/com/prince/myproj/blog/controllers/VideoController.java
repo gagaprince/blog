@@ -37,13 +37,24 @@ public class VideoController {
     public String viewToVideoDetail(HttpServletRequest request,HttpServletResponse response,Model model){
         String idStr = utilService.getDefaultWhenNull(request.getParameter("id"),"1");
         long id = Long.parseLong(idStr);
+        preparedVideoDetail(id,model);
+
+        return "videoDetail";
+    }
+
+    @RequestMapping("/video/detail/{id}")
+    @FooterCommon
+    public String viewToVideoDetail2(HttpServletRequest request,HttpServletResponse response,Model model,@PathVariable long id){
+        preparedVideoDetail(id,model);
+        return "videoDetail";
+    }
+
+    private void preparedVideoDetail(long id,Model model){
         VideoModel video = videoService.getVideoById(id);
 
         Map<String,Object> videoResultMap = new HashMap<String, Object>();
         videoResultMap.put("video", video);
         model.addAttribute("videoResultMap", videoResultMap);
-
-        return "videoDetail";
     }
 
 

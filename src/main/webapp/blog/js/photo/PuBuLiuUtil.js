@@ -1,6 +1,6 @@
 var gaga = gaga||{};
 gaga.PubuUtil = gaga.UtilBase.extend({
-    pubuItemTpl:['<a href="/blog/life/detail?id=@=id@" target="_blank">',
+    pubuItemTpl:['<a href="/blog/life/detail/@=id@" target="_blank">',
         '                                <div class="blog-img-item">',
         '                                    <span class="title"><font>@=name@</font></span>',
         '                                    <span class="img"><img src="@=cover@"></span>',
