@@ -24,6 +24,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <![endif]-->
         <script src="/blog/js/editor/ueditor.parse.js"></script>
         <%@ include file="common/tongji.jsp"%>
+
+        <style>
+            #ds-thread #ds-reset .ds-powered-by{
+                display:none;
+            }
+            #ds-thread #ds-reset .ds-meta{
+                display:none;
+            }
+            #ds-thread #ds-reset .ds-toolbar{
+                display:none;
+            }
+            #ds-thread #ds-reset .ds-comments-info{
+                margin-top:0 !important;
+            }
+        </style>
     </head>
     <body>
     <%@include file="common/header.jsp" %>
@@ -36,30 +51,53 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 <ul>
                     ${resultMap.daily.content}
                 </ul>
-                <c:if test="${not empty resultMap.relativeDailys}">
-                    <div class="otherlink">
-                        <h2>相关文章</h2>
-                        <div class="detail-tag">
-                        <c:forEach var="tag" items="${resultMap.dailyTags}" varStatus="status">
-                            <span><a href="/blog/search?key=${tag}">${tag}</a></span>
-                        </c:forEach>
-                        </div>
-                        <ul>
-                            <c:forEach var="relativeDaily" items="${resultMap.relativeDailys}" varStatus="status">
-                                <li><a href="/blog/detail?id=${relativeDaily.id}" title="${relativeDaily.title}">${relativeDaily.title}</a></li>
-                            </c:forEach>
-                            <!--
-                            <li><a href="http://www.yangqq.com/newstalk/mood/2013-07-02/335.html" title="有种情谊，不是爱情，也算不得友情">有种情谊，不是爱情，也算不得友情有种情谊，不是爱情，也算不得友情有种情谊，不是爱情，也算不得友情</a></li>
-                            <li><a href="http://www.yangqq.com/newstalk/mood/2013-07-01/329.html" title="世上最美好的爱情">世上最美好的爱情</a></li>
-                            <li><a href="http://www.yangqq.com/news/read/2013-06-11/213.html" title="爱情没有永远，地老天荒也走不完">爱情没有永远，地老天荒也走不完</a></li>
-                            <li><a href="http://www.yangqq.com/news/s/2013-06-06/24.html" title="爱情的背叛者">爱情的背叛者</a></li>-->
-                        </ul>
+                <div class="otherlink">
+                    <h2></h2>
+                    <div class="detail-tag">
+                    <c:forEach var="tag" items="${resultMap.dailyTags}" varStatus="status">
+                        <span><a href="/blog/search/${tag}">${tag}</a></span>
+                    </c:forEach>
                     </div>
-                </c:if>
+                    <!-- 多说评论框 start -->
+                        <div class="ds-thread" data-thread-key="${resultMap.daily.id}" data-title="${resultMap.daily.title}" data-url="${requestScope['javax.servlet.forward.request_uri']}"></div>
+                    <!-- 多说评论框 end -->
+                    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+                    <script type="text/javascript">
+                    var duoshuoQuery = {short_name:"gagalulu"};
+                        (function() {
+                            var ds = document.createElement('script');
+                            ds.type = 'text/javascript';ds.async = true;
+                            ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+                            ds.charset = 'UTF-8';
+                            (document.getElementsByTagName('head')[0]
+                             || document.getElementsByTagName('body')[0]).appendChild(ds);
+                        })();
+                        </script>
+                    <!-- 多说公共JS代码 end -->
+                </div>
+
             </div>
             <!--bloglist end-->
+
             <!-- aside include -->
             <%@ include file="common/aside.jsp"%>
+
+            <c:if test="${not empty resultMap.relativeDailys}">
+            <aside style="margin:0;">
+                <div class="tuijian">
+                    <h2>相关文章</h2>
+                    <ol>
+                        <c:forEach var="relativeDaily" items="${resultMap.relativeDailys}" varStatus="status">
+                            <li><span><strong>${status.index+1}</strong></span><a href="/blog/detail?id=${relativeDaily.id}">${relativeDaily.title}</a></li>
+                        </c:forEach>
+                    </ol>
+                </div>
+            </aside>
+            </c:if>
+
+            <!--<div class="comment">
+
+            </div>-->
         </div>
         <!--blogs end-->
     </div>
