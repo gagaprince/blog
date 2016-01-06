@@ -8,6 +8,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <html>
     <head>
         <meta name="baidu-site-verification" content="IlBwkvnFa1" />
+        <meta name="baidu_union_verify" content="3cc31deed933b184249ebb264a16938f">
         <%@ include file="common/meta.jsp"%>
         <title>gagaprince的世界</title>
         <link href="/blog/css/styles.css" rel="stylesheet">
