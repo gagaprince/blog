@@ -28,23 +28,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <!--info end-->
         <div class="blank"></div>
         <div class="blogs">
-            <ul class="video-list">
+            <ul class=" blog-img-list">
                 <c:forEach var="video" items="${videoResultMap.videos}" varStatus="status">
                     <li>
-                        <a class="cover">
-                        <c:if test="${not empty video.cover}">
-                            <img src="${video.cover}">
-                        </c:if>
-                        <c:if test="${empty video.cover}">
-                            <img src="http://gagablog.oss-cn-beijing.aliyuncs.com/video/default.png">
-                        </c:if>
-
-
-                        </a>
-                        <img class="playbtn" src="http://gagablog.oss-cn-beijing.aliyuncs.com/video/play.png">
-                        <a class="desc" href="/blog/video/detail/${video.id}" target="_blank">
-                            <span class="titlefont"><font>${video.title}</font></span>
-                            <span class="descfont"><font>${video.desc}</font></span>
+                        <a href="/blog/video/detail/${video.id}" target="_blank">
+                            <div class="blog-img-item">
+                                <span class="title"><font>${video.title}</font></span>
+                                <c:if test="${not empty video.cover}">
+                                    <span class="img feimg"><img src="${video.cover}"></span>
+                                </c:if>
+                                <c:if test="${empty video.cover}">
+                                    <span class="img feimg"><img src="http://gagablog.oss-cn-beijing.aliyuncs.com/video/default.png"></span>
+                                </c:if>
+                                <span class="title fetitle"><font>${video.desc}</font></span>
+                            </div>
                         </a>
                     </li>
                 </c:forEach>
