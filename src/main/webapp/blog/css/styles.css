@@ -67,7 +67,7 @@ header nav ul li a:hover, #nav_current { color: #fff; background: rgba(20, 20, 2
 aside { width: 310px; float: right; margin: 20px 0 0 0; }
 aside1 {width: 310px; float: right; margin: 20px 0 0 0; }
 aside1 .datepickerFrame{
-box-shadow: 0px 1px 0px rgba(255,255,255,.1), inset 0px 1px 1px rgba(0,0,0,.7); border-radius: 6px; padding: 15px; background: #222; margin-bottom: 20px; overflow: hidden;
+box-shadow: 0px 1px 0px rgba(255,255,255,.1), inset 0px 1px 1px rgba(0,0,0,.7); border-radius: 6px; padding: 15px; background: #222; overflow: hidden;
 }
 aside h2, footer h2 { font-size: 16px; margin-bottom: 10px; text-shadow: #000 1px 1px 1px; color: #ccc }
 aside div { box-shadow: 0px 1px 0px rgba(255,255,255,.1), inset 0px 1px 1px rgba(0,0,0,.7); border-radius: 6px; padding: 15px; background: #222; margin-bottom: 20px; overflow: hidden; }
