@@ -9,14 +9,17 @@ div.datepicker {
 	top: 0;
 	left: 0;
 	display: none;
+
 }
 .datepickerContainer {
 	background: #121212;
 	position: absolute;
 	top: 10px;
 	left: 10px;
+	border:#464647 2px solid;
+	border-radius: 6px;
 }
-.datepickerBorderT {
+/*.datepickerBorderT {
 	position: absolute;
 	left: 10px;
 	top: 0;
@@ -79,7 +82,7 @@ div.datepicker {
 	width: 10px;
 	height: 10px;
 	background: url(../images/datepicker_br.png);
-}
+}*/
 .datepickerHidden {
 	display: none;
 }
