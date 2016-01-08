@@ -28,22 +28,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <!--info end-->
         <div class="blank"></div>
         <div class="blogs">
-            <ul class="video-list">
+            <ul class="blog-img-list">
                 <c:forEach var="feModel" items="${feResultMap.feModels}" varStatus="status">
                     <li>
-                        <a class="cover">
-                        <c:if test="${not empty feModel.cover}">
-                            <img src="${feModel.cover}">
-                        </c:if>
-                        <c:if test="${empty feModel.cover}">
-                            <img src="http://gagablog.oss-cn-beijing.aliyuncs.com/video/default.png">
-                        </c:if>
-
-
-                        </a>
-                        <a class="desc" href="/blog/fe/detail/${feModel.id}" target="_blank">
-                            <span class="titlefont"><font>${feModel.name}</font></span>
-                            <span class="descfont"><font>${feModel.desc}</font></span>
+                        <a href="/blog/fe/detail/${feModel.id}" target="_blank">
+                            <div class="blog-img-item">
+                                <span class="title"><font>${feModel.name}</font></span>
+                                <c:if test="${not empty feModel.cover}">
+                                    <span class="img feimg"><img src="${feModel.cover}"></span>
+                                </c:if>
+                                <c:if test="${empty feModel.cover}">
+                                    <span class="img feimg"><img src="http://gagablog.oss-cn-beijing.aliyuncs.com/video/default.png"></span>
+                                </c:if>
+                                <span class="title fetitle"><font>${feModel.desc}</font></span>
+                            </div>
                         </a>
                     </li>
                 </c:forEach>
