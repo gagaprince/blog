@@ -34,7 +34,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     <h1>${feModel.name}</h1>
                 </div>
                 <div class="fe-frame">
-                    <iframe id="preview" src="${feModel.url}" frameborder="0" noresize="noresize"></iframe>
+                    <iframe id="preview" src="${feModel.url}" frameborder="0" noresize="noresize" onload="Javascript:SetWinHeight(this)"></iframe>
+                    <script>
+                        function SetWinHeight(obj){
+                            var win=obj;
+                            if (document.getElementById){
+                                if (win && !window.opera){
+                                    if (win.contentDocument && win.contentDocument.body.offsetHeight)
+                                        win.height = win.contentDocument.body.offsetHeight;
+                                    else if(win.Document && win.Document.body.scrollHeight)
+                                        win.height = win.Document.body.scrollHeight;
+                                }
+                            }
+                        }
+                    </script>
                 </div>
                 <div class="fedesc">
                     <h2>${feModel.desc}</h2>
