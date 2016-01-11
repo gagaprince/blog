@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>颜色工具</title>
+    <style>
+        *{
+            margin:0;
+            padding:0;
+        }
+        body{
+            background:#3F3E3C;
+            color:#ccc;
+        }
+        input{
+            border:none;
+            height:20px;
+            background:#3F3E3C;
+            color:#ccc;
+        }
+        .main{
+            width:100%;
+        }
+        .util{
+            margin-top: 20px;
+        }
+        .rgb{
+            width:210px;
+            height:35px;
+            margin: auto;
+            padding:5px 5px 5px 10px;
+            border:1px solid #000;
+            border-radius:4px;
+            background:#222;
+        }
+        .rgb span{
+            float: left;
+            height:35px;
+            line-height:35px;
+        }
+        .rgb input{
+            display:block;
+            float: left;
+            width:38px;
+            margin:0;
+            margin-top:8px;
+            margin-left: 3px;
+            padding-left: 5px;
+        }
+        .uu16{
+            width:210px;
+            height: 35px;
+            line-height:35px;
+            margin: auto;
+            margin-top: 5px;
+            padding:5px 5px 5px 10px;
+            border:1px solid #000;
+            border-radius:4px;
+            background:#222;
+        }
+        .uu16 span{
+            float: left;
+            height:35px;
+        }
+        .uu16 span input{
+            width:130px;
+            margin-left: 3px;
+            margin-top:8px;
+            padding-left: 5px;
+            float: left;
+        }
+        .often{
+            width: 420px;
+            margin: 10px auto;
+        }
+        .often-item{
+            width:70px;
+            color:#222;
+            height:30px;
+            background:#ddd;
+            float:left;
+            text-align: center;
+            line-height:30px;
+        }
+        .often:after{
+            clear: both;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="main">
+        <div class="util">
+            <div class="rgb">
+                <span>rgb值：</span>
+                <span><input type="text"></span>
+                <span><input type="text"></span>
+                <span><input type="text"></span>
+            </div>
+            <div class="uu16">
+                <span>#号值：</span>
+                <span><input type="text"></span>
+            </div>
+        </div>
+        <div class="often"><span>网络安全色：</span></div>
+        <div class="often" id="oftenColors">
+        </div>
+    </div>
+</body>
+<script src="http://www.gagalulu.wang/blog/js/jquery.js"></script>
+<script src="src/js/index.js"></script>
+</html>
