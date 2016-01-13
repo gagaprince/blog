@@ -1,46 +1,222 @@
 (function(window){
-    var map = null;
-    var key = 'An7mI-ncdAXO6T4Pzie8SwYcyKDFmwA-t-EHHEMpU9TmsyFKXXAGVWo4ITNfhdUI';
-
-//    var boundingBox = Microsoft.Maps.LocationRect.fromLocations(new Microsoft.Maps.Location(47.618594, -122.347618), new Microsoft.Maps.Location(47.620700, -122.347584), new Microsoft.Maps.Location(47.622052, -122.345869));
-//    map = new Microsoft.Maps.Map(document.getElementById('SDKmap'), {credentials: 'Your Bing Maps Key', bounds: boundingBox});
-    //ÕâÀïÈı¸öµã²»ÖªµÀÊÇÄÄÈı¸öµã
-
-
-    function initMap(){
-        var initObj = {
-            credentials:key,//map key  http://www.bingmapsportal.com/ ¿ÉÒÔÉêÇë
-            enableClickableLogo:false,//²»¼Ólogo
-            enableSearchLogo:false,      //ËÑË÷¿ò
-            showDashboard:true,    //¿ØÖÆÀ¸
-            showMapTypeSelector:true,  // µ±¿ØÖÆÀ¸trueÊ± ÊÇ·ñÏÔÊ¾autoMaticÑ¡Ïî
-            showScalebar:false,         //µ±¿ØÖÆÀ¸trueÊ±£¬ÊÇ·ñÏÔÊ¾·Å´óËõĞ¡¿Ø¼ş
-//        backgroundColor : new Microsoft.Maps.Color(Math.round(255*Math.random()),Math.round(255*Math.random()),Math.round(255*Math.random()),Math.round(255*Math.random())),
-//        disablePanning:true,        //²»ÖªµÀ¸ÉÂïµÄ
-//        bounds:boundingBox,         //viewOptions
-            center: new Microsoft.Maps.Location(47.609771, -122.2321543125),//ÖĞĞÄµã×ø±ê ºÍ
-            zoom: 8, // ·ÅËõ±È
+    function Map(){}
+    Map.prototype={
+        mapConfig:null,
+        map:null,
+        initConfig:function(){
+            //    var boundingBox = Microsoft.Maps.LocationRect.fromLocations(new Microsoft.Maps.Location(47.618594, -122.347618), new Microsoft.Maps.Location(47.620700, -122.347584), new Microsoft.Maps.Location(47.622052, -122.345869));
+            //    map = new Microsoft.Maps.Map(document.getElementById('SDKmap'), {credentials: 'Your Bing Maps Key', bounds: boundingBox});
+            //è¿™é‡Œä¸‰ä¸ªç‚¹ä¸çŸ¥é“æ˜¯å“ªä¸‰ä¸ªç‚¹
+            this.mapConfig={
+                credentials:'An7mI-ncdAXO6T4Pzie8SwYcyKDFmwA-t-EHHEMpU9TmsyFKXXAGVWo4ITNfhdUI',//map key  http://www.bingmapsportal.com/ å¯ä»¥ç”³è¯·
+                enableClickableLogo:false,//ä¸åŠ logo
+                enableSearchLogo:false,      //æœç´¢æ¡†
+                showDashboard:true,    //æ§åˆ¶æ 
+                showMapTypeSelector:true,  // å½“æ§åˆ¶æ trueæ—¶ æ˜¯å¦æ˜¾ç¤ºautoMaticé€‰é¡¹
+                showScalebar:false,         //å½“æ§åˆ¶æ trueæ—¶ï¼Œæ˜¯å¦æ˜¾ç¤ºæ”¾å¤§ç¼©å°æ§ä»¶
+    //        backgroundColor : new Microsoft.Maps.Color(Math.round(255*Math.random()),Math.round(255*Math.random()),Math.round(255*Math.random()),Math.round(255*Math.random())),
+    //        disablePanning:true,        //ä¸çŸ¥é“å¹²å˜›çš„
+    //        bounds:boundingBox,         //viewOptions
+                center: new Microsoft.Maps.Location(47.609771, -122.2321543125),//ä¸­å¿ƒç‚¹åæ ‡ å’Œ
+                zoom: 8, // æ”¾ç¼©æ¯”
 //            mapTypeId: Microsoft.Maps.MapTypeId.aerial,
 //            mapTypeId: Microsoft.Maps.MapTypeId.birdseye,
-            width:500,
-            height:500
+                width:500,
+                height:500
+            }
+        },
+        init:function(params){
+            this.initConfig();
+            this.mapConfig = $.extend(params,this.mapConfig);
+            this.initMap();
+            this.log();
+        },
+        initMap:function(){
+            var myMap = document.getElementById('myMap');
+            myMap.oncontextmenu = function(){return false;};
+            this.map = new Microsoft.Maps.Map(myMap,this.mapConfig);
+        },
+
+        addMark:function(p){
+            var map = this.map;
+            var pushpinOptions = {draggable: true};
+            var pushpin= Map.Pushpin(p||map.getCenter(), pushpinOptions);
+            map.entities.push(pushpin);
+            return pushpin;
+        },
+        addTipMark:function(font,p){
+            var map = this.map;
+            font = font||"è‡ªå®šä¹‰";
+            var html="<div style='font-size:12px;font-weight:bold;border:solid 2px;background-color:LightBlue;width:"+font.length*14+"px;"+"'>"+font+"</div>";
+            var pushpinOptions = {width:null,height: null,htmlContent:html,draggable: true};
+            var pushpin= Map.Pushpin(p||map.getCenter(), pushpinOptions);
+            map.entities.push(pushpin);
+            return pushpin;
+        },
+
+        linePoints:function(locations,options,polyline){
+            options = $.extend({
+                strokeColor:Map.Color(Math.round(255),Math.round(0),Math.round(0),Math.round(255)),
+                strokeThickness: 3
+            },options);
+            if(!polyline){
+                var map = this.map;
+                polyline = Map.Polyline([]);
+                map.entities.push(polyline);
+            }
+            polyline.setLocations(locations);
+            return polyline;
+        },
+
+        fillPoints:function(locations,options,polygon){
+            options = $.extend({
+                strokeColor: Map.Color(Math.round(255),Math.round(0),Math.round(0),Math.round(255)),
+                strokeThickness: 3,
+                fillColor:Map.Color(Math.round(0),Math.round(255),Math.round(0),Math.round(122))
+            },options);
+            if(!polygon){
+                var map = this.map;
+                polygon = Map.Polygon([]);
+                map.entities.push(polygon);
+            }
+            polygon.setLocations(locations);
+            return polygon;
+        },
+        removePolyline:function(polyline){
+            var map = this.map;
+            if(polyline instanceof Microsoft.Maps.Polyline){
+                map.entities.remove(polyline);
+            }
+        },
+
+        addMarkClickListener:function(mark,callback){
+            return this._addMarkListener("click",mark,callback);
+        },
+        addMarkLeftClickListener:function(mark,callback){
+            return this._addMarkListener("leftclick",mark,callback);
+        },
+        addMarkRightClickListener:function(mark,callback){
+            return this._addMarkListener("rightclick",mark,callback);
+        },
+        addMarkDragStartListener:function(mark,callback){
+            return this._addMarkListener("dragstart",mark,callback);
+        },
+        addMarkDragListener:function(mark,callback){
+            return this._addMarkListener("drag",mark,callback);
+        },
+        addMarkDragEndListener:function(mark,callback){
+            return this._addMarkListener("dragend",mark,callback);
+        },
+        removeMarkEvent:function(event){
+            if(event)Microsoft.Maps.Events.removeHandler(event);
+        },
+
+        addMapClickListener:function(callback){
+            return this._addMapListener("click",callback);
+        },
+        addMapRightClickListener:function(callback){
+            return this._addMapListener("rightclick",callback);
+        },
+        addMapDClickListener:function(callback){
+            return this._addMapListener("dblclick",callback);
+        },
+
+        _addMapListener:function(eventName,callback){
+            var map = this.map;
+            var _this = this;
+            var event= Microsoft.Maps.Events.addHandler(map,eventName, function(e){
+                var eventName = e.eventName;
+                if(eventName=="click"||eventName=="leftclick"||eventName=="rightclick"){
+                    var clickLocation = Map.p(e.pageY, e.pageX);
+                    var location = _this._transformPage2Location(clickLocation);
+                }else{
+
+                }
+                if(callback){
+                    callback(e,location);
+                }
+            });
+            return event;
+        },
+
+        _transformPage2Location:function(page){
+            var map = this.map;
+            var width = map.getWidth();
+            var height = map.getHeight();
+            var bounds = map.getBounds();
+            var bheight = bounds.height;
+            var bwidth = bounds.width;
+            var centerLocation = bounds.center;
+            var viewportX = map.getViewportX();
+            var viewportY = map.getViewportY();
+            var rateX = bwidth/width;
+            var rateY = bheight/height;
+            var locationx = centerLocation.longitude+(page.longitude-viewportX)*rateX;
+            var locationy = centerLocation.latitude-(page.latitude-viewportY)*rateY;
+            if(Math.abs(locationx)>180){
+                locationx = (Math.abs(locationx)-360)*locationx/Math.abs(locationx);
+            }
+            return Map.p(locationy,locationx);
+        },
+
+        _addMarkListener:function(eventName,mark,callback){
+            if(!mark){
+                throw "mark is null";
+            }
+            var event= Microsoft.Maps.Events.addHandler(mark,eventName, function(e){
+                var eventName = e.eventName;
+                if(eventName=="click"||eventName=="leftclick"||eventName=="rightclick"){
+                    var location = e.target._location;
+                }else{
+                    var location = e.entity._location;
+                }
+                if(callback){
+                    callback(e,location);
+                }
+            });
+            return event;
+        },
+
+        getRealMap:function(){
+            return this.map;
+        },
+
+        log:function(){
+            var map = this.map;
+            console.log(map.getImageryId());
+            console.log(map.getHeading());
+            console.log(map.getZoom());
+            console.log(map.getWidth()+"/"+map.getHeight());
+            console.log("map.getViewport:"+map.getViewportX()+"/"+map.getViewportY());
+            console.log("map.getMetersPerPixel:"+map.getMetersPerPixel());
+            console.log("map.getBounds:"+map.getBounds());
+            console.log("map.isRotationEnabled:"+map.isRotationEnabled());
+            console.log("map.isMercator:"+map.isMercator());
+            console.log("map.getZoomRange:"+map.getZoomRange().min+"-"+map.getZoomRange().max);
         }
-
-
-        map = new Microsoft.Maps.Map(document.getElementById('myMap'), initObj);
-
-        console.log(map.getImageryId());
-        console.log(map.getHeading());
-        console.log(map.getZoom());
-        console.log(map.getWidth()+"/"+map.getHeight());
-        console.log("map.getViewport:"+map.getViewportX()+"/"+map.getViewportY());
-        console.log("map.getMetersPerPixel:"+map.getMetersPerPixel());
-        console.log("map.getBounds:"+map.getBounds());
-        console.log("map.isRotationEnabled:"+map.isRotationEnabled());
-        console.log("map.isMercator:"+map.isMercator());
-        console.log("map.getZoomRange:"+map.getZoomRange().min+"-"+map.getZoomRange().max);
     }
-    $(document).ready(function(){
-        initMap();
-    });
+    Map.createMap = function(params){
+        var myMap = new Map();
+        myMap.init(params);
+        return myMap;
+    }
+    Map.p =Map.Location = function(y,x){
+        //latitude ç»´åº¦ longitudeç»åº¦
+        return new Microsoft.Maps.Location(y,x);
+    }
+    Map.c = Map.Color = function(r,g,b,a){
+        return new Microsoft.Maps.Color(r,g,b,a);
+    }
+    Map.pg = Map.Polygon=function(locations){
+        return new Microsoft.Maps.Polygon(locations);
+    }
+    Map.pl = Map.Polyline=function(locations){
+        return new Microsoft.Maps.Polyline(locations);
+    }
+    Map.pp = Map.Pushpin = function(location,params){
+        return new Microsoft.Maps.Pushpin(location,params);
+    }
+
+
+    window.Map = Map;
 })(window);
