@@ -25,6 +25,7 @@
         },
         _covert2js:function(inStr,co,isPlus){
             var ins = inStr.trim().replace(new RegExp(co,"g"),"\\"+co).split("\n");
+            if(ins=="")return "";
             if(isPlus){
                 var item = ins[0];
                 var sb = "";
