@@ -1,0 +1,86 @@
+
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>html转js工具</title>
+    <script src="http://gagalulu.wang/blog/js/jquery.js"></script>
+    <script src="src/js/html2js.js"></script>
+    <script src="src/js/index.js"></script>
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+        }
+        body{
+            background:#3F3E3C;
+        }
+        .main{
+            width:100%;
+        }
+        .textcontent{
+            width:90%;
+            margin:10px auto;
+        }
+        .textcontent textarea{
+            width:100%;
+            display:block;
+            margin:auto;
+            height:250px;
+            line-height:18px;
+            font-size:16px;
+            background:#333;
+            color:#fff;
+            padding:5px;
+            border-radius:5px;
+        }
+
+        .btn-frame{
+            width: 90%;
+            height: 50px;
+            margin: 5px auto;
+        }
+        .btn-frame .btn{
+            padding:10px 20px;
+            display: inline-block;
+            margin-top:1%;
+            margin-left:10px;
+            border: 1px solid #333333;
+            color:#fff;
+            border-radius:5px;
+            background:#222;
+            cursor: pointer;
+        }
+        .btn-frame .checkbox{
+            font-size:14px;
+            padding-left: 20px;
+        }
+        .btn-frame .checkbox input{
+            display: inline-block;
+            margin: 2px  0 0 -6px;
+            position:absolute;
+        }
+        .btn-frame .checkbox label{
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="main">
+        <div class="textcontent">
+            <textarea id="in" placeholder="请输入html"></textarea>
+        </div>
+        <div class="btn-frame">
+            <span class="btn" id="useDan">使用单引号</span>
+            <span class="btn" id="useShuang">使用双引号</span>
+            <span class="btn checkbox"><input id="usePlus" type="checkbox"><label for="usePlus">使用加号</label></span>
+        </div>
+        <div class="textcontent">
+            <textarea id="out" placeholder="这里生成js"></textarea>
+        </div>
+    </div>
+</body>
+</html>
