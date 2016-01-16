@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>promis 实验</title>
+    <script src="http://gagalulu.wang/blog/js/jquery.js"></script>
+    <script src="src/js/promis.js"></script>
+    <script src="src/js/request.js"></script>
+    <script src="src/js/index.js"></script>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        body{
+            background:#333;
+        }
+        .main{
+            width:100%;
+            color:#fff;
+        }
+        .main .desc{
+            width:90%;
+            margin:50px auto;
+            padding: 10px;
+            border: 1px solid #3f3f3f;
+        }
+        .main .ctrl{
+            width:90%;
+            margin: 20px auto;
+
+        }
+        .main .ctrl .btn{
+            color: #fff;
+            border: 1px solid #3f3f3f;
+            padding: 10px;
+            border-radius:5px;
+            cursor: pointer;
+        }
+        .main .log{
+            width:90%;
+            margin: 20px auto;
+            min-height:300px;
+            border: 1px solid #3f3f3f;
+            padding: 10px;
+        }
+    </style>
+
+</head>
+<body>
+    <div class="main">
+        <div class="desc">
+            <p>程序员小王想娶女神小米。</p>
+            <p>小米说必须先让她爸爸认可，然后让妈妈认可，然后让大伯认可，且让妈妈认可的前提是爸爸认可，让大伯认可的前提是爸爸妈妈都认可，然后我在考虑~</p>
+            <p>假设：他们各个人同意的可能性都为80%，而且都必须有一段时间考虑，每个人可以请求两次。</p>
+            <p>问：小王能不能取到小米~？</p>
+        </div>
+        <div class="ctrl">
+            <span class="btn" id="beginBtn">开始求婚</span>
+        </div>
+        <div class="log" id="logFrame">
+            <p>程序员小王想娶女神小米。</p>
+        </div>
+    </div>
+</body>
+</html>
