@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>frames</key>
+	<dict>
+		<key>menu_title.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{30, 60}, {280, 50}}</string>
+			<key>offset</key>
+			<string>{-0.5, 4}</string>
+			<key>sourceColorRect</key>
+			<string>{{2, 6}, {280, 50}}</string>
+			<key>sourceSize</key>
+			<string>{285, 70}</string>
+		</dict>
+		<key>ui_menu0.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{55, 6}, {166, 40}}</string>
+			<key>offset</key>
+			<string>{0, -0}</string>
+			<key>sourceColorRect</key>
+			<string>{{2, 5}, {166, 40}}</string>
+			<key>sourceSize</key>
+			<string>{170, 50}</string>
+		</dict>
+	</dict>
+	<key>metadata</key>
+	<dict>
+		<key>format</key>
+		<integer>1</integer>
+		<key>size</key>
+		<string>{512, 128}</string>
+	</dict>
+</dict>
+</plist>
