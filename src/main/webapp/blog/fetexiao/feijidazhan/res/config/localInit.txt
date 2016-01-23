@@ -1,0 +1,26 @@
+{
+    "planeconfig":[
+        {"lv":1},{"lv":1},{"lv":1}
+    ],
+    "selectplane":0,
+    "jgnl":0,
+    "m1500":0,
+    "m3000":0,
+    "zjhd":0,
+    "tszy":0,
+    "pjyx":0,
+    "sscc":0,
+    "gold":2000,
+    "onceBestChongCi":0,
+    "onceBestChongCiDaoJu":0,
+    "totalKillNum":0,
+    "totalDistanse":0,
+    "totalGoldNum":0,
+    "totalDead":0,
+    "totalUseDaoju":0,
+    "maxDistanse":0,
+    "bestScore":0,
+    "onceBestGold":0,
+    "totalCostGold":0,
+    "totalPj":0
+}
