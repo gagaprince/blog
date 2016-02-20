@@ -6,7 +6,7 @@
             <li><a href="/blog/cate/tech" title="技术博客">技术博客</a></li>
             <li><a href="/blog/video" title="视频教程">视频教程</a></li>
             <li><a href="/blog/fe" title="前端特效">前端特效</a></li>
-            <!--<li><a href="/blog/life" title="美女校花">美女校花</a></l  -->
+            <li><a href="/blog/life" title="美女校花">美女校花</a></li>
             <li><a href="/blog/cate/words" title="碎言碎语">碎言碎语</a></li>
         </ul>
         <script src="/blog/js/silder.js"></script>
