@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>提成计算器</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="full-screen" content="yes">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="x5-fullscreen" content="true">
+    <meta name="360-fullscreen" content="true">
+    <link rel="stylesheet" href="src/css/main.css"/>
+    <script src="http://gagalulu.wang/blog/js/jquery.js"></script>
+    <script src="src/js/ticheng.js"></script>
+</head>
+<body>
+    <div class="header">
+        提成计算器
+    </div>
+    <div class="contain">
+        <div id="timeTransform" class="times">
+            <div class="timeitem"><span class="lb">45天业绩</span><span class="lbi"><input type="text" placeholder="请输入45天业绩" class="money-input" day="45"/></span></div>
+            <div class="timeitem"><span class="lb">90天业绩</span><span class="lbi"><input type="text" placeholder="请输入90天业绩" class="money-input" day="90"/></span></div>
+            <div class="timeitem"><span class="lb">180天业绩</span><span class="lbi"><input type="text" placeholder="请输入180天业绩" class="money-input" day="180"/></span></div>
+            <div class="timeitem"><span class="lb">360天业绩</span><span class="lbi"><input type="text" placeholder="请输入360天业绩" class="money-input" day="360"/></span></div>
+            <div class="timeitem"><span class="lb">复投业绩</span><span class="lbi"><input type="text" placeholder="请输入复投业绩" class="money-input1"/></span></div>
+        </div>
+        <div class="tips">以上没有项目不填（单位：元）</div>
+        <div class="btn-group">
+            <div id="cal" class="btn">
+                开始计算
+            </div>
+            <div id="reset" class="btn">
+                重置
+            </div>
+        </div>
+
+        <div id="result" class="result" style="clear: both;">
+            <span class="lb">应得提成：</span>
+            <span class="result-text"></span>
+        </div>
+    </div>
+
+</body>
+</html>
