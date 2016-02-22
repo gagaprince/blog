@@ -31,9 +31,11 @@ body{
 }
 .times .timeitem .lbi{
     float: right;
+    width:120px;
 }
 
 .times .timeitem .lbi input{
+    width:115px;
     height: 30px;
     background:#555;
     border:1px solid #222;
