@@ -44,6 +44,11 @@ public class SliderCommonAdvice {
                 List<FontLinkModel> photoFontModels = fontLinkService.giveMePhotoFontLink();
                 List<FontLinkModel> hotClickModels = fontLinkService.giveMeHotClick();
 
+
+                logger.info("updataModels:"+updateModels);
+                logger.info("photoFontModels:"+photoFontModels);
+                logger.info("hotClickModels:"+hotClickModels);
+
                 Map<String,Object> sliderResult = new HashMap<String, Object>();
                 sliderResult.put("updateModels",updateModels);
                 sliderResult.put("photoFontModels",photoFontModels);

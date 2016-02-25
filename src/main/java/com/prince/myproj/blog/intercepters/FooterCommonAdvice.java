@@ -4,6 +4,7 @@ import com.prince.myproj.blog.models.FontLinkModel;
 import com.prince.myproj.blog.models.FriendLinkModel;
 import com.prince.myproj.blog.services.FontLinkService;
 import com.prince.myproj.blog.services.FriendLinkService;
+import org.apache.log4j.Logger;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -32,6 +33,9 @@ public class FooterCommonAdvice {
     @Autowired
     private FontLinkService fontLinkService;
 
+
+    public static final Logger logger = Logger.getLogger(FooterCommonAdvice.class);
+
     @Around("footerCommon()")
     public Object doAround(ProceedingJoinPoint joinPoint)throws Throwable{
         //先拿到httprequest
@@ -47,6 +51,7 @@ public class FooterCommonAdvice {
                 List<FontLinkModel> photoModels = fontLinkService.giveMePhotoLink();
 
                 Map<String,Object> footerResult = new HashMap<String, Object>();
+
                 footerResult.put("friendLinks",friendLinkModels);
                 footerResult.put("photoModels",photoModels);
                 request.setAttribute("footerResultMap",footerResult);
