@@ -16,7 +16,7 @@ import java.util.Map;
 @Service
 public class FontLinkService {
 
-    public static final Logger logger = Logger.getLogger(fontLinkDao.class);
+    public static final Logger logger = Logger.getLogger(FontLinkService.class);
 
     @Autowired
     private FontLinkDao fontLinkDao;
