@@ -2,6 +2,7 @@ package com.prince.myproj.blog.services;
 
 import com.prince.myproj.blog.dao.FontLinkDao;
 import com.prince.myproj.blog.models.FontLinkModel;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,8 @@ import java.util.Map;
  */
 @Service
 public class FontLinkService {
+
+    public static final Logger logger = Logger.getLogger(fontLinkDao.class);
 
     @Autowired
     private FontLinkDao fontLinkDao;
@@ -41,6 +44,8 @@ public class FontLinkService {
         limitMap.put("bigCate",bigCate);
         limitMap.put("fromIndex",0);
         limitMap.put("toIndex",size);
+
+        logger.info(bigCate);
 
         return fontLinkDao.getFontLinksByCate(limitMap);
     }
