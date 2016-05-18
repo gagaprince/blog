@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.prince.myproj.shares.dao.SharesDao">
+    <resultMap id="SharesSingleModelResultMap" type="SharesSingleModel">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="code" property="code" jdbcType="VARCHAR" />
+        <result column="code_all" property="codeAll" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <insert id="save"
+            parameterType="SharesSingleModel"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into shares(
+        <trim suffixOverrides=",">
+            <if test="id != null"> id ,</if>
+            <if test="name != null"> name ,</if>
+            <if test="code != null"> code ,</if>
+            <if test="codeAll != null"> code_all ,</if>
+        </trim>
+        )values(
+        <trim suffixOverrides=",">
+            <if test="id != null"> #{id} ,</if>
+            <if test="name != null"> #{name} ,</if>
+            <if test="code != null"> #{code} ,</if>
+            <if test="codeAll != null"> #{codeAll} ,</if>
+        </trim>
+        )
+    </insert>
+
+
+
+
+    <select id="getShares" parameterType="map" resultMap="SharesSingleModelResultMap">
+        select * from shares s
+        <where>
+            1=1
+            <if test="codeAll != null">
+                and s.code_all = #{codeAll}
+            </if>
+            <if test="name != null">
+                and s.name = #{name}
+            </if>
+        </where>
+        <if test="fromIndex != null and toIndex != null">
+        limit #{fromIndex}, #{toIndex}
+        </if>
+    </select>
+
+
+
+    <select id="getAllCount" parameterType="map" resultType="Long">
+        select count(1) from shares s
+        <where>
+            1=1
+        </where>
+    </select>
+
+</mapper>

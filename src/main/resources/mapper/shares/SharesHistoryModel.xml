@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.prince.myproj.shares.dao.SharesHistoryDao">
+    <resultMap id="SharesModelResultMap" type="SharesModel">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="code_all" property="code" jdbcType="VARCHAR" />
+        <result column="open_price" property="open" jdbcType="FLOAT" />
+        <result column="high_price" property="high" jdbcType="FLOAT" />
+        <result column="low_price" property="low" jdbcType="FLOAT" />
+        <result column="close_price" property="close" jdbcType="FLOAT" />
+        <result column="volume" property="volume" jdbcType="FLOAT" />
+        <result column="share_date" property="date" jdbcType="DATE" />
+        <result column="create_time" property="createTime" jdbcType="DATE" />
+    </resultMap>
+
+    <insert id="save"
+            parameterType="SharesModel"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into shares_history(
+        <trim suffixOverrides=",">
+            <if test="id != null"> id ,</if>
+            <if test="code != null"> code_all ,</if>
+            <if test="open != null"> open_price ,</if>
+            <if test="high != null"> high_price ,</if>
+            <if test="low != null"> low_price ,</if>
+            <if test="close != null"> close_price ,</if>
+            <if test="volume != null"> volume ,</if>
+            <if test="createTime != null"> create_time ,</if>
+            <if test="date != null"> share_date ,</if>
+        </trim>
+        )values(
+        <trim suffixOverrides=",">
+            <if test="id != null"> #{id} ,</if>
+            <if test="code != null"> #{code} ,</if>
+            <if test="open != null"> #{open} ,</if>
+            <if test="high != null"> #{high} ,</if>
+            <if test="low != null"> #{low} ,</if>
+            <if test="close != null"> #{close} ,</if>
+            <if test="volume != null"> #{volume} ,</if>
+            <if test="createTime != null"> #{createTime} ,</if>
+            <if test="date != null"> #{date} ,</if>
+        </trim>
+        )
+    </insert>
+
+
+    <select id="selectByMap" parameterType="map" resultMap="SharesModelResultMap">
+        select * from shares_history s
+        <where>
+            1=1
+            <if test="code != null">
+                and s.code_all = #{code}
+            </if>
+            <if test="date != null">
+                and s.share_date = #{date}
+            </if>
+        </where>
+    </select>
+
+</mapper>

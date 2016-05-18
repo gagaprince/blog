@@ -6,6 +6,7 @@ import java.util.Date;
  * Created by zidong.wang on 2016/5/16.
  */
 public class SharesModel {
+    private long id;
     private String code;    //股票代码
     private String name;    //股票名称
     private float open;
@@ -13,9 +14,18 @@ public class SharesModel {
     private float high;
     private float low;
     private float volume;
-    private Date date;
+    private String date;
+    private Date createTime=new Date();
 
-    public Date getDate() {
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getDate() {
         return date;
     }
 
@@ -43,7 +53,7 @@ public class SharesModel {
         this.close = close;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

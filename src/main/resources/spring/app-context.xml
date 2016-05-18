@@ -14,7 +14,7 @@
 
 
     <context:property-placeholder location="classpath:*.properties" />
-    <context:component-scan base-package="com.prince.myproj.blog" />
+    <context:component-scan base-package="com.prince.myproj" />
     <mvc:annotation-driven>
         <mvc:message-converters>
             <bean class="org.springframework.http.converter.StringHttpMessageConverter">
