@@ -11,5 +11,6 @@ import java.util.Map;
 public interface SharesDao {
     public void save(SharesSingleModel model);
     public List<SharesSingleModel> getShares(Map<String,Object> seMap);
+    public List<SharesSingleModel> getSharesIncodes(Map<String,Object> seMap);
     public long getAllCount();
 }

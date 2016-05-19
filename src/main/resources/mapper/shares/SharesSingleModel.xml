@@ -50,6 +50,21 @@
     </select>
 
 
+    <select id="getSharesIncodes" parameterType="map" resultMap="SharesSingleModelResultMap">
+        select * from shares s
+        <where>
+            1=1
+            <if test="codes != null">
+                and s.code_all in
+                <foreach item="code" collection="codes" open="(" separator="," close=")">
+                    #{code,jdbcType=VARCHAR}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+
+
 
     <select id="getAllCount" parameterType="map" resultType="Long">
         select count(1) from shares s

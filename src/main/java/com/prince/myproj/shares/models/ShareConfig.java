@@ -8,6 +8,15 @@ public class ShareConfig {
     private String realTimeUrl;
     private String shareCodeUrl;
     private String shareTablePath;
+    private String historyAddUrl;
+
+    public String getHistoryAddUrl() {
+        return historyAddUrl;
+    }
+
+    public void setHistoryAddUrl(String historyAddUrl) {
+        this.historyAddUrl = historyAddUrl;
+    }
 
     public String getShareTablePath() {
         return shareTablePath;

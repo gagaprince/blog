@@ -17,6 +17,12 @@ public class SharesModel {
     private String date;
     private Date createTime=new Date();
 
+
+    private float increasePer;
+    private float increaseVal;
+    private float sixMean;//6日均值
+    private float tweentyMean;  //21日均值
+
     public long getId() {
         return id;
     }

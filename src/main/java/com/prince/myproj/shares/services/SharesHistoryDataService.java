@@ -56,11 +56,25 @@ public class SharesHistoryDataService {
         }
     }
 
+    private List<SharesSingleModel> getSharesModels(String codes){
+        HashMap<String,Object> paramMap = new HashMap<String, Object>();
+        List<String> codeList = new ArrayList<String>();
+        String[] codeItems = codes.split(",");
+        for(int i=0;i<codeItems.length;i++){
+            codeList.add(codeItems[i]);
+        }
+        paramMap.put("codes",codeList);
+        logger.info(codes);
+        List<SharesSingleModel> sharesModels = sharesDao.getSharesIncodes(paramMap);
+        logger.info(sharesModels.size());
+        return sharesModels;
+    }
+
     private List<SharesSingleModel> getSharesModels(long start,long end){
         HashMap<String,Object> paramMap = new HashMap<String, Object>();
 
         paramMap.put("fromIndex",start);
-        paramMap.put("toIndex",end-start);
+        paramMap.put("toIndex", end - start);
 
         List<SharesSingleModel> sharesModels = sharesDao.getShares(paramMap);
         return sharesModels;
@@ -102,6 +116,10 @@ public class SharesHistoryDataService {
     private void saveOneTableInDB(SharesSingleModel model){
         String path = config.getShareTablePath()+model.getCodeAll()+"_"+model.getName().replace("*","x")+".csv";
         File f = new File(path);
+        saveOneTableInDBWithFile(model,f,0);
+    }
+
+    private void saveOneTableInDBWithFile(SharesSingleModel model,File f,int type){
         if(f.exists()){
             BufferedReader br = null;
             try {
@@ -115,13 +133,13 @@ public class SharesHistoryDataService {
                         SharesModel sharesModel = new SharesModel();
                         sharesModel.setDate(fileds[0].trim());
                         sharesModel.setCode(model.getCodeAll());
-                        sharesModel.setOpen(Float.parseFloat(fileds[1].trim()));
-                        sharesModel.setHigh(Float.parseFloat(fileds[2].trim()));
-                        sharesModel.setLow(Float.parseFloat(fileds[3].trim()));
-                        sharesModel.setClose(Float.parseFloat(fileds[4].trim()));
-                        sharesModel.setVolume(Float.parseFloat(fileds[5].trim()));
+                        sharesModel.setOpen(Float.parseFloat(fileds[type+1].trim()));
+                        sharesModel.setHigh(Float.parseFloat(fileds[type+2].trim()));
+                        sharesModel.setLow(Float.parseFloat(fileds[type+3].trim()));
+                        sharesModel.setClose(Float.parseFloat(fileds[type+4].trim()));
+                        sharesModel.setVolume(Float.parseFloat(fileds[type+5].trim()));
 
-                        if(isExitHistory(sharesModel)){
+                        if(!isExitHistory(sharesModel)){
                             sharesHistoryDao.save(sharesModel);
                         }
                     }
@@ -160,6 +178,16 @@ public class SharesHistoryDataService {
         }
     }
 
+    public void updateTodayHistory(String codes ,String dateStart,String dateEnd){
+        List<SharesSingleModel> sharesModels = getSharesModels(codes);
+        updateOneTodayHistory(sharesModels, dateStart, dateEnd);
+    }
+
+    public void updateTodayHistory(long start,long end,String dateStart,String dateEnd){
+        List<SharesSingleModel> sharesModels = getSharesModels(start, end);
+        updateOneTodayHistory(sharesModels, dateStart, dateEnd);
+    }
+
     private void updateOneTodayHistory(List<SharesSingleModel> models){
         int size = models.size();
         StringBuffer sb = new StringBuffer("");
@@ -174,6 +202,33 @@ public class SharesHistoryDataService {
         logger.info(todayContent);
 
         parseTodayData(todayContent,models);
+
+    }
+
+    private void updateOneTodayHistory(List<SharesSingleModel> models,String dateStart,String dateEnd){
+        int size = models.size();
+        StringBuffer sb = new StringBuffer("");
+        String path = config.getShareTablePath()+"temp.csv";
+        for(int i=0;i<size;i++){
+            SharesSingleModel model = models.get(i);
+            String codeAll = model.getCodeAll();
+            if(codeAll.startsWith("sz")){
+                sb.append("&code=1");
+            }else{
+                sb.append("&code=0");
+            }
+            sb.append(model.getCode()).append("&start=").append(dateStart)
+                    .append("&end=").append(dateEnd);
+            String url = config.getHistoryAddUrl()+sb.toString();
+            logger.info(url);
+            HttpUtil httpUtil = HttpUtil.getInstance();
+            httpUtil.saveImgByUrl(url, path);
+
+            File f = new File(path);
+            saveOneTableInDBWithFile(model, f,2);
+
+        }
+
 
     }
 
@@ -193,7 +248,7 @@ public class SharesHistoryDataService {
                 sharesModel.setLow(Float.parseFloat(fields[5]));
                 sharesModel.setVolume(Float.parseFloat(fields[8]));
                 sharesModel.setDate(fields[30]);
-                if(isExitHistory(sharesModel)){
+                if(!isExitHistory(sharesModel)){
                     sharesHistoryDao.save(sharesModel);
                 }
             }
