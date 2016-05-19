@@ -23,6 +23,42 @@ public class SharesModel {
     private float sixMean;//6日均值
     private float tweentyMean;  //21日均值
 
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public float getIncreasePer() {
+        return increasePer;
+    }
+
+    public float getIncreaseVal() {
+        return increaseVal;
+    }
+
+    public float getSixMean() {
+        return sixMean;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public void setIncreasePer(float increasePer) {
+        this.increasePer = increasePer;
+    }
+
+    public void setIncreaseVal(float increaseVal) {
+        this.increaseVal = increaseVal;
+    }
+
+    public void setSixMean(float sixMean) {
+        this.sixMean = sixMean;
+    }
+
+    public void setTweentyMean(float tweentyMean) {
+        this.tweentyMean = tweentyMean;
+    }
+
     public long getId() {
         return id;
     }
