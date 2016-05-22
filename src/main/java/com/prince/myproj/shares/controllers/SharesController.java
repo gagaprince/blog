@@ -98,4 +98,18 @@ public class SharesController {
         //http://localhost:9999/shares/sharesCodes
     }
 
+
+    @RequestMapping("/cacularMeans")
+    @ResponseBody
+    public String cacularMeans(HttpServletRequest request,HttpServletResponse response,Model model){
+        long start = Long.parseLong(request.getParameter("start"));
+        long end = Long.parseLong(request.getParameter("end"));
+        String dateStart = request.getParameter("datestart");
+        String dateEnd = request.getParameter("dateend");
+        sharesHistoryDataService.cacularMean(start,end,dateStart,dateEnd);
+        return "cacularMeans  success";
+        //保存今天的数据倒库中
+        //http://localhost:9999/shares/cacularMeans?start=0&end=1&datestart=19491001&dateend=20160520
+    }
+
 }

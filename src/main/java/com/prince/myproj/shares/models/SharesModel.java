@@ -13,15 +13,58 @@ public class SharesModel {
     private float close;
     private float high;
     private float low;
-    private float volume;
+    private float volume;   //成交量
     private String date;
     private Date createTime=new Date();
 
 
-    private float increasePer;
-    private float increaseVal;
+    private float increasePer;  //涨跌幅
+    private float increaseVal;  //涨跌额
+    private float changePer;    //换手率
+    private float volumeVal;    //成交金额
+    private float totalValue;   //总市值
+    private float transValue;   //流通市值
+
+
     private float sixMean;//6日均值
     private float tweentyMean;  //21日均值
+
+
+    public float getChangePer() {
+        return changePer;
+    }
+
+    public float getTotalValue() {
+        return totalValue;
+    }
+
+    public float getTransValue() {
+        return transValue;
+    }
+
+    public Float getTweentyMean() {
+        return tweentyMean;
+    }
+
+    public float getVolumeVal() {
+        return volumeVal;
+    }
+
+    public void setChangePer(float changePer) {
+        this.changePer = changePer;
+    }
+
+    public void setTotalValue(float totalValue) {
+        this.totalValue = totalValue;
+    }
+
+    public void setTransValue(float transValue) {
+        this.transValue = transValue;
+    }
+
+    public void setVolumeVal(float volumeVal) {
+        this.volumeVal = volumeVal;
+    }
 
     public Date getCreateTime() {
         return createTime;
@@ -35,7 +78,7 @@ public class SharesModel {
         return increaseVal;
     }
 
-    public float getSixMean() {
+    public Float getSixMean() {
         return sixMean;
     }
 

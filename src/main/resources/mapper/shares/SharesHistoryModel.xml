@@ -15,6 +15,10 @@
         <result column="increase_val" property="increaseVal" jdbcType="FLOAT" />
         <result column="six_mean" property="sixMean" jdbcType="FLOAT" />
         <result column="tweenty_mean" property="tweentyMean" jdbcType="FLOAT" />
+        <result column="change_per" property="changePer" jdbcType="FLOAT" />
+        <result column="volume_val" property="volumeVal" jdbcType="FLOAT" />
+        <result column="total_val" property="totalValue" jdbcType="FLOAT" />
+        <result column="trans_val" property="transValue" jdbcType="FLOAT" />
         <result column="share_date" property="date" jdbcType="DATE" />
         <result column="create_time" property="createTime" jdbcType="DATE" />
     </resultMap>
@@ -35,6 +39,10 @@
             <if test="increaseVal != null"> increase_val ,</if>
             <if test="sixMean != null"> six_mean ,</if>
             <if test="tweentyMean != null"> tweenty_mean ,</if>
+            <if test="changePer != null"> change_per ,</if>
+            <if test="volumeVal != null"> volume_val ,</if>
+            <if test="totalValue != null"> total_val ,</if>
+            <if test="transValue != null"> trans_val ,</if>
             <if test="createTime != null"> create_time ,</if>
             <if test="date != null"> share_date ,</if>
         </trim>
@@ -51,6 +59,10 @@
             <if test="increaseVal != null"> #{increaseVal} ,</if>
             <if test="sixMean != null"> #{sixMean} ,</if>
             <if test="tweentyMean != null"> #{tweentyMean} ,</if>
+            <if test="changePer != null"> #{changePer} ,</if>
+            <if test="volumeVal != null"> #{volumeVal} ,</if>
+            <if test="totalValue != null"> #{totalValue} ,</if>
+            <if test="transValue != null"> #{transValue} ,</if>
             <if test="createTime != null"> #{createTime} ,</if>
             <if test="date != null"> #{date} ,</if>
         </trim>
@@ -70,5 +82,30 @@
             </if>
         </where>
     </select>
+
+
+    <select id="selectWithDate" parameterType="map" resultMap="SharesModelResultMap">
+        select * from shares_history s
+        <where>
+            1=1
+            <if test="codeAll != null">
+                and s.code_all = #{codeAll}
+            </if>
+            <if test="startDate != null">
+                and s.share_date BETWEEN #{startDate} AND #{endDate}
+            </if>
+            order by s.share_date
+        </where>
+    </select>
+
+
+    <update id="updateMeans" parameterType="SharesModel">
+        update  shares_history
+        <trim prefix="set" suffixOverrides=",">
+            <if test="sixMean != null">six_mean = #{sixMean},</if>
+            <if test="tweentyMean != null"> tweenty_mean = #{tweentyMean} ,</if>
+        </trim>
+        where id = #{id}
+    </update>
 
 </mapper>

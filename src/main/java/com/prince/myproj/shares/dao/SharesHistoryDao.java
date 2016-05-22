@@ -11,4 +11,7 @@ import java.util.Map;
 public interface SharesHistoryDao {
     public void save(SharesModel model);
     public List<SharesModel> selectByMap(Map<String,Object> keyMap);
+    public List<SharesModel> selectWithDate(Map<String,Object> paramMap);
+
+    public void updateMeans(SharesModel model);
 }

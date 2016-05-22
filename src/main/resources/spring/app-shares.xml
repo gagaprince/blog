@@ -18,6 +18,6 @@
         <property name="realTimeUrl" value="http://hq.sinajs.cn/?list="></property>
         <property name="shareCodeUrl" value="http://money.finance.sina.com.cn/d/api/openapi_proxy.php/?__s="></property>
         <property name="shareTablePath" value="${shares.table.path}"></property>
-        <property name="historyAddUrl" value="http://quotes.money.163.com/service/chddata.html?fields=TOPEN;HIGH;LOW;TCLOSE;VOTURNOVER;"></property>
+        <property name="historyAddUrl" value="http://quotes.money.163.com/service/chddata.html?fields=TOPEN;HIGH;LOW;TCLOSE;VOTURNOVER;CHG;PCHG;TURNOVER;VATURNOVER;TCAP;MCAP;"></property>
     </bean>
 </beans>

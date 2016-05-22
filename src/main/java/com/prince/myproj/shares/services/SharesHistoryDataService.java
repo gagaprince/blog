@@ -127,22 +127,38 @@ public class SharesHistoryDataService {
                 String line = br.readLine();//第一行先读出
                 while((line=br.readLine())!=null){
                     logger.info(line);
-                    String[] fileds = line.split(",");
+                    try {
+                        String[] fileds = line.split(",");
+                        if(fileds.length>=6){
+                            SharesModel sharesModel = new SharesModel();
+                            sharesModel.setDate(fileds[0].trim());
+                            sharesModel.setCode(model.getCodeAll());
+                            sharesModel.setOpen(parseFloat(fileds,type + 1));
+                            sharesModel.setHigh(parseFloat(fileds,type + 2));
+                            sharesModel.setLow(parseFloat(fileds,type + 3));
+                            sharesModel.setClose(parseFloat(fileds,type + 4));
+                            sharesModel.setVolume(parseFloat(fileds,type+5));
 
-                    if(fileds.length>=6){
-                        SharesModel sharesModel = new SharesModel();
-                        sharesModel.setDate(fileds[0].trim());
-                        sharesModel.setCode(model.getCodeAll());
-                        sharesModel.setOpen(Float.parseFloat(fileds[type+1].trim()));
-                        sharesModel.setHigh(Float.parseFloat(fileds[type+2].trim()));
-                        sharesModel.setLow(Float.parseFloat(fileds[type+3].trim()));
-                        sharesModel.setClose(Float.parseFloat(fileds[type+4].trim()));
-                        sharesModel.setVolume(Float.parseFloat(fileds[type+5].trim()));
+                            if (fileds.length >= 12) {
+                                sharesModel.setIncreaseVal(parseFloat(fileds,type + 6));
+                                sharesModel.setIncreasePer(parseFloat(fileds,type + 7));
+                                sharesModel.setChangePer(parseFloat(fileds,type+8));
+                                sharesModel.setVolumeVal(parseFloat(fileds,type+9));
+                                sharesModel.setTotalValue(parseFloat(fileds,type+10));
+                                sharesModel.setTransValue(parseFloat(fileds,type+11));
 
-                        if(!isExitHistory(sharesModel)){
-                            sharesHistoryDao.save(sharesModel);
+                            }
+
+
+                            if(!isExitHistory(sharesModel)){
+                                sharesHistoryDao.save(sharesModel);
+                            }
                         }
+                    }catch (Exception e){
+                        e.printStackTrace();
+                        logger.error(e.getMessage());
                     }
+
                 }
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -152,6 +168,21 @@ public class SharesHistoryDataService {
 
 
         }
+    }
+
+    private float parseFloat(String[] ss,int index){
+        try {
+            String s = ss[index].trim();
+            if("".equals(s)){
+                return 0;
+            }else{
+                return Float.parseFloat(s);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return 0;
+        }
+
     }
 
     private boolean isExitHistory(SharesModel sharesModel){
@@ -201,17 +232,17 @@ public class SharesHistoryDataService {
         String todayContent = httpUtil.getContentByUrl(url);
         logger.info(todayContent);
 
-        parseTodayData(todayContent,models);
+        parseTodayData(todayContent, models);
 
     }
 
     private void updateOneTodayHistory(List<SharesSingleModel> models,String dateStart,String dateEnd){
         int size = models.size();
-        StringBuffer sb = new StringBuffer("");
-        String path = config.getShareTablePath()+"temp.csv";
         for(int i=0;i<size;i++){
+            StringBuffer sb = new StringBuffer("");
             SharesSingleModel model = models.get(i);
             String codeAll = model.getCodeAll();
+            String path = config.getShareTablePath()+codeAll+".csv";
             if(codeAll.startsWith("sz")){
                 sb.append("&code=1");
             }else{
@@ -255,5 +286,89 @@ public class SharesHistoryDataService {
 
         }
     }
+
+    public void cacularMean(long start,long end ,String startDate,String endDate){
+        List<SharesSingleModel> sharesModels = getSharesModels(start, end);
+
+        int size = sharesModels.size();
+        for(int i=0;i<size;i++){
+            SharesSingleModel shareModel = sharesModels.get(i);
+            cacularMeanOneModel(shareModel,startDate,endDate);
+        }
+    }
+
+    private void cacularMeanOneModel(SharesSingleModel model,String startDate,String endDate){
+        List<SharesModel> models = getModelsByStartEndDate(model, startDate, endDate);
+        cacularAndSaveMean(models, 6);
+        cacularAndSaveMean(models,21);
+    }
+
+    private void cacularAndSaveMean(List<SharesModel> models,int days){
+        //先取出 days 数据算总和
+        float sum = 0;
+        int size = models.size();
+        int indexBegin=-1;
+
+        for(int i=0;i<days-1 && i<size;i++){
+            SharesModel model = models.get(i);
+            float close = model.getClose();
+            if(close==0){
+                models.remove(i);
+                i--;
+                size--;
+            }else {
+                sum+=close;
+            }
+            indexBegin = i;
+        }
+        if(days>size){
+            return ;
+        }
+
+        for(int i=indexBegin+1;i<size;i++){
+            SharesModel model = models.get(i);
+            float close = model.getClose();
+            if(close==0){
+                models.remove(i);
+                size--;
+                i--;
+            }else{
+                sum += close;
+                float daysMean = sum/days;
+                SharesModel preModel = models.get(i-days+1);
+                float preClose = preModel.getClose();
+                sum -= preClose;
+                saveMeanInDb(model,daysMean,days);
+            }
+        }
+
+    }
+
+    private void saveMeanInDb(SharesModel model,float means,int days){
+        if(days==6){
+            model.setSixMean(means);
+        }else{
+            model.setTweentyMean(means);
+        }
+        if(model.getSixMean()!=null && model.getSixMean()!=0 && model.getTweentyMean()!=null && model.getTweentyMean()!=0){
+            logger.info("update  id:"+model.getId() +" code:"+model.getCode()
+            +" 6daysmean:"+model.getSixMean()+" 21daysmean:"+model.getTweentyMean());
+            sharesHistoryDao.updateMeans(model);
+        }
+    }
+
+    //拿出将要计算的model
+    private List<SharesModel> getModelsByStartEndDate(SharesSingleModel sharesSingleModel,String startDate,String endDate){
+        Map<String,Object> paramMap = new HashMap<String, Object>();
+        paramMap.put("codeAll",sharesSingleModel.getCodeAll());
+        paramMap.put("startDate",startDate);
+        paramMap.put("endDate",endDate);
+
+        List<SharesModel> models = sharesHistoryDao.selectWithDate(paramMap);
+
+        return models;
+
+    }
+
 
 }
