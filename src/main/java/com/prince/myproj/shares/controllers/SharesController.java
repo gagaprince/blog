@@ -1,6 +1,8 @@
 package com.prince.myproj.shares.controllers;
 
+import com.alibaba.fastjson.JSON;
 import com.prince.myproj.blog.dao.DailyDao;
+import com.prince.myproj.blog.models.ResultModel;
 import com.prince.myproj.shares.services.ShareCodeGetService;
 import com.prince.myproj.shares.services.SharesHistoryDataService;
 import org.apache.log4j.Logger;
@@ -33,7 +35,7 @@ public class SharesController {
         long end = Long.parseLong(request.getParameter("end"));
         sharesHistoryDataService.downloadTable(start,end);
         return "history success";
-        //½«ÀúÊ·Êı¾İ±£´æÔÚ±¾µØ
+        //å°†å†å²æ•°æ®ä¿å­˜åœ¨æœ¬åœ°
         //http://localhost:9999/shares/history?start=0&end=1
     }
 
@@ -44,7 +46,7 @@ public class SharesController {
         long end = Long.parseLong(request.getParameter("end"));
         sharesHistoryDataService.downloadTableContainXing(start, end);
         return "history success";
-        //½«¼Ó*Êı¾İ±£´æÔÚ±¾µØ
+        //å°†åŠ *æ•°æ®ä¿å­˜åœ¨æœ¬åœ°
         //http://localhost:9999/shares/historyXin?start=0&end=1
     }
 
@@ -55,7 +57,7 @@ public class SharesController {
         long end = Long.parseLong(request.getParameter("end"));
         sharesHistoryDataService.saveTableInDB(start, end);
         return "history to db success";
-        //½«±¾µØÊı¾İ±£´æµ½db
+        //å°†æœ¬åœ°æ•°æ®ä¿å­˜åˆ°db
         //http://localhost:9999/shares/historyToDb?start=0&end=1
     }
 
@@ -72,20 +74,33 @@ public class SharesController {
             sharesHistoryDataService.updateTodayHistory(start, end);
         }
         return "history today to db success";
-        //±£´æ½ñÌìµÄÊı¾İµ¹¿âÖĞ
+        //ä¿å­˜ä»Šå¤©çš„æ•°æ®å€’åº“ä¸­
         //http://localhost:9999/shares/historyToday?start=0&end=1&datestart=20150518&dateend=20150519
+    }
+    @RequestMapping("/saveHistoryData")
+    @ResponseBody
+    public String saveHistoryData(HttpServletRequest request,HttpServletResponse response,Model model){
+        ResultModel resultModel = new ResultModel();
+        sharesHistoryDataService.downloadTable();
+        resultModel.getBstatus().setCode(0);
+        resultModel.getBstatus().setDesc("ä¿å­˜æ•°æ®å®Œæ¯•");
+        return JSON.toJSONString(resultModel);
     }
 
     @RequestMapping("/historyTodayByCode")
     @ResponseBody
     public String saveTodayHistoryByCode(HttpServletRequest request,HttpServletResponse response,Model model){
-
+        ResultModel resultModel = new ResultModel();
         String codes = request.getParameter("code");
         String dateStart = request.getParameter("datestart");
         String dateEnd = request.getParameter("dateend");
         sharesHistoryDataService.updateTodayHistory(codes,dateStart,dateEnd);
-        return "history today to db code success";
-        //±£´æ½ñÌìµÄÊı¾İµ¹¿âÖĞ
+
+        resultModel.getBstatus().setCode(0);
+        resultModel.getBstatus().setDesc("history today to db code success");
+
+        return JSON.toJSONString(resultModel);
+        //ä¿å­˜ä»Šå¤©çš„æ•°æ®å€’åº“ä¸­
         //http://localhost:9999/shares/historyTodayByCode?code=sh000001,sz390001,sz390006&datestart=20150518&dateend=20150519
     }
 
@@ -94,7 +109,7 @@ public class SharesController {
     public String getSharesCodes(HttpServletRequest request,HttpServletResponse response,Model model){
         shareCodeGetService.getAllCodeFromSina();
         return "success";
-        //»ñÈ¡ËùÓĞ¹ÉÆ±´úÂë
+        //è·å–æ‰€æœ‰è‚¡ç¥¨ä»£ç 
         //http://localhost:9999/shares/sharesCodes
     }
 
@@ -108,7 +123,7 @@ public class SharesController {
         String dateEnd = request.getParameter("dateend");
         sharesHistoryDataService.cacularMean(start,end,dateStart,dateEnd);
         return "cacularMeans  success";
-        //±£´æ½ñÌìµÄÊı¾İµ¹¿âÖĞ
+        //ä¿å­˜ä»Šå¤©çš„æ•°æ®å€’åº“ä¸­
         //http://localhost:9999/shares/cacularMeans?start=0&end=1&datestart=19491001&dateend=20160520
     }
 

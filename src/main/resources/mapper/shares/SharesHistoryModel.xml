@@ -83,6 +83,17 @@
         </where>
     </select>
 
+    <select id="selectLastModel" parameterType="map" resultMap="SharesModelResultMap">
+        select * from shares_history s
+        <where>
+            1=1
+            <if test="code != null">
+                and s.code_all = #{code}
+            </if>
+        </where>
+        order by s.share_date desc limit 1
+    </select>
+
 
     <select id="selectWithDate" parameterType="map" resultMap="SharesModelResultMap">
         select * from shares_history s

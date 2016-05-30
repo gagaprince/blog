@@ -1,0 +1,48 @@
+*{
+    margin:0;
+    padding:0;
+}
+body{
+    background:#3F3E3C;
+}
+.main{
+    width:100%;
+}
+
+
+.btn-frame{
+    width: 90%;
+    height: 50px;
+    margin: 5px auto;
+}
+.btn-frame .btn{
+    padding:10px 20px;
+    display: inline-block;
+    margin-top:1%;
+    margin-left:10px;
+    border: 1px solid #333333;
+    color:#fff;
+    border-radius:5px;
+    background:#222;
+    cursor: pointer;
+}
+.btn-frame .checkbox{
+    font-size:14px;
+    padding-left: 20px;
+}
+.btn-frame .checkbox input{
+    display: inline-block;
+    margin: 2px  0 0 -6px;
+    position:absolute;
+}
+.btn-frame .checkbox label{
+    margin-left: 10px;
+    cursor: pointer;
+}
+.result-frame{
+    width:90%;
+    margin:50px auto;
+    border:1px solid #000;
+    color:#fff;
+    padding:20px;
+}

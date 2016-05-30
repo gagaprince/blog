@@ -11,10 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Created by zidong.wang on 2016/5/17.
@@ -32,8 +30,22 @@ public class SharesHistoryDataService {
     @Autowired
     private SharesHistoryDao sharesHistoryDao;
 
+
+    public void downloadTable(){
+        long start = 0;
+        long end = 3000;
+        Map<String,Object> paramMap = new HashMap<String, Object>();
+        paramMap.put("code","sh000001");
+        SharesModel lastModel = sharesHistoryDao.selectLastModel(paramMap);
+        String dateStart = lastModel.getDate();
+        String dateEnd = getNowDate();
+        logger.info("dateStart:"+dateStart);
+        logger.info("dateEnd:" + dateEnd);
+        updateTodayHistory(start,end,dateStart,dateEnd);
+    }
+
     public void downloadTable(long start,long end){
-        //ÏÂÔØ±¸Ñ¡¹ÉÆ±µÄÀúÊ·Êı¾İ ±£´æÔÚÎÄ¼şÖĞ
+        //ä¸‹è½½å¤‡é€‰è‚¡ç¥¨çš„å†å²æ•°æ® ä¿å­˜åœ¨æ–‡ä»¶ä¸­
         List<SharesSingleModel> sharesModels = getSharesModels(start, end);
 
         int size = sharesModels.size();
@@ -44,7 +56,7 @@ public class SharesHistoryDataService {
     }
 
     public void downloadTableContainXing(long start,long end){
-        //ÏÂÔØ±¸Ñ¡¹ÉÆ±µÄÀúÊ·Êı¾İ ±£´æÔÚÎÄ¼şÖĞ
+        //ä¸‹è½½å¤‡é€‰è‚¡ç¥¨çš„å†å²æ•°æ® ä¿å­˜åœ¨æ–‡ä»¶ä¸­
         List<SharesSingleModel> sharesModels = getSharesModels(start,end);
 
         int size = sharesModels.size();
@@ -81,7 +93,7 @@ public class SharesHistoryDataService {
     }
 
     private void downloadOneTable(SharesSingleModel model){
-        //ÏÂÔØ¶ÔÓ¦codeµÄ¹ÉÆ±ÎÄ¼ş µ½¶ÔÓ¦Ä¿Â¼
+        //ä¸‹è½½å¯¹åº”codeçš„è‚¡ç¥¨æ–‡ä»¶ åˆ°å¯¹åº”ç›®å½•
         String codeAll = model.getCodeAll();
         String code = model.getCode();
         String codeReal = "";
@@ -104,7 +116,7 @@ public class SharesHistoryDataService {
 
 
     public void saveTableInDB(long start,long end){
-        //½«csvÎÄ¼şÖĞµÄÊı¾İ±£´æµ½Êı¾İ¿âÖĞ
+        //å°†csvæ–‡ä»¶ä¸­çš„æ•°æ®ä¿å­˜åˆ°æ•°æ®åº“ä¸­
         List<SharesSingleModel> sharesModels = getSharesModels(start, end);
         int size = sharesModels.size();
         for(int i=0;i<size;i++){
@@ -124,7 +136,7 @@ public class SharesHistoryDataService {
             BufferedReader br = null;
             try {
                 br = new BufferedReader(new FileReader(f));
-                String line = br.readLine();//µÚÒ»ĞĞÏÈ¶Á³ö
+                String line = br.readLine();//ç¬¬ä¸€è¡Œå…ˆè¯»å‡º
                 while((line=br.readLine())!=null){
                     logger.info(line);
                     try {
@@ -304,7 +316,7 @@ public class SharesHistoryDataService {
     }
 
     private void cacularAndSaveMean(List<SharesModel> models,int days){
-        //ÏÈÈ¡³ö days Êı¾İËã×ÜºÍ
+        //å…ˆå–å‡º days æ•°æ®ç®—æ€»å’Œ
         float sum = 0;
         int size = models.size();
         int indexBegin=-1;
@@ -352,12 +364,12 @@ public class SharesHistoryDataService {
         }
         if(model.getSixMean()!=null && model.getSixMean()!=0 && model.getTweentyMean()!=null && model.getTweentyMean()!=0){
             logger.info("update  id:"+model.getId() +" code:"+model.getCode()
-            +" 6daysmean:"+model.getSixMean()+" 21daysmean:"+model.getTweentyMean());
+                    +" 6daysmean:"+model.getSixMean()+" 21daysmean:"+model.getTweentyMean());
             sharesHistoryDao.updateMeans(model);
         }
     }
 
-    //ÄÃ³ö½«Òª¼ÆËãµÄmodel
+    //æ‹¿å‡ºå°†è¦è®¡ç®—çš„model
     private List<SharesModel> getModelsByStartEndDate(SharesSingleModel sharesSingleModel,String startDate,String endDate){
         Map<String,Object> paramMap = new HashMap<String, Object>();
         paramMap.put("codeAll",sharesSingleModel.getCodeAll());
@@ -370,5 +382,9 @@ public class SharesHistoryDataService {
 
     }
 
+    private String getNowDate(){
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");//è®¾ç½®æ—¥æœŸæ ¼å¼
+        return df.format(new Date());
+    }
 
 }
