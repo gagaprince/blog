@@ -8,6 +8,7 @@ import com.prince.myproj.shares.models.SharesSingleModel;
 import com.prince.myproj.util.MailService;
 import com.prince.myproj.util.bean.Mail;
 import com.prince.util.httputil.HttpUtil;
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -203,7 +204,7 @@ public class SharesHistoryDataService {
     private boolean isExitHistory(SharesModel sharesModel){
         Map<String,Object> keyMap = new HashMap<String, Object>();
         keyMap.put("code",sharesModel.getCode());
-        keyMap.put("date",sharesModel.getDate());
+        keyMap.put("date", sharesModel.getDate());
         List<SharesModel> exitList = sharesHistoryDao.selectByMap(keyMap);
         if(exitList.size()==0){
             return false;
@@ -324,14 +325,14 @@ public class SharesHistoryDataService {
         int size = sharesModels.size();
         for(int i=0;i<size;i++){
             SharesSingleModel shareModel = sharesModels.get(i);
-            cacularMeanOneModel(shareModel,startDate,endDate);
+            cacularMeanOneModel(shareModel, startDate, endDate);
         }
     }
 
     private void cacularMeanOneModel(SharesSingleModel model,String startDate,String endDate){
         List<SharesModel> models = getModelsByStartEndDate(model, startDate, endDate);
         cacularAndSaveMean(models, 6);
-        cacularAndSaveMean(models,21);
+        cacularAndSaveMean(models, 21);
     }
 
     private void cacularAndSaveMean(List<SharesModel> models,int days){
@@ -442,12 +443,24 @@ public class SharesHistoryDataService {
     }
 
     private String getMailContent(){
-        StringBuffer sb = new StringBuffer();
+        StringBuffer sb = new StringBuffer("<p>");
+
+        //获取最新大盘交易日的数据
+        Map<String,Object> paramMap = new HashMap<String, Object>();
+        paramMap.put("code","sh000001");
+        SharesModel sharesModel = sharesHistoryDao.selectLastModel(paramMap);
+        sb.append("今日大盘<br>开盘：").append(sharesModel.getOpen()).append("<br>")
+                .append("收盘：").append(sharesModel.getClose()).append("<br>")
+                .append("最高：").append(sharesModel.getHigh()).append("<br> ")
+                .append("最低：").append(sharesModel.getLow()).append("<br>")
+                .append("涨幅：").append(sharesModel.getIncreasePer()).append("<br>")
+                .append("涨幅值：").append(sharesModel.getIncreaseVal()).append("<br>")
+                .append("6日均线：").append(sharesModel.getSixMean()).append("<br>")
+                .append("21日均线：").append(sharesModel.getTweentyMean()).append("<br>")
+                .append("日期：").append(sharesModel.getDate()).append("<br></p>");
 
 
-
-
-        return "今日大盘 开盘 收盘 最高 最低 涨幅 ";
+        return sb.toString();
     }
 
 }
