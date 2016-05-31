@@ -442,6 +442,11 @@ public class SharesHistoryDataService {
     }
 
     private String getMailContent(){
+        StringBuffer sb = new StringBuffer();
+
+
+
+
         return "今日大盘 开盘 收盘 最高 最低 涨幅 ";
     }
 
