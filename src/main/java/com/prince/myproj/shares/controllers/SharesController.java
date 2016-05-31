@@ -5,6 +5,8 @@ import com.prince.myproj.blog.dao.DailyDao;
 import com.prince.myproj.blog.models.ResultModel;
 import com.prince.myproj.shares.services.ShareCodeGetService;
 import com.prince.myproj.shares.services.SharesHistoryDataService;
+import com.prince.myproj.util.MailService;
+import com.prince.myproj.util.bean.Mail;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -121,10 +123,34 @@ public class SharesController {
         long end = Long.parseLong(request.getParameter("end"));
         String dateStart = request.getParameter("datestart");
         String dateEnd = request.getParameter("dateend");
-        sharesHistoryDataService.cacularMean(start,end,dateStart,dateEnd);
+        sharesHistoryDataService.cacularMean(start, end, dateStart, dateEnd);
         return "cacularMeans  success";
         //保存今天的数据倒库中
         //http://localhost:9999/shares/cacularMeans?start=0&end=1&datestart=19491001&dateend=20160520
+    }
+    @RequestMapping("/cacularAllMeans")
+    @ResponseBody
+    public String cacularAllMeans(HttpServletRequest request,HttpServletResponse response,Model model){
+        ResultModel resultModel = new ResultModel();
+
+        sharesHistoryDataService.cacularMean();
+
+        resultModel.getBstatus().setCode(0);
+        resultModel.getBstatus().setDesc("计算平均完成");
+        return JSON.toJSONString(resultModel);
+    }
+
+    @RequestMapping("/sendMail")
+    @ResponseBody
+    public String sendMail(HttpServletRequest request,HttpServletResponse response,Model model){
+        ResultModel resultModel = new ResultModel();
+
+        sharesHistoryDataService.sendMail();
+
+        resultModel.getBstatus().setCode(0);
+        resultModel.getBstatus().setDesc("邮件发送完成");
+        return JSON.toJSONString(resultModel);
+
     }
 
 }

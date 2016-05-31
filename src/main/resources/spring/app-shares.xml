@@ -19,5 +19,11 @@
         <property name="shareCodeUrl" value="http://money.finance.sina.com.cn/d/api/openapi_proxy.php/?__s="></property>
         <property name="shareTablePath" value="${shares.table.path}"></property>
         <property name="historyAddUrl" value="http://quotes.money.163.com/service/chddata.html?fields=TOPEN;HIGH;LOW;TCLOSE;VOTURNOVER;CHG;PCHG;TURNOVER;VATURNOVER;TCAP;MCAP;"></property>
+        <property name="mailUserName" value="wangzidongprince"></property>
+        <property name="mailPassword" value="hanyun2675380wen"></property>
+        <property name="stmp" value="smtp.163.com"></property>
+        <property name="toUser" value="923731573@qq.com"></property>
+        <property name="fromUser" value="wangzidongprince@163.com"></property>
+
     </bean>
 </beans>

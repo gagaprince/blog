@@ -9,6 +9,51 @@ public class ShareConfig {
     private String shareCodeUrl;
     private String shareTablePath;
     private String historyAddUrl;
+    private String mailUserName;
+    private String mailPassword;
+    private String stmp;
+    private String toUser;
+    private String fromUser;
+
+    public String getFromUser() {
+        return fromUser;
+    }
+
+    public void setFromUser(String fromUser) {
+        this.fromUser = fromUser;
+    }
+
+    public String getStmp() {
+        return stmp;
+    }
+
+    public String getToUser() {
+        return toUser;
+    }
+
+    public void setStmp(String stmp) {
+        this.stmp = stmp;
+    }
+
+    public void setToUser(String toUser) {
+        this.toUser = toUser;
+    }
+
+    public String getMailPassword() {
+        return mailPassword;
+    }
+
+    public String getMailUserName() {
+        return mailUserName;
+    }
+
+    public void setMailPassword(String mailPassword) {
+        this.mailPassword = mailPassword;
+    }
+
+    public void setMailUserName(String mailUserName) {
+        this.mailUserName = mailUserName;
+    }
 
     public String getHistoryAddUrl() {
         return historyAddUrl;

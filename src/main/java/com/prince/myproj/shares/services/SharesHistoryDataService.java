@@ -5,12 +5,15 @@ import com.prince.myproj.shares.dao.SharesHistoryDao;
 import com.prince.myproj.shares.models.ShareConfig;
 import com.prince.myproj.shares.models.SharesModel;
 import com.prince.myproj.shares.models.SharesSingleModel;
+import com.prince.myproj.util.MailService;
+import com.prince.myproj.util.bean.Mail;
 import com.prince.util.httputil.HttpUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -37,7 +40,7 @@ public class SharesHistoryDataService {
         Map<String,Object> paramMap = new HashMap<String, Object>();
         paramMap.put("code","sh000001");
         SharesModel lastModel = sharesHistoryDao.selectLastModel(paramMap);
-        String dateStart = lastModel.getDate();
+        String dateStart = lastModel.getDate().replaceAll("-","");
         String dateEnd = getNowDate();
         logger.info("dateStart:"+dateStart);
         logger.info("dateEnd:" + dateEnd);
@@ -299,6 +302,22 @@ public class SharesHistoryDataService {
         }
     }
 
+    public void cacularMean(){
+        long start = 0;
+        long end = 3000;
+
+        Map<String,Object> paramMap = new HashMap<String, Object>();
+        paramMap.put("code","sh000001");
+        SharesModel sharesModel =sharesHistoryDao.selectLastMeanModel(paramMap);
+        String startDate = getDateByMinus(sharesModel.getDate(),-30);
+        String endDate = getNowDate("yyyy-MM-dd");
+
+        logger.info("startDate:"+startDate);
+        logger.info("endDate:" + endDate);
+        cacularMean(start,end,startDate,endDate);
+
+    }
+
     public void cacularMean(long start,long end ,String startDate,String endDate){
         List<SharesSingleModel> sharesModels = getSharesModels(start, end);
 
@@ -383,8 +402,47 @@ public class SharesHistoryDataService {
     }
 
     private String getNowDate(){
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");//设置日期格式
+        return getNowDate("yyyyMMdd");
+    }
+
+    private String getNowDate(String fomateStr){
+        SimpleDateFormat df = new SimpleDateFormat(fomateStr);//设置日期格式
         return df.format(new Date());
+    }
+
+    private String getDateByMinus(String date,long day){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date now = null;
+        try {
+            now = sdf.parse(date);
+            now.setTime(now.getTime() +day*24*3600*1000);
+            return sdf.format(now);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return "";
+
+    }
+
+    public void sendMail(){
+        Mail mail = new Mail();
+        mail.setSubject(getSubject());
+        mail.setContent(getMailContent());
+        mail.setFrom(config.getFromUser());
+        mail.setTo(config.getToUser());
+        mail.setSmtp(config.getStmp());
+        mail.setUsername(config.getMailUserName());
+        mail.setPassword(config.getMailPassword());
+        MailService.send(mail);
+    }
+
+    private String getSubject(){
+        String dateStr = getNowDate();
+        return dateStr+"股票市场分析";
+    }
+
+    private String getMailContent(){
+        return "今日大盘 开盘 收盘 最高 最低 涨幅 ";
     }
 
 }
