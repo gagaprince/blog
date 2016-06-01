@@ -122,6 +122,22 @@
         </where>
     </select>
 
+    <select id="selectWithHighLow" parameterType="map" resultMap="SharesModelResultMap">
+        select * from shares_history s
+        <where>
+            1=1
+            <if test="high != null">
+                and s.increase_per <![CDATA[ >= ]]> #{high}
+            </if>
+            <if test="low != null">
+                and s.increase_per <![CDATA[ <= ]]> #{low}
+            </if>
+            <if test="date != null">
+                and s.share_date = #{date}
+            </if>
+        </where>
+    </select>
+
 
     <update id="updateMeans" parameterType="SharesModel">
         update  shares_history

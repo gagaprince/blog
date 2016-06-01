@@ -61,7 +61,7 @@ public class SharesHistoryDataService {
 
     public void downloadTableContainXing(long start,long end){
         //下载备选股票的历史数据 保存在文件中
-        List<SharesSingleModel> sharesModels = getSharesModels(start,end);
+        List<SharesSingleModel> sharesModels = getSharesModels(start, end);
 
         int size = sharesModels.size();
         for(int i=0;i<size;i++){
@@ -72,6 +72,7 @@ public class SharesHistoryDataService {
         }
     }
 
+    //获取要操作的股票代码
     private List<SharesSingleModel> getSharesModels(String codes){
         HashMap<String,Object> paramMap = new HashMap<String, Object>();
         List<String> codeList = new ArrayList<String>();
@@ -85,7 +86,7 @@ public class SharesHistoryDataService {
         logger.info(sharesModels.size());
         return sharesModels;
     }
-
+    //获取要操作的股票代码
     private List<SharesSingleModel> getSharesModels(long start,long end){
         HashMap<String,Object> paramMap = new HashMap<String, Object>();
 
@@ -95,6 +96,7 @@ public class SharesHistoryDataService {
         List<SharesSingleModel> sharesModels = sharesDao.getShares(paramMap);
         return sharesModels;
     }
+
 
     private void downloadOneTable(SharesSingleModel model){
         //下载对应code的股票文件 到对应目录
@@ -128,13 +130,14 @@ public class SharesHistoryDataService {
         }
 
     }
-
+    //将一条数据放入数据库
     private void saveOneTableInDB(SharesSingleModel model){
         String path = config.getShareTablePath()+model.getCodeAll()+"_"+model.getName().replace("*","x")+".csv";
         File f = new File(path);
         saveOneTableInDBWithFile(model,f,0);
     }
 
+    //将文件分析后  放入数据库
     private void saveOneTableInDBWithFile(SharesSingleModel model,File f,int type){
         if(f.exists()){
             BufferedReader br = null;
@@ -200,7 +203,7 @@ public class SharesHistoryDataService {
         }
 
     }
-
+    //判断是否已经存在
     private boolean isExitHistory(SharesModel sharesModel){
         Map<String,Object> keyMap = new HashMap<String, Object>();
         keyMap.put("code",sharesModel.getCode());
@@ -213,6 +216,7 @@ public class SharesHistoryDataService {
     }
 
 
+    //更新今天的数据 主要用于更新均线数据
     public void updateTodayHistory(long start,long end){
         List<SharesSingleModel> sharesModels = getSharesModels(start, end);
         int size = sharesModels.size();
@@ -424,7 +428,23 @@ public class SharesHistoryDataService {
         return "";
 
     }
+    //找出超过备选涨幅的列表
+    public List<SharesModel> findIncreaseHigherList(float per){
+        Map<String,Object> paramMap = new HashMap<String, Object>();
+        paramMap.put("high",per);
+        paramMap.put("date", getNowDate("yyyy-MM-dd"));
+        return sharesHistoryDao.selectWithHighLow(paramMap);
+    }
 
+    public List<SharesModel> findIncreaseLowerList(float per){
+        Map<String,Object> paramMap = new HashMap<String, Object>();
+        paramMap.put("low",per);
+        paramMap.put("date",getNowDate("yyyy-MM-dd"));
+        return sharesHistoryDao.selectWithHighLow(paramMap);
+    }
+
+
+    //发送分析邮件
     public void sendMail(){
         Mail mail = new Mail();
         mail.setSubject(getSubject());
@@ -443,6 +463,45 @@ public class SharesHistoryDataService {
     }
 
     private String getMailContent(){
+        StringBuffer sb = new StringBuffer("<p>");
+
+        sb.append(getSHdata()).append("<br>");
+
+        return sb.toString();
+    }
+
+    private String getHigherModelsHtml(){
+        List<SharesModel> liseModels = findIncreaseHigherList(8);
+        return parseModerListToHtml(liseModels);
+    }
+
+    private String getLowerModelsHtml(){
+        List<SharesModel> liseModels = findIncreaseLowerList(-8);
+        return parseModerListToHtml(liseModels);
+    }
+
+    //获取股票list转成的html
+    private String parseModerListToHtml(List<SharesModel> listModels){
+        StringBuffer sb = new StringBuffer("");
+
+        sb.append("<table>")
+                .append("<thead>")
+
+                .append("<tr>")
+                .append("<th>股票代码<th>")
+                .append("<th>股票名称<th>")
+                .append("<th>涨幅<th>")
+                .append("</tr>")
+                .append("</thead>")
+                .append("<tbody>")
+                .append("</tbody>")
+                .append("</table>");
+
+        return sb.toString();
+    }
+
+    //获取大盘综合信息
+    private String getSHdata(){
         StringBuffer sb = new StringBuffer("<p>");
 
         //获取最新大盘交易日的数据

@@ -14,6 +14,8 @@ public interface SharesHistoryDao {
     public List<SharesModel> selectWithDate(Map<String,Object> paramMap);
     public SharesModel selectLastModel(Map<String,Object> paramMap);//获取数据库中对应code最后一天的数据
     public SharesModel selectLastMeanModel(Map<String,Object> paramMap);//获取最后一天计算了means的model
+    public List<SharesModel> selectWithHighLow(Map<String,Object> paramMap);//获取特定涨幅范围的股票列表
+
 
     public void updateMeans(SharesModel model);
 }
