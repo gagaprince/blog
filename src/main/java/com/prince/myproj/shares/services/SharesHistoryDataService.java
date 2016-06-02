@@ -393,6 +393,8 @@ public class SharesHistoryDataService {
         }
     }
 
+
+
     //拿出将要计算的model
     private List<SharesModel> getModelsByStartEndDate(SharesSingleModel sharesSingleModel,String startDate,String endDate){
         Map<String,Object> paramMap = new HashMap<String, Object>();
@@ -429,18 +431,32 @@ public class SharesHistoryDataService {
 
     }
     //找出超过备选涨幅的列表
-    public List<SharesModel> findIncreaseHigherList(float per){
+    public List<SharesModel> findIncreaseHigherList(float per,String date){
         Map<String,Object> paramMap = new HashMap<String, Object>();
         paramMap.put("high",per);
-        paramMap.put("date", getNowDate("yyyy-MM-dd"));
+        paramMap.put("date", date);
         return sharesHistoryDao.selectWithHighLow(paramMap);
     }
 
-    public List<SharesModel> findIncreaseLowerList(float per){
+    public List<SharesModel> findIncreaseLowerList(float per,String date){
         Map<String,Object> paramMap = new HashMap<String, Object>();
-        paramMap.put("low",per);
-        paramMap.put("date",getNowDate("yyyy-MM-dd"));
+        paramMap.put("low", per);
+        paramMap.put("date", date);
         return sharesHistoryDao.selectWithHighLow(paramMap);
+    }
+
+    //获取大盘指标今日的股指
+    public List<SharesModel> getZhiModels(){
+        List<SharesModel> zhiModels = new ArrayList<SharesModel>();
+        String[] codeAlls = "sh000001,sz399001,sz399006".split(",");
+        for(int i=0;i<codeAlls.length;i++){
+            String code = codeAlls[i];
+            Map<String,Object> paramMap = new HashMap<String, Object>();
+            paramMap.put("code",code);
+            SharesModel lastModel = sharesHistoryDao.selectLastModel(paramMap);
+            zhiModels.add(lastModel);
+        }
+        return zhiModels;
     }
 
 
@@ -463,63 +479,13 @@ public class SharesHistoryDataService {
     }
 
     private String getMailContent(){
-        StringBuffer sb = new StringBuffer("<p>");
 
-        sb.append(getSHdata()).append("<br>");
+        StringBuffer sb = new StringBuffer();
 
-        return sb.toString();
-    }
-
-    private String getHigherModelsHtml(){
-        List<SharesModel> liseModels = findIncreaseHigherList(8);
-        return parseModerListToHtml(liseModels);
-    }
-
-    private String getLowerModelsHtml(){
-        List<SharesModel> liseModels = findIncreaseLowerList(-8);
-        return parseModerListToHtml(liseModels);
-    }
-
-    //获取股票list转成的html
-    private String parseModerListToHtml(List<SharesModel> listModels){
-        StringBuffer sb = new StringBuffer("");
-
-        sb.append("<table>")
-                .append("<thead>")
-
-                .append("<tr>")
-                .append("<th>股票代码<th>")
-                .append("<th>股票名称<th>")
-                .append("<th>涨幅<th>")
-                .append("</tr>")
-                .append("</thead>")
-                .append("<tbody>")
-                .append("</tbody>")
-                .append("</table>");
+        HttpUtil httpUtil = HttpUtil.getInstance();
+        String content = httpUtil.getContentByUrl("http://localhost:9999/shares/today");
+        sb.append(content);
 
         return sb.toString();
     }
-
-    //获取大盘综合信息
-    private String getSHdata(){
-        StringBuffer sb = new StringBuffer("<p>");
-
-        //获取最新大盘交易日的数据
-        Map<String,Object> paramMap = new HashMap<String, Object>();
-        paramMap.put("code","sh000001");
-        SharesModel sharesModel = sharesHistoryDao.selectLastModel(paramMap);
-        sb.append("今日大盘<br>开盘：").append(sharesModel.getOpen()).append("<br>")
-                .append("收盘：").append(sharesModel.getClose()).append("<br>")
-                .append("最高：").append(sharesModel.getHigh()).append("<br> ")
-                .append("最低：").append(sharesModel.getLow()).append("<br>")
-                .append("涨幅：").append(sharesModel.getIncreasePer()).append("<br>")
-                .append("涨幅值：").append(sharesModel.getIncreaseVal()).append("<br>")
-                .append("6日均线：").append(sharesModel.getSixMean()).append("<br>")
-                .append("21日均线：").append(sharesModel.getTweentyMean()).append("<br>")
-                .append("日期：").append(sharesModel.getDate()).append("<br></p>");
-
-
-        return sb.toString();
-    }
-
 }

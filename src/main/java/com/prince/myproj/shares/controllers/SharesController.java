@@ -3,6 +3,7 @@ package com.prince.myproj.shares.controllers;
 import com.alibaba.fastjson.JSON;
 import com.prince.myproj.blog.dao.DailyDao;
 import com.prince.myproj.blog.models.ResultModel;
+import com.prince.myproj.shares.models.SharesModel;
 import com.prince.myproj.shares.services.ShareCodeGetService;
 import com.prince.myproj.shares.services.SharesHistoryDataService;
 import com.prince.myproj.util.MailService;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * Created by zidong.wang on 2016/5/16.
@@ -29,6 +31,23 @@ public class SharesController {
 
     @Autowired
     private SharesHistoryDataService sharesHistoryDataService;
+    @RequestMapping("/today")
+    public String viewTodayShares(HttpServletRequest request,HttpServletResponse response,Model model){
+
+        List<SharesModel> zhiModels = sharesHistoryDataService.getZhiModels();
+        String shareDate = zhiModels.get(0).getDate();
+
+        List<SharesModel> highModels = sharesHistoryDataService.findIncreaseHigherList(8, shareDate);
+        List<SharesModel> lowModels = sharesHistoryDataService.findIncreaseLowerList(-8, shareDate);
+
+
+        model.addAttribute("zhiModels",zhiModels);
+        model.addAttribute("highModels",highModels);
+        model.addAttribute("lowModels",lowModels);
+        model.addAttribute("shareDate",shareDate);
+
+        return "shares/todayShares";
+    }
 
     @RequestMapping("/history")
     @ResponseBody
