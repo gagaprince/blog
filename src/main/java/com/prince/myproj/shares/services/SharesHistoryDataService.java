@@ -2,9 +2,11 @@ package com.prince.myproj.shares.services;
 
 import com.prince.myproj.shares.dao.SharesDao;
 import com.prince.myproj.shares.dao.SharesHistoryDao;
+import com.prince.myproj.shares.mathutils.ShareFun;
 import com.prince.myproj.shares.models.ShareConfig;
 import com.prince.myproj.shares.models.SharesModel;
 import com.prince.myproj.shares.models.SharesSingleModel;
+import com.prince.myproj.util.DateUtil;
 import com.prince.myproj.util.MailService;
 import com.prince.myproj.util.bean.Mail;
 import com.prince.util.httputil.HttpUtil;
@@ -33,8 +35,14 @@ public class SharesHistoryDataService {
     private SharesDao sharesDao;
     @Autowired
     private SharesHistoryDao sharesHistoryDao;
+    @Autowired
+    private ShareFun shareFun;
+
+    @Autowired
+    private DateUtil dateUtil;
 
 
+    //一键下载缺失的数据
     public void downloadTable(){
         long start = 0;
         long end = 3000;
@@ -42,7 +50,7 @@ public class SharesHistoryDataService {
         paramMap.put("code","sh000001");
         SharesModel lastModel = sharesHistoryDao.selectLastModel(paramMap);
         String dateStart = lastModel.getDate().replaceAll("-","");
-        String dateEnd = getNowDate();
+        String dateEnd = dateUtil.getNowDate();
         logger.info("dateStart:"+dateStart);
         logger.info("dateEnd:" + dateEnd);
         updateTodayHistory(start,end,dateStart,dateEnd);
@@ -115,7 +123,7 @@ public class SharesHistoryDataService {
         logger.info(csvUrl);
 
         HttpUtil httpUtil = HttpUtil.getInstance();
-        httpUtil.saveImgByUrl(csvUrl,path);
+        httpUtil.saveImgByUrl(csvUrl, path);
 
 
     }
@@ -206,7 +214,7 @@ public class SharesHistoryDataService {
     //判断是否已经存在
     private boolean isExitHistory(SharesModel sharesModel){
         Map<String,Object> keyMap = new HashMap<String, Object>();
-        keyMap.put("code",sharesModel.getCode());
+        keyMap.put("code", sharesModel.getCode());
         keyMap.put("date", sharesModel.getDate());
         List<SharesModel> exitList = sharesHistoryDao.selectByMap(keyMap);
         if(exitList.size()==0){
@@ -307,6 +315,10 @@ public class SharesHistoryDataService {
         }
     }
 
+    /**
+     * 计算平滑移动平均值 收盘价 均线
+     */
+
     public void cacularMean(){
         long start = 0;
         long end = 3000;
@@ -315,11 +327,11 @@ public class SharesHistoryDataService {
         paramMap.put("code","sh000001");
         SharesModel sharesModel =sharesHistoryDao.selectLastMeanModel(paramMap);
         String startDate = getDateByMinus(sharesModel.getDate(),-30);
-        String endDate = getNowDate("yyyy-MM-dd");
+        String endDate = dateUtil.getNowDate("yyyy-MM-dd");
 
         logger.info("startDate:"+startDate);
         logger.info("endDate:" + endDate);
-        cacularMean(start,end,startDate,endDate);
+        cacularMean(start, end, startDate, endDate);
 
     }
 
@@ -374,9 +386,11 @@ public class SharesHistoryDataService {
                 SharesModel preModel = models.get(i-days+1);
                 float preClose = preModel.getClose();
                 sum -= preClose;
-                saveMeanInDb(model,daysMean,days);
+//                saveMeanInDb(model,daysMean,days);
             }
         }
+
+        saveModelList(models);
 
     }
 
@@ -395,26 +409,18 @@ public class SharesHistoryDataService {
 
 
 
-    //拿出将要计算的model
+    //拿出将要计算的model 非停牌的数据
     private List<SharesModel> getModelsByStartEndDate(SharesSingleModel sharesSingleModel,String startDate,String endDate){
         Map<String,Object> paramMap = new HashMap<String, Object>();
         paramMap.put("codeAll",sharesSingleModel.getCodeAll());
         paramMap.put("startDate",startDate);
         paramMap.put("endDate",endDate);
+        paramMap.put("volume","1");
 
         List<SharesModel> models = sharesHistoryDao.selectWithDate(paramMap);
 
         return models;
 
-    }
-
-    private String getNowDate(){
-        return getNowDate("yyyyMMdd");
-    }
-
-    private String getNowDate(String fomateStr){
-        SimpleDateFormat df = new SimpleDateFormat(fomateStr);//设置日期格式
-        return df.format(new Date());
     }
 
     private String getDateByMinus(String date,long day){
@@ -430,62 +436,113 @@ public class SharesHistoryDataService {
         return "";
 
     }
-    //找出超过备选涨幅的列表
-    public List<SharesModel> findIncreaseHigherList(float per,String date){
-        Map<String,Object> paramMap = new HashMap<String, Object>();
-        paramMap.put("high",per);
-        paramMap.put("date", date);
-        return sharesHistoryDao.selectWithHighLow(paramMap);
-    }
 
-    public List<SharesModel> findIncreaseLowerList(float per,String date){
-        Map<String,Object> paramMap = new HashMap<String, Object>();
-        paramMap.put("low", per);
-        paramMap.put("date", date);
-        return sharesHistoryDao.selectWithHighLow(paramMap);
-    }
+    /**
+     * 计算cyc 和 cys 指导支撑和压力
+     * 保存数据库
+     */
 
-    //获取大盘指标今日的股指
-    public List<SharesModel> getZhiModels(){
-        List<SharesModel> zhiModels = new ArrayList<SharesModel>();
-        String[] codeAlls = "sh000001,sz399001,sz399006".split(",");
-        for(int i=0;i<codeAlls.length;i++){
-            String code = codeAlls[i];
-            Map<String,Object> paramMap = new HashMap<String, Object>();
-            paramMap.put("code",code);
-            SharesModel lastModel = sharesHistoryDao.selectLastModel(paramMap);
-            zhiModels.add(lastModel);
+    public void cacularCycHistory(){
+        //从数据库中拿出一只股票的历史数据 除去停牌的数据
+        List<SharesSingleModel> sharesModels = getSharesModels(0, 3000);
+        for(int i=0;i<sharesModels.size();i++){
+            cacularOneCycHistory(sharesModels.get(i));
         }
-        return zhiModels;
+    }
+
+    public void cacularCycLastDay(){
+        List<SharesSingleModel> sharesModels = getSharesModels(0, 3000);
+        for(int i=0;i<sharesModels.size();i++){
+            cacularOneCycLastDay(sharesModels.get(i));
+        }
+    }
+
+    public void cacularOneCycHistory(SharesSingleModel sharesModel){
+        List<SharesModel> cacuList = getModelsByStartEndDate(sharesModel, null, null);
+
+        //计算5日cyc cys
+        cacularOneCycHistoryByDay(cacuList,5);
+        //计算13日cyc cys
+        cacularOneCycHistoryByDay(cacuList,13);
+        //计算34日cyc cys
+        cacularOneCycHistoryByDay(cacuList, 34);
+
+        saveModelList(cacuList);
+    }
+
+    public void cacularOneCycLastDay(SharesSingleModel sharesModel){
+        List<SharesModel> cacuList = getModelsByStartEndDate(sharesModel, null, null);
+
+        int index = cacuList.size()-1;
+        //计算5日cyc cys
+        cacularOneCycHistoryOneDay(cacuList,5,index);
+        //计算13日cyc cys
+        cacularOneCycHistoryOneDay(cacuList, 13, index);
+        //计算34日cyc cys
+        cacularOneCycHistoryOneDay(cacuList, 34, index);
+
+        saveModelOne(cacuList.get(index));
+
+    }
+
+    private void saveModelOne(SharesModel model){
+        sharesHistoryDao.updateMeans(model);
+    }
+
+    private void saveModelList(List<SharesModel> cacuList){
+        for(int i=0;i<cacuList.size();i++){
+            SharesModel model = cacuList.get(i);
+            sharesHistoryDao.updateMeans(model);
+        }
+    }
+
+    private void cacularOneCycHistoryByDay(List<SharesModel> cacuList ,int day){
+        for(int i=day;i<cacuList.size();i++){
+            cacularOneCycHistoryOneDay(cacuList,day,i);
+        }
+    }
+
+    private SharesModel cacularOneCycHistoryOneDay(List<SharesModel> cacuList,int day,int index){
+        List<Float> volumList = splitShareList(cacuList,day,index,"volume");
+        List<Float> volumValList = splitShareList(cacuList, day, index, "volumeVal");
+        SharesModel model = cacuList.get(index);
+        if(volumList!=null && volumValList!=null){
+            float emaVolum = shareFun.ema(volumList, 2 / day);
+            float emaVolumVal = shareFun.ema(volumValList,2/day);
+            float cyc = emaVolumVal/emaVolum;
+            float currentPrice = model.getClose();
+            float cys = (currentPrice/cyc-1)*100;
+            logger.info("日期："+model.getDate());
+            logger.info("成交量滑动平均值："+emaVolum);
+            logger.info("成交金额滑动平均值：" + emaVolumVal);
+            logger.info(day+"日平均成本："+cyc);
+            logger.info(day+"日当前价： "+ currentPrice);
+            logger.info(day+"日cys： "+ cys);
+            logger.info("********************************************");
+            model.setCycByDay(day, cyc);
+            model.setCysByDay(day, cys);
+        }
+        return model;
     }
 
 
-    //发送分析邮件
-    public void sendMail(){
-        Mail mail = new Mail();
-        mail.setSubject(getSubject());
-        mail.setContent(getMailContent());
-        mail.setFrom(config.getFromUser());
-        mail.setTo(config.getToUser());
-        mail.setSmtp(config.getStmp());
-        mail.setUsername(config.getMailUserName());
-        mail.setPassword(config.getMailPassword());
-        MailService.send(mail);
-    }
 
-    private String getSubject(){
-        String dateStr = getNowDate();
-        return dateStr+"股票市场分析";
-    }
-
-    private String getMailContent(){
-
+    //获取一个size长度的 量的list 末尾下标为index
+    private List<Float> splitShareList(List<SharesModel> modelList,int size,int index,String type){
+        if(index<size-1)return null;
+        List<Float> valList = new ArrayList<Float>();
         StringBuffer sb = new StringBuffer();
-
-        HttpUtil httpUtil = HttpUtil.getInstance();
-        String content = httpUtil.getContentByUrl("http://localhost:9999/shares/today");
-        sb.append(content);
-
-        return sb.toString();
+        for(int i=index-size+1;i<index+1;i++){
+            SharesModel model = modelList.get(i);
+            if("volume".equals(type)){
+                valList.add(model.getVolume());
+            }else{
+                valList.add(model.getVolumeVal());
+            }
+            sb.append(valList.get(valList.size()-1)).append(",");
+        }
+        return valList;
     }
+
+
 }

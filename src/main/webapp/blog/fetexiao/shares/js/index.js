@@ -2,6 +2,8 @@ $(document).ready(function(){
 
     var saveHistroyDataUrl='/shares/saveHistoryData';
     var cacularDataUrl = '/shares/cacularAllMeans';
+//    var cacularAllCyc = '/shares/cacularAllCyc';
+    var cacularLastCyc = '/shares/cacularLastCyc';
     var sendMailUrl = '/shares/sendMail';
 
     var Shares = {
@@ -22,6 +24,14 @@ $(document).ready(function(){
             $("#cacularData").on("click",function(){
                 $("#resultFrame").html("");
                 Util.api(cacularDataUrl,{
+                },function(res){
+                    $("#resultFrame").html(res.bstatus.desc);
+                });
+            });
+
+            $("#cacularCyc").on("click",function(){
+                $("#resultFrame").html("");
+                Util.api(cacularLastCyc,{
                 },function(res){
                     $("#resultFrame").html(res.bstatus.desc);
                 });

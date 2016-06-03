@@ -4,8 +4,10 @@ import com.alibaba.fastjson.JSON;
 import com.prince.myproj.blog.dao.DailyDao;
 import com.prince.myproj.blog.models.ResultModel;
 import com.prince.myproj.shares.models.SharesModel;
+import com.prince.myproj.shares.services.ShareAnalysisService;
 import com.prince.myproj.shares.services.ShareCodeGetService;
 import com.prince.myproj.shares.services.SharesHistoryDataService;
+import com.prince.myproj.shares.services.SharesMailService;
 import com.prince.myproj.util.MailService;
 import com.prince.myproj.util.bean.Mail;
 import org.apache.log4j.Logger;
@@ -30,15 +32,20 @@ public class SharesController {
     private ShareCodeGetService shareCodeGetService;
 
     @Autowired
+    private SharesMailService sharesMailService;
+    @Autowired
+    private ShareAnalysisService shareAnalysisService;
+
+    @Autowired
     private SharesHistoryDataService sharesHistoryDataService;
     @RequestMapping("/today")
     public String viewTodayShares(HttpServletRequest request,HttpServletResponse response,Model model){
 
-        List<SharesModel> zhiModels = sharesHistoryDataService.getZhiModels();
+        List<SharesModel> zhiModels = shareAnalysisService.getZhiModels();
         String shareDate = zhiModels.get(0).getDate();
 
-        List<SharesModel> highModels = sharesHistoryDataService.findIncreaseHigherList(8, shareDate);
-        List<SharesModel> lowModels = sharesHistoryDataService.findIncreaseLowerList(-8, shareDate);
+        List<SharesModel> highModels = shareAnalysisService.findIncreaseHigherList(8, shareDate);
+        List<SharesModel> lowModels = shareAnalysisService.findIncreaseLowerList(-8, shareDate);
 
 
         model.addAttribute("zhiModels",zhiModels);
@@ -54,7 +61,7 @@ public class SharesController {
     public String getHistoryByCode(HttpServletRequest request,HttpServletResponse response,Model model){
         long start = Long.parseLong(request.getParameter("start"));
         long end = Long.parseLong(request.getParameter("end"));
-        sharesHistoryDataService.downloadTable(start,end);
+        sharesHistoryDataService.downloadTable(start, end);
         return "history success";
         //将历史数据保存在本地
         //http://localhost:9999/shares/history?start=0&end=1
@@ -164,12 +171,36 @@ public class SharesController {
     public String sendMail(HttpServletRequest request,HttpServletResponse response,Model model){
         ResultModel resultModel = new ResultModel();
 
-        sharesHistoryDataService.sendMail();
+        sharesMailService.sendMail();
 
         resultModel.getBstatus().setCode(0);
         resultModel.getBstatus().setDesc("邮件发送完成");
         return JSON.toJSONString(resultModel);
 
+    }
+
+    @RequestMapping("/cacularAllCyc")
+    @ResponseBody
+    public String cacularAllCyc(HttpServletRequest request,HttpServletResponse response,Model model){
+        ResultModel resultModel = new ResultModel();
+
+        sharesHistoryDataService.cacularCycHistory();
+
+        resultModel.getBstatus().setCode(0);
+        resultModel.getBstatus().setDesc("计算所有平均成本完成");
+        return JSON.toJSONString(resultModel);
+    }
+
+    @RequestMapping("/cacularLastCyc")
+    @ResponseBody
+    public String cacularLastCyc(HttpServletRequest request,HttpServletResponse response,Model model){
+        ResultModel resultModel = new ResultModel();
+
+        sharesHistoryDataService.cacularCycLastDay();
+
+        resultModel.getBstatus().setCode(0);
+        resultModel.getBstatus().setDesc("计算所有平均成本完成");
+        return JSON.toJSONString(resultModel);
     }
 
 }

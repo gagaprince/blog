@@ -19,6 +19,14 @@
         <result column="volume_val" property="volumeVal" jdbcType="FLOAT" />
         <result column="total_val" property="totalValue" jdbcType="FLOAT" />
         <result column="trans_val" property="transValue" jdbcType="FLOAT" />
+
+        <result column="cyc5" property="cyc5" jdbcType="FLOAT" />
+        <result column="cyc13" property="cyc13" jdbcType="FLOAT" />
+        <result column="cyc34" property="cyc34" jdbcType="FLOAT" />
+        <result column="cys5" property="cys5" jdbcType="FLOAT" />
+        <result column="cys13" property="cys13" jdbcType="FLOAT" />
+        <result column="cys34" property="cys34" jdbcType="FLOAT" />
+
         <result column="share_date" property="date" jdbcType="DATE" />
         <result column="create_time" property="createTime" jdbcType="DATE" />
     </resultMap>
@@ -118,6 +126,9 @@
             <if test="startDate != null">
                 and s.share_date BETWEEN #{startDate} AND #{endDate}
             </if>
+            <if test="volume != null">
+                and s.volume != 0
+            </if>
             order by s.share_date
         </where>
     </select>
@@ -144,6 +155,12 @@
         <trim prefix="set" suffixOverrides=",">
             <if test="sixMean != null">six_mean = #{sixMean},</if>
             <if test="tweentyMean != null"> tweenty_mean = #{tweentyMean} ,</if>
+            <if test="cyc5 != null"> cyc5 = #{cyc5} ,</if>
+            <if test="cyc13 != null"> cyc13 = #{cyc13} ,</if>
+            <if test="cyc34 != null"> cyc34 = #{cyc34} ,</if>
+            <if test="cys5 != null"> cys5 = #{cys5} ,</if>
+            <if test="cys13 != null"> cys13 = #{cys13} ,</if>
+            <if test="cys34 != null"> cys34 = #{cys34} ,</if>
         </trim>
         where id = #{id}
     </update>

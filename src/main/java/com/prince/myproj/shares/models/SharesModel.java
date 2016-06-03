@@ -29,6 +29,61 @@ public class SharesModel {
     private float sixMean;//6日均值
     private float tweentyMean;  //21日均值
 
+    private float cyc5; //5日平均成本
+    private float cyc13;    //13日平均成本
+    private float cyc34;    //34日平均成本
+
+    private float cys5;     //5日盈亏率 短线策略
+    private float cys13;    //13日盈亏率    中线
+    private float cys34;    //34日盈亏率 长线
+
+    public float getCyc13() {
+        return cyc13;
+    }
+
+    public float getCyc34() {
+        return cyc34;
+    }
+
+    public float getCyc5() {
+        return cyc5;
+    }
+
+    public float getCys13() {
+        return cys13;
+    }
+
+    public float getCys34() {
+        return cys34;
+    }
+
+    public float getCys5() {
+        return cys5;
+    }
+
+    public void setCyc13(float cyc13) {
+        this.cyc13 = cyc13;
+    }
+
+    public void setCyc34(float cyc34) {
+        this.cyc34 = cyc34;
+    }
+
+    public void setCyc5(float cyc5) {
+        this.cyc5 = cyc5;
+    }
+
+    public void setCys13(float cys13) {
+        this.cys13 = cys13;
+    }
+
+    public void setCys34(float cys34) {
+        this.cys34 = cys34;
+    }
+
+    public void setCys5(float cys5) {
+        this.cys5 = cys5;
+    }
 
     public float getChangePer() {
         return changePer;
@@ -173,4 +228,30 @@ public class SharesModel {
     public void setName(String name) {
         this.name = name;
     }
+
+    public void setCycByDay(int day,float val){
+        switch (day){
+            case 5:
+                setCyc5(val);
+                break;
+            case 13:
+                setCyc13(val);
+                break;
+            case 34:
+                setCyc34(val);
+        }
+    }
+    public void setCysByDay(int day,float val){
+        switch (day){
+            case 5:
+                setCys5(val);
+                break;
+            case 13:
+                setCys13(val);
+                break;
+            case 34:
+                setCys34(val);
+        }
+    }
+
 }
