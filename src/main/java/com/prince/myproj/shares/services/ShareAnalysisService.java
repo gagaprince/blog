@@ -46,6 +46,14 @@ public class ShareAnalysisService {
         paramMap.put("date", date);
         return sharesHistoryDao.selectWithHighLow(paramMap);
     }
+    //找出cys超跌的股票
+    public List<SharesModel> findCysList(String key,float val,String date){
+        Map<String,Object> paramMap = new HashMap<String, Object>();
+        paramMap.put(key, val);
+        paramMap.put("date", date);
+        return sharesHistoryDao.selectWithHighLow(paramMap);
+    }
+
 
     //获取大盘指标今日的股指
     public List<SharesModel> getZhiModels(){

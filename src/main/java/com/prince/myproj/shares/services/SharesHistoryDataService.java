@@ -98,7 +98,7 @@ public class SharesHistoryDataService {
     private List<SharesSingleModel> getSharesModels(long start,long end){
         HashMap<String,Object> paramMap = new HashMap<String, Object>();
 
-        paramMap.put("fromIndex",start);
+        paramMap.put("fromIndex", start);
         paramMap.put("toIndex", end - start);
 
         List<SharesSingleModel> sharesModels = sharesDao.getShares(paramMap);
@@ -142,7 +142,7 @@ public class SharesHistoryDataService {
     private void saveOneTableInDB(SharesSingleModel model){
         String path = config.getShareTablePath()+model.getCodeAll()+"_"+model.getName().replace("*","x")+".csv";
         File f = new File(path);
-        saveOneTableInDBWithFile(model,f,0);
+        saveOneTableInDBWithFile(model, f, 0);
     }
 
     //将文件分析后  放入数据库
@@ -284,7 +284,7 @@ public class SharesHistoryDataService {
             httpUtil.saveImgByUrl(url, path);
 
             File f = new File(path);
-            saveOneTableInDBWithFile(model, f,2);
+            saveOneTableInDBWithFile(model, f, 2);
 
         }
 
@@ -386,11 +386,11 @@ public class SharesHistoryDataService {
                 SharesModel preModel = models.get(i-days+1);
                 float preClose = preModel.getClose();
                 sum -= preClose;
-//                saveMeanInDb(model,daysMean,days);
+                saveMeanInDb(model,daysMean,days);
             }
         }
 
-        saveModelList(models);
+//        saveModelList(models);
 
     }
 
@@ -457,48 +457,119 @@ public class SharesHistoryDataService {
         }
     }
 
+    public void modifyCacularCycHistory(){
+        List<SharesSingleModel> sharesModels = getSharesModels(0, 3000);
+        for(int i=0;i<sharesModels.size();i++){
+            modifyCacularOneCysHistory(sharesModels.get(i));
+        }
+    }
+
     public void cacularOneCycHistory(SharesSingleModel sharesModel){
-        List<SharesModel> cacuList = getModelsByStartEndDate(sharesModel, null, null);
+        String code = sharesModel.getCodeAll();
+        if(!code.equals("sh000001")&&!code.equals("sz399001")&&!code.equals("sz399006")){
+            List<SharesModel> cacuList = getModelsByStartEndDate(sharesModel, null, null);
 
-        //计算5日cyc cys
-        cacularOneCycHistoryByDay(cacuList,5);
-        //计算13日cyc cys
-        cacularOneCycHistoryByDay(cacuList,13);
-        //计算34日cyc cys
-        cacularOneCycHistoryByDay(cacuList, 34);
+            //计算5日cyc cys
+            cacularOneCycHistoryByDay(cacuList, 5);
+            //计算13日cyc cys
+            cacularOneCycHistoryByDay(cacuList, 13);
+            //计算34日cyc cys
+            cacularOneCycHistoryByDay(cacuList, 34);
 
-        saveModelList(cacuList);
+            saveModelList(cacuList);
+        }
+
+    }
+
+    public void modifyCacularOneCysHistory(SharesSingleModel sharesModel){
+        String code = sharesModel.getCodeAll();
+        if(!code.equals("sh000001")&&!code.equals("sz399001")&&!code.equals("sz399006")){
+            List<SharesModel> cacuList = getModelsByStartEndDate(sharesModel, null, null);
+            //计算5日cyc cys
+            modifyCycWithQuanByDay(cacuList, 5);
+            //计算13日cyc cys
+            modifyCycWithQuanByDay(cacuList, 13);
+            //计算34日cyc cys
+            modifyCycWithQuanByDay(cacuList, 34);
+        }
     }
 
     public void cacularOneCycLastDay(SharesSingleModel sharesModel){
-        List<SharesModel> cacuList = getModelsByStartEndDate(sharesModel, null, null);
+        String code = sharesModel.getCodeAll();
+        if(!code.equals("sh000001")&&!code.equals("sz399001")&&!code.equals("sz399006")) {
+            List<SharesModel> cacuList = getModelsByStartEndDate(sharesModel, null, null);
 
-        int index = cacuList.size()-1;
-        //计算5日cyc cys
-        cacularOneCycHistoryOneDay(cacuList,5,index);
-        //计算13日cyc cys
-        cacularOneCycHistoryOneDay(cacuList, 13, index);
-        //计算34日cyc cys
-        cacularOneCycHistoryOneDay(cacuList, 34, index);
+            int index = cacuList.size() - 1;
+            //计算5日cyc cys
+            cacularOneCycHistoryOneDay(cacuList, 5, index);
+            //计算13日cyc cys
+            cacularOneCycHistoryOneDay(cacuList, 13, index);
+            //计算34日cyc cys
+            cacularOneCycHistoryOneDay(cacuList, 34, index);
 
-        saveModelOne(cacuList.get(index));
-
+            saveModelOne(cacuList.get(index));
+        }
     }
 
     private void saveModelOne(SharesModel model){
-        sharesHistoryDao.updateMeans(model);
+        try{
+            sharesHistoryDao.updateMeans(model);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+//        sharesHistoryDao.updateMeans(model);
     }
 
     private void saveModelList(List<SharesModel> cacuList){
         for(int i=0;i<cacuList.size();i++){
             SharesModel model = cacuList.get(i);
-            sharesHistoryDao.updateMeans(model);
+            logger.info("update  id:" + model.getId() + " code:" + model.getCode()
+                    + " 6daysmean:" + model.getSixMean() + " 21daysmean:" + model.getTweentyMean()
+                    +" cyc5:"+model.getCyc5()
+                    +" cyc13:"+model.getCyc13()
+                    +" cyc34:"+model.getCyc34()
+                    +" cys5:"+model.getCys5()
+                    +" cys13:"+model.getCys13()
+                    +" cys34:"+model.getCys34()
+            );
+            try{
+                sharesHistoryDao.updateMeans(model);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
         }
     }
 
     private void cacularOneCycHistoryByDay(List<SharesModel> cacuList ,int day){
         for(int i=day;i<cacuList.size();i++){
-            cacularOneCycHistoryOneDay(cacuList,day,i);
+            cacularOneCycHistoryOneDay(cacuList, day, i);
+        }
+    }
+    //cyc的计算没有除权 这个方法将没有除权的结果修正
+    public void modifyCycWithQuanByDay(List<SharesModel> cacuList ,int day){
+        for(int i=day;i<cacuList.size()-1;i++){
+            SharesModel yestoday = cacuList.get(i);
+            SharesModel today = cacuList.get(i+1);
+
+            float yestoryClose = yestoday.getClose();
+            float todayOpen = today.getOpen();
+            if(todayOpen<yestoryClose*0.9-0.5){
+                int begin = day;
+                int end = cacuList.size();
+                if(i+1>day){
+                    begin = i+1;
+                }
+                if(i+day<end){
+                    end = i+day;
+                }
+                for(int j=begin;j<end;j++){
+                    SharesModel model = cacularOneCycHistoryOneDay(cacuList,day,j);
+                    saveModelOne(model);
+                }
+            }
+
+
         }
     }
 
@@ -530,16 +601,37 @@ public class SharesHistoryDataService {
     //获取一个size长度的 量的list 末尾下标为index
     private List<Float> splitShareList(List<SharesModel> modelList,int size,int index,String type){
         if(index<size-1)return null;
+        float quan = 1;
+        int quanindex = 0;
+        if("volume".equals(type)){
+            //若果是获取量的 则要除权 先确认高增转的这一天的下标
+            for(int i=index-size+1;i<index;i++){
+                SharesModel yestoday = modelList.get(i);
+                SharesModel today = modelList.get(i+1);
+                float yestodayClose = yestoday.getClose();
+                float todayOpen = today.getOpen();
+                if(todayOpen<yestodayClose*0.9-0.5){
+                    //第二日开盘价低于第一日收盘价的跌停板 说明高增转
+                    quan = yestodayClose/todayOpen;
+                    quanindex = i+i;
+                    break;
+                }
+            }
+        }
+
         List<Float> valList = new ArrayList<Float>();
-        StringBuffer sb = new StringBuffer();
         for(int i=index-size+1;i<index+1;i++){
             SharesModel model = modelList.get(i);
             if("volume".equals(type)){
-                valList.add(model.getVolume());
+                if(i<quanindex){
+                    valList.add(model.getVolume()*quan);
+                }else{
+                    valList.add(model.getVolume());
+                }
+
             }else{
                 valList.add(model.getVolumeVal());
             }
-            sb.append(valList.get(valList.size()-1)).append(",");
         }
         return valList;
     }

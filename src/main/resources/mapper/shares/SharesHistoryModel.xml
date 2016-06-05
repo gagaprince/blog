@@ -143,6 +143,24 @@
             <if test="low != null">
                 and s.increase_per <![CDATA[ <= ]]> #{low}
             </if>
+            <if test="cys34low != null">
+                and s.cys34 <![CDATA[ <= ]]> #{cys34low}
+            </if>
+            <if test="cys13low != null">
+                and s.cys13 <![CDATA[ <= ]]> #{cys13low}
+            </if>
+            <if test="cys5low != null">
+                and s.cys5 <![CDATA[ <= ]]> #{cys5low}
+            </if>
+            <if test="cys5high != null">
+                and s.cys5 <![CDATA[ >= ]]> #{cys5high}
+            </if>
+            <if test="cys13high != null">
+                and s.cys13 <![CDATA[ >= ]]> #{cys13high}
+            </if>
+            <if test="cys34high != null">
+                and s.cys34 <![CDATA[ >= ]]> #{cys34high}
+            </if>
             <if test="date != null">
                 and s.share_date = #{date}
             </if>

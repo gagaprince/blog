@@ -41,17 +41,31 @@ public class SharesController {
     @RequestMapping("/today")
     public String viewTodayShares(HttpServletRequest request,HttpServletResponse response,Model model){
 
+        String shareDate = request.getParameter("date");
         List<SharesModel> zhiModels = shareAnalysisService.getZhiModels();
-        String shareDate = zhiModels.get(0).getDate();
+        if(shareDate==null){
+            shareDate = zhiModels.get(0).getDate();
+        }
 
         List<SharesModel> highModels = shareAnalysisService.findIncreaseHigherList(8, shareDate);
         List<SharesModel> lowModels = shareAnalysisService.findIncreaseLowerList(-8, shareDate);
-
+        List<SharesModel> cys5LowModels = shareAnalysisService.findCysList("cys5low", -10, shareDate);
+        List<SharesModel> cys13LowModels = shareAnalysisService.findCysList("cys13low", -16, shareDate);
+        List<SharesModel> cys34LowModels = shareAnalysisService.findCysList("cys34low",-20,shareDate);
+        List<SharesModel> cys5HighModels = shareAnalysisService.findCysList("cys5high",10,shareDate);
+        List<SharesModel> cys13HighModels = shareAnalysisService.findCysList("cys13high",16,shareDate);
+        List<SharesModel> cys34HighModels = shareAnalysisService.findCysList("cys34high",20,shareDate);
 
         model.addAttribute("zhiModels",zhiModels);
         model.addAttribute("highModels",highModels);
         model.addAttribute("lowModels",lowModels);
         model.addAttribute("shareDate",shareDate);
+        model.addAttribute("cys5LowModels",cys5LowModels);
+        model.addAttribute("cys13LowModels",cys13LowModels);
+        model.addAttribute("cys34LowModels",cys34LowModels);
+        model.addAttribute("cys5HighModels",cys5HighModels);
+        model.addAttribute("cys13HighModels",cys13HighModels);
+        model.addAttribute("cys34HighModels",cys34HighModels);
 
         return "shares/todayShares";
     }
@@ -199,8 +213,21 @@ public class SharesController {
         sharesHistoryDataService.cacularCycLastDay();
 
         resultModel.getBstatus().setCode(0);
-        resultModel.getBstatus().setDesc("计算所有平均成本完成");
+        resultModel.getBstatus().setDesc("计算最后一日成本完成");
         return JSON.toJSONString(resultModel);
     }
+
+    @RequestMapping("/modifyCyc")
+    @ResponseBody
+    public String modifyCyc(HttpServletRequest request,HttpServletResponse response,Model model){
+        ResultModel resultModel = new ResultModel();
+
+        sharesHistoryDataService.modifyCacularCycHistory();
+
+        resultModel.getBstatus().setCode(0);
+        resultModel.getBstatus().setDesc("修复所有平均成本完成");
+        return JSON.toJSONString(resultModel);
+    }
+
 
 }
