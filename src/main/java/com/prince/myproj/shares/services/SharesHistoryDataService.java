@@ -310,6 +310,7 @@ public class SharesHistoryDataService {
                 sharesModel.setHigh(Float.parseFloat(fields[4]));
                 sharesModel.setLow(Float.parseFloat(fields[5]));
                 sharesModel.setVolume(Float.parseFloat(fields[8]));
+                sharesModel.setVolumeVal(Float.parseFloat(fields[9]));
                 sharesModel.setDate(fields[30]);
                 if(!isExitHistory(sharesModel)){
                     sharesHistoryDao.save(sharesModel);
@@ -479,7 +480,7 @@ public class SharesHistoryDataService {
 
         int index = cacuList.size()-1;
         //计算5日cyc cys
-        cacularOneCycHistoryOneDay(cacuList,5,index);
+        cacularOneCycHistoryOneDay(cacuList, 5, index);
         //计算13日cyc cys
         cacularOneCycHistoryOneDay(cacuList, 13, index);
         //计算34日cyc cys
@@ -502,7 +503,7 @@ public class SharesHistoryDataService {
 
     private void cacularOneCycHistoryByDay(List<SharesModel> cacuList ,int day){
         for(int i=day;i<cacuList.size();i++){
-            cacularOneCycHistoryOneDay(cacuList,day,i);
+            cacularOneCycHistoryOneDay(cacuList, day, i);
         }
     }
 
@@ -546,6 +547,19 @@ public class SharesHistoryDataService {
             sb.append(valList.get(valList.size()-1)).append(",");
         }
         return valList;
+    }
+
+
+    /**
+     * 收盘前获取数据存入临时表 计算cyc cys 发送策略邮件
+     */
+
+    public void downloadTablePre(){
+
+    }
+
+    public void cacularCycLastDayPre(){
+
     }
 
 
