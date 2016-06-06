@@ -49,7 +49,11 @@ public class SharesHistoryDataService {
         Map<String,Object> paramMap = new HashMap<String, Object>();
         paramMap.put("code","sh000001");
         SharesModel lastModel = sharesHistoryDao.selectLastModel(paramMap);
-        String dateStart = lastModel.getDate().replaceAll("-","");
+        String dateStart = "19901219";
+        if(lastModel!=null){
+            dateStart = lastModel.getDate().replaceAll("-","");
+        }
+
         String dateEnd = dateUtil.getNowDate();
         logger.info("dateStart:"+dateStart);
         logger.info("dateEnd:" + dateEnd);
@@ -306,6 +310,7 @@ public class SharesHistoryDataService {
                 sharesModel.setHigh(Float.parseFloat(fields[4]));
                 sharesModel.setLow(Float.parseFloat(fields[5]));
                 sharesModel.setVolume(Float.parseFloat(fields[8]));
+                sharesModel.setVolumeVal(Float.parseFloat(fields[9]));
                 sharesModel.setDate(fields[30]);
                 if(!isExitHistory(sharesModel)){
                     sharesHistoryDao.save(sharesModel);
@@ -634,6 +639,19 @@ public class SharesHistoryDataService {
             }
         }
         return valList;
+    }
+
+
+    /**
+     * 收盘前获取数据存入临时表 计算cyc cys 发送策略邮件
+     */
+
+    public void downloadTablePre(){
+
+    }
+
+    public void cacularCycLastDayPre(){
+
     }
 
 

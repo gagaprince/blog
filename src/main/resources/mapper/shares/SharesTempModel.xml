@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.prince.myproj.shares.dao.SharesHistoryDao">
+    <resultMap id="SharesModelResultMap" type="SharesModel">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="code_all" property="code" jdbcType="VARCHAR" />
+        <result column="open_price" property="open" jdbcType="FLOAT" />
+        <result column="high_price" property="high" jdbcType="FLOAT" />
+        <result column="low_price" property="low" jdbcType="FLOAT" />
+        <result column="close_price" property="close" jdbcType="FLOAT" />
+        <result column="volume" property="volume" jdbcType="FLOAT" />
+        <result column="increase_per" property="increasePer" jdbcType="FLOAT" />
+        <result column="increase_val" property="increaseVal" jdbcType="FLOAT" />
+        <result column="six_mean" property="sixMean" jdbcType="FLOAT" />
+        <result column="tweenty_mean" property="tweentyMean" jdbcType="FLOAT" />
+        <result column="change_per" property="changePer" jdbcType="FLOAT" />
+        <result column="volume_val" property="volumeVal" jdbcType="FLOAT" />
+        <result column="total_val" property="totalValue" jdbcType="FLOAT" />
+        <result column="trans_val" property="transValue" jdbcType="FLOAT" />
+
+        <result column="cyc5" property="cyc5" jdbcType="FLOAT" />
+        <result column="cyc13" property="cyc13" jdbcType="FLOAT" />
+        <result column="cyc34" property="cyc34" jdbcType="FLOAT" />
+        <result column="cys5" property="cys5" jdbcType="FLOAT" />
+        <result column="cys13" property="cys13" jdbcType="FLOAT" />
+        <result column="cys34" property="cys34" jdbcType="FLOAT" />
+
+        <result column="share_date" property="date" jdbcType="DATE" />
+        <result column="create_time" property="createTime" jdbcType="DATE" />
+    </resultMap>
+
+    <insert id="save"
+            parameterType="SharesModel"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into shares_temp(
+        <trim suffixOverrides=",">
+            <if test="id != null"> id ,</if>
+            <if test="code != null"> code_all ,</if>
+            <if test="open != null"> open_price ,</if>
+            <if test="high != null"> high_price ,</if>
+            <if test="low != null"> low_price ,</if>
+            <if test="close != null"> close_price ,</if>
+            <if test="volume != null"> volume ,</if>
+            <if test="increasePer != null"> increase_per ,</if>
+            <if test="increaseVal != null"> increase_val ,</if>
+            <if test="sixMean != null"> six_mean ,</if>
+            <if test="tweentyMean != null"> tweenty_mean ,</if>
+            <if test="changePer != null"> change_per ,</if>
+            <if test="volumeVal != null"> volume_val ,</if>
+            <if test="totalValue != null"> total_val ,</if>
+            <if test="transValue != null"> trans_val ,</if>
+            <if test="createTime != null"> create_time ,</if>
+            <if test="date != null"> share_date ,</if>
+        </trim>
+        )values(
+        <trim suffixOverrides=",">
+            <if test="id != null"> #{id} ,</if>
+            <if test="code != null"> #{code} ,</if>
+            <if test="open != null"> #{open} ,</if>
+            <if test="high != null"> #{high} ,</if>
+            <if test="low != null"> #{low} ,</if>
+            <if test="close != null"> #{close} ,</if>
+            <if test="volume != null"> #{volume} ,</if>
+            <if test="increasePer != null"> #{increasePer} ,</if>
+            <if test="increaseVal != null"> #{increaseVal} ,</if>
+            <if test="sixMean != null"> #{sixMean} ,</if>
+            <if test="tweentyMean != null"> #{tweentyMean} ,</if>
+            <if test="changePer != null"> #{changePer} ,</if>
+            <if test="volumeVal != null"> #{volumeVal} ,</if>
+            <if test="totalValue != null"> #{totalValue} ,</if>
+            <if test="transValue != null"> #{transValue} ,</if>
+            <if test="createTime != null"> #{createTime} ,</if>
+            <if test="date != null"> #{date} ,</if>
+        </trim>
+        )
+    </insert>
+
+
+    <select id="selectByMap" parameterType="map" resultMap="SharesModelResultMap">
+        select * from shares_temp s
+        <where>
+            1=1
+            <if test="code != null">
+                and s.code_all = #{code}
+            </if>
+            <if test="date != null">
+                and s.share_date = #{date}
+            </if>
+        </where>
+    </select>
+
+
+
+
+    <update id="update" parameterType="SharesModel">
+        update  shares_temp
+        <trim prefix="set" suffixOverrides=",">
+
+            <if test="open != null"> open_price = #{open} ,</if>
+            <if test="high != null"> high_price = #{high} ,</if>
+            <if test="low != null"> low_price = #{low},</if>
+            <if test="close != null"> close_price = #{close},</if>
+            <if test="volume != null"> volume = #{volume},</if>
+            <if test="volumeVal != null"> volume_val = #{volumeVal} ,</if>
+            <if test="createTime != null"> create_time = #{createTime} ,</if>
+            <if test="date != null"> share_date = #{date} ,</if>
+            <if test="sixMean != null">six_mean = #{sixMean},</if>
+            <if test="tweentyMean != null"> tweenty_mean = #{tweentyMean} ,</if>
+            <if test="cyc5 != null"> cyc5 = #{cyc5} ,</if>
+            <if test="cyc13 != null"> cyc13 = #{cyc13} ,</if>
+            <if test="cyc34 != null"> cyc34 = #{cyc34} ,</if>
+            <if test="cys5 != null"> cys5 = #{cys5} ,</if>
+            <if test="cys13 != null"> cys13 = #{cys13} ,</if>
+            <if test="cys34 != null"> cys34 = #{cys34} ,</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+</mapper>

@@ -229,5 +229,34 @@ public class SharesController {
         return JSON.toJSONString(resultModel);
     }
 
+    @RequestMapping("/cacuAll")
+    @ResponseBody
+    public String kingKey(HttpServletRequest request,HttpServletResponse response,Model model){
+        ResultModel resultModel = new ResultModel();
+
+        sharesHistoryDataService.downloadTable();
+        sharesHistoryDataService.cacularMean();
+        sharesHistoryDataService.cacularCycLastDay();
+        sharesMailService.sendMail();
+
+        resultModel.getBstatus().setCode(0);
+        resultModel.getBstatus().setDesc("上述过程已经完成");
+        return JSON.toJSONString(resultModel);
+    }
+    @RequestMapping("/cacuAllPre")
+    @ResponseBody
+    public String cacuAllPre(HttpServletRequest request,HttpServletResponse response,Model model){
+        //在不到三点时获取股票数据并进行 选股操作 发出邮件
+        ResultModel resultModel = new ResultModel();
+
+        sharesHistoryDataService.downloadTablePre();
+//        sharesHistoryDataService.cacularMean();
+        sharesHistoryDataService.cacularCycLastDayPre();
+        sharesMailService.sendMailPre();
+
+        resultModel.getBstatus().setCode(0);
+        resultModel.getBstatus().setDesc("预测完成");
+        return JSON.toJSONString(resultModel);
+    }
 
 }

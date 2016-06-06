@@ -50,6 +50,13 @@ public class SharesMailService {
         MailService.send(mail);
     }
 
+    /**
+     * 收盘前发送预测邮件
+     */
+    public void sendMailPre(){
+
+    }
+
     private String getSubject(){
         String dateStr = dateUtil.getNowDate();
         return dateStr+"股票市场分析";
