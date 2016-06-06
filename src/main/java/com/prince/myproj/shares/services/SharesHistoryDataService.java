@@ -49,7 +49,11 @@ public class SharesHistoryDataService {
         Map<String,Object> paramMap = new HashMap<String, Object>();
         paramMap.put("code","sh000001");
         SharesModel lastModel = sharesHistoryDao.selectLastModel(paramMap);
-        String dateStart = lastModel.getDate().replaceAll("-","");
+        String dateStart = "19901219";
+        if(lastModel!=null){
+            dateStart = lastModel.getDate().replaceAll("-","");
+        }
+
         String dateEnd = dateUtil.getNowDate();
         logger.info("dateStart:"+dateStart);
         logger.info("dateEnd:" + dateEnd);

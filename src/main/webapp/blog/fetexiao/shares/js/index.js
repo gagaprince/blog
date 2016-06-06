@@ -5,6 +5,7 @@ $(document).ready(function(){
 //    var cacularAllCyc = '/shares/cacularAllCyc';
     var cacularLastCyc = '/shares/cacularLastCyc';
     var sendMailUrl = '/shares/sendMail';
+    var kingkeyUrl = '/shares/kingKey';//一键完成以上操作
 
     var Shares = {
         init:function(){
@@ -40,6 +41,13 @@ $(document).ready(function(){
             $("#sendMail").on("click",function(){
                 $("#resultFrame").html("");
                 Util.api(sendMailUrl,{
+                },function(res){
+                    $("#resultFrame").html(res.bstatus.desc);
+                });
+            });
+            $("#kingkey").on("click",function(){
+                $("#resultFrame").html("");
+                Util.api(kingkeyUrl,{
                 },function(res){
                     $("#resultFrame").html(res.bstatus.desc);
                 });
