@@ -5,7 +5,7 @@ $(document).ready(function(){
 //    var cacularAllCyc = '/shares/cacularAllCyc';
     var cacularLastCyc = '/shares/cacularLastCyc';
     var sendMailUrl = '/shares/sendMail';
-    var kingkeyUrl = '/shares/kingKey';//一键完成以上操作
+    var kingkeyUrl = '/shares/cacuAll';//一键完成以上操作
 
     var Shares = {
         init:function(){

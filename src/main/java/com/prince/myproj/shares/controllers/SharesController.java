@@ -203,7 +203,7 @@ public class SharesController {
         return JSON.toJSONString(resultModel);
     }
 
-    @RequestMapping("/kingKey")
+    @RequestMapping("/cacuAll")
     @ResponseBody
     public String kingKey(HttpServletRequest request,HttpServletResponse response,Model model){
         ResultModel resultModel = new ResultModel();
