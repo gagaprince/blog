@@ -3,6 +3,7 @@ package com.prince.myproj.shares.controllers;
 import com.alibaba.fastjson.JSON;
 import com.prince.myproj.blog.dao.DailyDao;
 import com.prince.myproj.blog.models.ResultModel;
+import com.prince.myproj.shares.models.AnalysisBean;
 import com.prince.myproj.shares.models.SharesModel;
 import com.prince.myproj.shares.services.ShareAnalysisService;
 import com.prince.myproj.shares.services.ShareCodeGetService;
@@ -22,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by zidong.wang on 2016/5/16.
@@ -96,6 +98,45 @@ public class SharesController {
         model.addAttribute("cys34HighModels",cys34HighModels);
 
         return "shares/preTodayShares";
+    }
+
+    @RequestMapping("/analysisByDay")
+    public String analysisByDay(HttpServletRequest request,HttpServletResponse response,Model model){
+        String shareDate = request.getParameter("date");
+        if(shareDate == null){
+            shareDate = dateUtil.getNowDate("yyyy-MM-dd");
+        }
+
+        List<SharesModel> cys13LowModels = shareAnalysisService.findCysList("cys13low", -16, shareDate);
+
+        Map<String,List<SharesModel>> lowCysMap = shareAnalysisService.findLowCysSomeDayData(cys13LowModels,10);
+
+        model.addAttribute("shareDate",shareDate);
+        model.addAttribute("cys13LowModels",cys13LowModels);
+        model.addAttribute("lowcysMap",lowCysMap);
+
+        return "shares/analysisByDay";
+    }
+
+    @RequestMapping("/analysisByCode")
+    public String analysisByCode(HttpServletRequest request,HttpServletResponse response,Model model){
+        String codestr = request.getParameter("codes");
+        int day = Integer.parseInt(request.getParameter("day"));
+        if(codestr == null){
+            codestr = "sh000001";
+        }
+
+        String[] codes = codestr.split(",");
+
+
+        Map<String,List<SharesModel>> cysModelListMap = shareAnalysisService.giveMeCysModelList(codes,day);
+
+        Map<String,AnalysisBean> analysisBeanMap = shareAnalysisService.findLowestCysAndT(codes, cysModelListMap);
+
+        model.addAttribute("cysModelListMap",cysModelListMap);
+        model.addAttribute("analysisBeanMap",analysisBeanMap);
+
+        return "shares/analysisByCode";
     }
 
     @RequestMapping("/history")

@@ -102,6 +102,21 @@
         order by s.share_date desc limit 1
     </select>
 
+    <select id="selectModelByCode" parameterType="map" resultMap="SharesModelResultMap">
+        select * from shares_history s
+        <where>
+            1=1
+            <if test="code != null">
+                and s.code_all = #{code}
+            </if>
+        </where>
+        order by s.share_date desc
+        <if test="day != null">
+            limit #{day}
+        </if>
+
+    </select>
+
     <select id="selectLastMeanModel" parameterType="map" resultMap="SharesModelResultMap">
         select * from shares_history s
         <where>
