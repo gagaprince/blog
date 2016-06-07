@@ -2,6 +2,7 @@ package com.prince.myproj.shares.services;
 
 import com.prince.myproj.shares.dao.SharesDao;
 import com.prince.myproj.shares.dao.SharesHistoryDao;
+import com.prince.myproj.shares.dao.SharesTempDao;
 import com.prince.myproj.shares.mathutils.ShareFun;
 import com.prince.myproj.shares.models.ShareConfig;
 import com.prince.myproj.shares.models.SharesModel;
@@ -14,6 +15,7 @@ import org.apache.commons.collections.map.HashedMap;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sun.rmi.runtime.Log;
 
 import java.io.*;
 import java.text.ParseException;
@@ -35,6 +37,8 @@ public class SharesHistoryDataService {
     private SharesDao sharesDao;
     @Autowired
     private SharesHistoryDao sharesHistoryDao;
+    @Autowired
+    private SharesTempDao sharesTempDao;
     @Autowired
     private ShareFun shareFun;
 
@@ -92,7 +96,7 @@ public class SharesHistoryDataService {
         for(int i=0;i<codeItems.length;i++){
             codeList.add(codeItems[i]);
         }
-        paramMap.put("codes",codeList);
+        paramMap.put("codes", codeList);
         logger.info(codes);
         List<SharesSingleModel> sharesModels = sharesDao.getSharesIncodes(paramMap);
         logger.info(sharesModels.size());
@@ -181,7 +185,7 @@ public class SharesHistoryDataService {
                             }
 
 
-                            if(!isExitHistory(sharesModel)){
+                            if(!isExitHistory(sharesModel,"history")){
                                 sharesHistoryDao.save(sharesModel);
                             }
                         }
@@ -216,12 +220,18 @@ public class SharesHistoryDataService {
 
     }
     //判断是否已经存在
-    private boolean isExitHistory(SharesModel sharesModel){
+    private boolean isExitHistory(SharesModel sharesModel,String type){
         Map<String,Object> keyMap = new HashMap<String, Object>();
         keyMap.put("code", sharesModel.getCode());
         keyMap.put("date", sharesModel.getDate());
-        List<SharesModel> exitList = sharesHistoryDao.selectByMap(keyMap);
-        if(exitList.size()==0){
+        List<SharesModel> exitList=null;
+        if("history".equals(type)){
+            exitList = sharesHistoryDao.selectByMap(keyMap);
+        }else{
+            exitList = sharesTempDao.selectByMap(keyMap);
+        }
+
+        if(exitList!=null && exitList.size()==0){
             return false;
         }
         return true;
@@ -229,7 +239,7 @@ public class SharesHistoryDataService {
 
 
     //更新今天的数据 主要用于更新均线数据
-    public void updateTodayHistory(long start,long end){
+    /*public void updateTodayHistory(long start,long end){
         List<SharesSingleModel> sharesModels = getSharesModels(start, end);
         int size = sharesModels.size();
         for(int i=0;i<size;i++){
@@ -239,7 +249,7 @@ public class SharesHistoryDataService {
             }
             updateOneTodayHistory(updateModels);
         }
-    }
+    }*/
 
     public void updateTodayHistory(String codes ,String dateStart,String dateEnd){
         List<SharesSingleModel> sharesModels = getSharesModels(codes);
@@ -251,22 +261,6 @@ public class SharesHistoryDataService {
         updateOneTodayHistory(sharesModels, dateStart, dateEnd);
     }
 
-    private void updateOneTodayHistory(List<SharesSingleModel> models){
-        int size = models.size();
-        StringBuffer sb = new StringBuffer("");
-        for(int i=0;i<size;i++){
-            SharesSingleModel model = models.get(i);
-            sb.append(model.getCodeAll()).append(",");
-        }
-        String url = config.getRealTimeUrl()+sb.toString();
-        logger.info(url);
-        HttpUtil httpUtil = HttpUtil.getInstance();
-        String todayContent = httpUtil.getContentByUrl(url);
-        logger.info(todayContent);
-
-        parseTodayData(todayContent, models);
-
-    }
 
     private void updateOneTodayHistory(List<SharesSingleModel> models,String dateStart,String dateEnd){
         int size = models.size();
@@ -295,31 +289,6 @@ public class SharesHistoryDataService {
 
     }
 
-    private void parseTodayData(String todayContent,List<SharesSingleModel> models){
-        String[] codeContents = todayContent.split(";");
-        int length = codeContents.length;
-        for(int i=0;i<length;i++){
-            String codeContent = codeContents[i];
-            String[] fields = codeContent.split(",");
-            SharesSingleModel model = models.get(i);
-            if(fields.length>=32){
-                SharesModel sharesModel = new SharesModel();
-                sharesModel.setCode(model.getCodeAll());
-                sharesModel.setOpen(Float.parseFloat(fields[1]));
-                sharesModel.setClose(Float.parseFloat(fields[3]));
-                sharesModel.setHigh(Float.parseFloat(fields[4]));
-                sharesModel.setLow(Float.parseFloat(fields[5]));
-                sharesModel.setVolume(Float.parseFloat(fields[8]));
-                sharesModel.setVolumeVal(Float.parseFloat(fields[9]));
-                sharesModel.setDate(fields[30]);
-                if(!isExitHistory(sharesModel)){
-                    sharesHistoryDao.save(sharesModel);
-                }
-            }
-
-        }
-    }
-
     /**
      * 计算平滑移动平均值 收盘价 均线
      */
@@ -329,9 +298,9 @@ public class SharesHistoryDataService {
         long end = 3000;
 
         Map<String,Object> paramMap = new HashMap<String, Object>();
-        paramMap.put("code","sh000001");
+        paramMap.put("code", "sh000001");
         SharesModel sharesModel =sharesHistoryDao.selectLastMeanModel(paramMap);
-        String startDate = getDateByMinus(sharesModel.getDate(),-30);
+        String startDate = getDateByMinus(sharesModel.getDate(), -30);
         String endDate = dateUtil.getNowDate("yyyy-MM-dd");
 
         logger.info("startDate:"+startDate);
@@ -416,9 +385,14 @@ public class SharesHistoryDataService {
 
     //拿出将要计算的model 非停牌的数据
     private List<SharesModel> getModelsByStartEndDate(SharesSingleModel sharesSingleModel,String startDate,String endDate){
+        return getModelsByStartEndDate(sharesSingleModel.getCodeAll(),startDate,endDate);
+    }
+
+    //拿出将要计算的model 非停牌的数据
+    private List<SharesModel> getModelsByStartEndDate(String code,String startDate,String endDate){
         Map<String,Object> paramMap = new HashMap<String, Object>();
-        paramMap.put("codeAll",sharesSingleModel.getCodeAll());
-        paramMap.put("startDate",startDate);
+        paramMap.put("codeAll", code);
+        paramMap.put("startDate", startDate);
         paramMap.put("endDate",endDate);
         paramMap.put("volume","1");
 
@@ -529,13 +503,13 @@ public class SharesHistoryDataService {
         for(int i=0;i<cacuList.size();i++){
             SharesModel model = cacuList.get(i);
             logger.info("update  id:" + model.getId() + " code:" + model.getCode()
-                    + " 6daysmean:" + model.getSixMean() + " 21daysmean:" + model.getTweentyMean()
-                    +" cyc5:"+model.getCyc5()
-                    +" cyc13:"+model.getCyc13()
-                    +" cyc34:"+model.getCyc34()
-                    +" cys5:"+model.getCys5()
-                    +" cys13:"+model.getCys13()
-                    +" cys34:"+model.getCys34()
+                            + " 6daysmean:" + model.getSixMean() + " 21daysmean:" + model.getTweentyMean()
+                            + " cyc5:" + model.getCyc5()
+                            + " cyc13:" + model.getCyc13()
+                            + " cyc34:" + model.getCyc34()
+                            + " cys5:" + model.getCys5()
+                            + " cys13:" + model.getCys13()
+                            + " cys34:" + model.getCys34()
             );
             try{
                 sharesHistoryDao.updateMeans(model);
@@ -647,12 +621,106 @@ public class SharesHistoryDataService {
      */
 
     public void downloadTablePre(){
+        //获取股票代码
+        long start = 0;
+        long end = 3000;
+        List<SharesSingleModel> sharesModels = getSharesModels(start, end);
 
+        int size = sharesModels.size();
+        int len = 100;
+        for(int i=0;i<size;){
+            List<SharesSingleModel> updateModels = new ArrayList<SharesSingleModel>();
+            for(int j=0;j<len&&i+j<size;j++){
+                updateModels.add(sharesModels.get(i+j));
+            }
+            updateTodayRealTime(updateModels);
+            i = i+len;
+        }
     }
 
     public void cacularCycLastDayPre(){
+        Map<String ,Object> paramMap = new HashMap<String, Object>();
+        paramMap.put("volume",1);
+        List<SharesModel> models = sharesTempDao.selectByMap(paramMap);
+        int size = models.size();
+        for(int i=0;i<size;i++){
+            cacularOneCycPre(models.get(i));
+        }
+    }
 
+    private void cacularOneCycPre(SharesModel sharesModel){
+        String code = sharesModel.getCode();
+        if(!code.equals("sh000001")&&!code.equals("sz399001")&&!code.equals("sz399006")) {
+            List<SharesModel> cacuList = getModelsByStartEndDate(code, "1990-01-01", sharesModel.getDate());
+            SharesModel lastDay = cacuList.get(cacuList.size()-1);
+            cacuList.add(sharesModel);
+            int index = cacuList.size() - 1;
+            //计算5日cyc cys
+            cacularOneCycHistoryOneDay(cacuList, 5, index);
+            //计算13日cyc cys
+            cacularOneCycHistoryOneDay(cacuList, 13, index);
+            //计算34日cyc cys
+            cacularOneCycHistoryOneDay(cacuList, 34, index);
+
+            saveTempModelOne(cacuList.get(index));
+        }
+    }
+
+    private void saveTempModelOne(SharesModel model){
+        try{
+            sharesTempDao.update(model);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 
+    //获取实时数据存入临时表
+    private void updateTodayRealTime(List<SharesSingleModel> models){
+        int size = models.size();
+        StringBuffer sb = new StringBuffer("");
+        for(int i=0;i<size;i++){
+            SharesSingleModel model = models.get(i);
+            sb.append(model.getCodeAll()).append(",");
+        }
+        String url = config.getRealTimeUrl()+sb.toString();
+        logger.info(url);
+        HttpUtil httpUtil = HttpUtil.getInstance();
+        String todayContent = httpUtil.getContentByUrl(url);
+//        logger.info(todayContent);
+
+        parseTodayData(todayContent, models);
+
+    }
+    //分析并存单条数据
+    private void parseTodayData(String todayContent,List<SharesSingleModel> models){
+        String[] codeContents = todayContent.split(";");
+        int length = codeContents.length;
+        int size = models.size();
+        logger.info("length:"+length+"    size:"+size);
+        for(int i=0;i<length && i<size;i++){
+            String codeContent = codeContents[i];
+            String[] fields = codeContent.split(",");
+            SharesSingleModel model = models.get(i);
+            if(fields.length>=32){
+                SharesModel sharesModel = new SharesModel();
+                sharesModel.setCode(model.getCodeAll());
+                sharesModel.setOpen(Float.parseFloat(fields[1]));
+                sharesModel.setClose(Float.parseFloat(fields[3]));
+                sharesModel.setHigh(Float.parseFloat(fields[4]));
+                sharesModel.setLow(Float.parseFloat(fields[5]));
+                sharesModel.setVolume(Float.parseFloat(fields[8]));
+                sharesModel.setVolumeVal(Float.parseFloat(fields[9]));
+                sharesModel.setDate(fields[30]);
+                if(!isExitHistory(sharesModel,"temp")){
+                    logger.info("save:"+sharesModel.getCode());
+                    sharesTempDao.save(sharesModel);
+                }else{
+                    logger.info("update:"+sharesModel.getCode());
+                    sharesTempDao.update(sharesModel);
+                }
+            }
+
+        }
+    }
 }

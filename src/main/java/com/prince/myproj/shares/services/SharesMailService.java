@@ -42,19 +42,26 @@ public class SharesMailService {
         Mail mail = new Mail();
         mail.setSubject(getSubject());
         mail.setContent(getMailContent());
-        mail.setFrom(config.getFromUser());
-        mail.setTo(config.getToUser());
-        mail.setSmtp(config.getStmp());
-        mail.setUsername(config.getMailUserName());
-        mail.setPassword(config.getMailPassword());
-        MailService.send(mail);
+        sendMailWithObj(mail);
     }
 
     /**
      * 收盘前发送预测邮件
      */
     public void sendMailPre(){
+        Mail mail = new Mail();
+        mail.setSubject(getSubject());
+        mail.setContent(getMailContent("http://localhost:9999/shares/preToday"));
+        sendMailWithObj(mail);
+    }
 
+    public void sendMailWithObj(Mail mail){
+        mail.setFrom(config.getFromUser());
+        mail.setTo(config.getToUser());
+        mail.setSmtp(config.getStmp());
+        mail.setUsername(config.getMailUserName());
+        mail.setPassword(config.getMailPassword());
+        MailService.send(mail);
     }
 
     private String getSubject(){
@@ -65,11 +72,14 @@ public class SharesMailService {
 
 
     private String getMailContent(){
+        return getMailContent("http://localhost:9999/shares/today");
 
+    }
+    private String getMailContent(String url){
         StringBuffer sb = new StringBuffer();
 
         HttpUtil httpUtil = HttpUtil.getInstance();
-        String content = httpUtil.getContentByUrl("http://localhost:9999/shares/today");
+        String content = httpUtil.getContentByUrl(url);
         sb.append(content);
 
         return sb.toString();

@@ -8,6 +8,7 @@ import com.prince.myproj.shares.services.ShareAnalysisService;
 import com.prince.myproj.shares.services.ShareCodeGetService;
 import com.prince.myproj.shares.services.SharesHistoryDataService;
 import com.prince.myproj.shares.services.SharesMailService;
+import com.prince.myproj.util.DateUtil;
 import com.prince.myproj.util.MailService;
 import com.prince.myproj.util.bean.Mail;
 import org.apache.log4j.Logger;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -30,6 +32,8 @@ public class SharesController {
     public static final Logger logger = Logger.getLogger(SharesController.class);
     @Autowired
     private ShareCodeGetService shareCodeGetService;
+    @Autowired
+    private DateUtil dateUtil;
 
     @Autowired
     private SharesMailService sharesMailService;
@@ -38,6 +42,7 @@ public class SharesController {
 
     @Autowired
     private SharesHistoryDataService sharesHistoryDataService;
+
     @RequestMapping("/today")
     public String viewTodayShares(HttpServletRequest request,HttpServletResponse response,Model model){
 
@@ -68,6 +73,29 @@ public class SharesController {
         model.addAttribute("cys34HighModels",cys34HighModels);
 
         return "shares/todayShares";
+    }
+
+    @RequestMapping("/preToday")
+    public String viewPreTodayShares(HttpServletRequest request,HttpServletResponse response,Model model){
+
+        String shareDate = dateUtil.getNowDate("yyyy-MM-dd");
+
+        List<SharesModel> cys5LowModels = shareAnalysisService.findCysPreList("cys5low", -10);
+        List<SharesModel> cys13LowModels = shareAnalysisService.findCysPreList("cys13low", -16);
+        List<SharesModel> cys34LowModels = shareAnalysisService.findCysPreList("cys34low", -20);
+        List<SharesModel> cys5HighModels = shareAnalysisService.findCysPreList("cys5high", 10);
+        List<SharesModel> cys13HighModels = shareAnalysisService.findCysPreList("cys13high", 16);
+        List<SharesModel> cys34HighModels = shareAnalysisService.findCysPreList("cys34high",20);
+
+        model.addAttribute("shareDate",shareDate);
+        model.addAttribute("cys5LowModels",cys5LowModels);
+        model.addAttribute("cys13LowModels",cys13LowModels);
+        model.addAttribute("cys34LowModels",cys34LowModels);
+        model.addAttribute("cys5HighModels",cys5HighModels);
+        model.addAttribute("cys13HighModels",cys13HighModels);
+        model.addAttribute("cys34HighModels",cys34HighModels);
+
+        return "shares/preTodayShares";
     }
 
     @RequestMapping("/history")
@@ -113,7 +141,7 @@ public class SharesController {
         if(dateStart!=null&&dateStart!=null){
             sharesHistoryDataService.updateTodayHistory(start, end,dateStart,dateEnd);
         }else{
-            sharesHistoryDataService.updateTodayHistory(start, end);
+//            sharesHistoryDataService.updateTodayHistory(start, end);
         }
         return "history today to db success";
         //保存今天的数据倒库中
@@ -246,6 +274,8 @@ public class SharesController {
     @RequestMapping("/cacuAllPre")
     @ResponseBody
     public String cacuAllPre(HttpServletRequest request,HttpServletResponse response,Model model){
+        long timeStart = new Date().getTime();
+
         //在不到三点时获取股票数据并进行 选股操作 发出邮件
         ResultModel resultModel = new ResultModel();
 
@@ -253,9 +283,11 @@ public class SharesController {
 //        sharesHistoryDataService.cacularMean();
         sharesHistoryDataService.cacularCycLastDayPre();
         sharesMailService.sendMailPre();
+        long timeEnd = new Date().getTime();
 
         resultModel.getBstatus().setCode(0);
-        resultModel.getBstatus().setDesc("预测完成");
+        resultModel.getBstatus().setDesc("预测完成 用时："+(timeEnd-timeStart)/1000);
+
         return JSON.toJSONString(resultModel);
     }
 

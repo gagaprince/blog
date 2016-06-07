@@ -11,6 +11,6 @@ import java.util.Map;
 public interface SharesTempDao {
     public void save(SharesModel model);
     public List<SharesModel> selectByMap(Map<String, Object> keyMap);
-
+    public List<SharesModel> selectWithHighLow(Map<String, Object> keyMap);
     public void update(SharesModel model);
 }

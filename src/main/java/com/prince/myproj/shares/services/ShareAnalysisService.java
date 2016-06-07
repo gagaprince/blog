@@ -1,6 +1,7 @@
 package com.prince.myproj.shares.services;
 
 import com.prince.myproj.shares.dao.SharesHistoryDao;
+import com.prince.myproj.shares.dao.SharesTempDao;
 import com.prince.myproj.shares.models.SharesModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,9 @@ public class ShareAnalysisService {
 
     @Autowired
     private SharesHistoryDao sharesHistoryDao;
+
+    @Autowired
+    private SharesTempDao sharesTempDao;
 
     //找出今天比均线低的代码
     public void findListLowMean(){
@@ -52,6 +56,13 @@ public class ShareAnalysisService {
         paramMap.put(key, val);
         paramMap.put("date", date);
         return sharesHistoryDao.selectWithHighLow(paramMap);
+    }
+
+    //找出cys超跌的股票
+    public List<SharesModel> findCysPreList(String key,float val){
+        Map<String,Object> paramMap = new HashMap<String, Object>();
+        paramMap.put(key, val);
+        return sharesTempDao.selectWithHighLow(paramMap);
     }
 
 

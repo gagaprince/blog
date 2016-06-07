@@ -7,6 +7,7 @@ $(document).ready(function(){
     var modifyCacularCyc = '/shares/modifyCyc';
     var sendMailUrl = '/shares/sendMail';
     var kingkeyUrl = '/shares/cacuAll';//一键完成以上操作
+    var cacuAllPre = '/shares/cacuAllPre';//收盘前预测
 
     var Shares = {
         init:function(){
@@ -64,6 +65,14 @@ $(document).ready(function(){
             $("#kingkey").on("click",function(){
                 $("#resultFrame").html("");
                 Util.api(kingkeyUrl,{
+                },function(res){
+                    $("#resultFrame").html(res.bstatus.desc);
+                });
+            });
+
+            $("#cacularPre").on("click",function(){
+                $("#resultFrame").html("");
+                Util.api(cacuAllPre,{
                 },function(res){
                     $("#resultFrame").html(res.bstatus.desc);
                 });
