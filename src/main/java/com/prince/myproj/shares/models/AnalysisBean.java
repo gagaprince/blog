@@ -67,5 +67,5 @@ public class AnalysisBean {
     public void setHighestDate(String highestDate) {
         this.highestDate = highestDate;
     }
-    
+
 }

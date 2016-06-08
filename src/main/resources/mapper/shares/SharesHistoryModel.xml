@@ -109,6 +109,9 @@
             <if test="code != null">
                 and s.code_all = #{code}
             </if>
+            <if test="volume != null">
+                and s.volume != 0
+            </if>
         </where>
         order by s.share_date desc
         <if test="day != null">

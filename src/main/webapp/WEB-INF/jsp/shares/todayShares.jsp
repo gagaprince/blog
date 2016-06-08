@@ -111,7 +111,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     <tbody>
                         <c:forEach var="model" items="${highModels}" varStatus="status">
                             <tr>
-                                <td>${model.code}</td>
+                                <td><a target="_blank" href="http://gagalulu.wang/shares/analysisByCode?codes=${model.code}&day=60">${model.code}</a></td>
                                 <td>${model.open}</td>
                                 <td>${model.close}</td>
                                 <td>${model.high}</td>
@@ -144,7 +144,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     <tbody>
                         <c:forEach var="model" items="${lowModels}" varStatus="status">
                             <tr>
-                                <td>${model.code}</td>
+                                <td><a target="_blank" href="http://gagalulu.wang/shares/analysisByCode?codes=${model.code}&day=60">${model.code}</a></td>
                                 <td>${model.open}</td>
                                 <td>${model.close}</td>
                                 <td>${model.high}</td>
@@ -183,7 +183,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                    <tbody>
                    <c:forEach var="model" items="${cys5LowModels}" varStatus="status">
                        <tr>
-                           <td>${model.code}</td>
+                           <td><a target="_blank" href="http://gagalulu.wang/shares/analysisByCode?codes=${model.code}&day=60">${model.code}</a></td>
                            <td>${model.open}</td>
                            <td>${model.close}</td>
                            <td>${model.high}</td>
@@ -228,7 +228,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                    <tbody>
                    <c:forEach var="model" items="${cys13LowModels}" varStatus="status">
                        <tr>
-                           <td>${model.code}</td>
+                           <td><a target="_blank" href="http://gagalulu.wang/shares/analysisByCode?codes=${model.code}&day=60">${model.code}</a></td>
                            <td>${model.open}</td>
                            <td>${model.close}</td>
                            <td>${model.high}</td>
@@ -273,7 +273,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                    <tbody>
                    <c:forEach var="model" items="${cys34LowModels}" varStatus="status">
                        <tr>
-                           <td>${model.code}</td>
+                           <td><a target="_blank" href="http://gagalulu.wang/shares/analysisByCode?codes=${model.code}&day=60">${model.code}</a></td>
                            <td>${model.open}</td>
                            <td>${model.close}</td>
                            <td>${model.high}</td>
@@ -318,7 +318,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                    <tbody>
                    <c:forEach var="model" items="${cys5HighModels}" varStatus="status">
                        <tr>
-                           <td>${model.code}</td>
+                           <td><a target="_blank" href="http://gagalulu.wang/shares/analysisByCode?codes=${model.code}&day=60">${model.code}</a></td>
                            <td>${model.open}</td>
                            <td>${model.close}</td>
                            <td>${model.high}</td>
@@ -363,7 +363,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                    <tbody>
                    <c:forEach var="model" items="${cys13HighModels}" varStatus="status">
                        <tr>
-                           <td>${model.code}</td>
+                           <td><a target="_blank" href="http://gagalulu.wang/shares/analysisByCode?codes=${model.code}&day=60">${model.code}</a></td>
                            <td>${model.open}</td>
                            <td>${model.close}</td>
                            <td>${model.high}</td>
@@ -408,7 +408,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                    <tbody>
                    <c:forEach var="model" items="${cys34HighModels}" varStatus="status">
                        <tr>
-                           <td>${model.code}</td>
+                           <td><a target="_blank" href="http://gagalulu.wang/shares/analysisByCode?codes=${model.code}&day=60">${model.code}</a></td>
                            <td>${model.open}</td>
                            <td>${model.close}</td>
                            <td>${model.high}</td>

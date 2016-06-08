@@ -129,7 +129,7 @@ public class SharesController {
         String[] codes = codestr.split(",");
 
 
-        Map<String,List<SharesModel>> cysModelListMap = shareAnalysisService.giveMeCysModelList(codes,day);
+        Map<String,List<SharesModel>> cysModelListMap = shareAnalysisService.giveMeCysModelList(codes, day);
 
         Map<String,AnalysisBean> analysisBeanMap = shareAnalysisService.findLowestCysAndT(codes, cysModelListMap);
 
@@ -329,6 +329,25 @@ public class SharesController {
         resultModel.getBstatus().setCode(0);
         resultModel.getBstatus().setDesc("预测完成 用时："+(timeEnd-timeStart)/1000);
 
+        return JSON.toJSONString(resultModel);
+    }
+    @RequestMapping("/analysisVolCyc")
+    @ResponseBody
+    public String analysisVolCyc(HttpServletRequest request,HttpServletResponse response,Model model){
+        shareAnalysisService.analysisVolumeCyc();
+        ResultModel resultModel = new ResultModel();
+        resultModel.getBstatus().setCode(0);
+        resultModel.getBstatus().setDesc("统计完成 请查看邮件");
+        return JSON.toJSONString(resultModel);
+    }
+
+    @RequestMapping("/analysisVolCys")
+    @ResponseBody
+    public String analysisVolCys(HttpServletRequest request,HttpServletResponse response,Model model){
+        shareAnalysisService.analysisVolumeCys();
+        ResultModel resultModel = new ResultModel();
+        resultModel.getBstatus().setCode(0);
+        resultModel.getBstatus().setDesc("统计完成 请查看邮件");
         return JSON.toJSONString(resultModel);
     }
 

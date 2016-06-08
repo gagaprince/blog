@@ -103,7 +103,7 @@ public class SharesHistoryDataService {
         return sharesModels;
     }
     //获取要操作的股票代码
-    private List<SharesSingleModel> getSharesModels(long start,long end){
+    public List<SharesSingleModel> getSharesModels(long start,long end){
         HashMap<String,Object> paramMap = new HashMap<String, Object>();
 
         paramMap.put("fromIndex", start);
