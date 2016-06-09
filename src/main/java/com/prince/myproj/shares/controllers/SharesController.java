@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.prince.myproj.blog.dao.DailyDao;
 import com.prince.myproj.blog.models.ResultModel;
 import com.prince.myproj.shares.models.AnalysisBean;
+import com.prince.myproj.shares.models.AnalysisBuyTimeBean;
 import com.prince.myproj.shares.models.SharesModel;
 import com.prince.myproj.shares.services.ShareAnalysisService;
 import com.prince.myproj.shares.services.ShareCodeGetService;
@@ -59,9 +60,9 @@ public class SharesController {
         List<SharesModel> cys5LowModels = shareAnalysisService.findCysList("cys5low", -10, shareDate);
         List<SharesModel> cys13LowModels = shareAnalysisService.findCysList("cys13low", -16, shareDate);
         List<SharesModel> cys34LowModels = shareAnalysisService.findCysList("cys34low",-20,shareDate);
-        List<SharesModel> cys5HighModels = shareAnalysisService.findCysList("cys5high",10,shareDate);
-        List<SharesModel> cys13HighModels = shareAnalysisService.findCysList("cys13high",16,shareDate);
-        List<SharesModel> cys34HighModels = shareAnalysisService.findCysList("cys34high",20,shareDate);
+        List<SharesModel> cys5HighModels = shareAnalysisService.findCysList("cys5high", 10, shareDate);
+        List<SharesModel> cys13HighModels = shareAnalysisService.findCysList("cys13high", 16, shareDate);
+        List<SharesModel> cys34HighModels = shareAnalysisService.findCysList("cys34high", 20, shareDate);
 
         model.addAttribute("zhiModels",zhiModels);
         model.addAttribute("highModels",highModels);
@@ -109,7 +110,7 @@ public class SharesController {
 
         List<SharesModel> cys13LowModels = shareAnalysisService.findCysList("cys13low", -16, shareDate);
 
-        Map<String,List<SharesModel>> lowCysMap = shareAnalysisService.findLowCysSomeDayData(cys13LowModels,10);
+        Map<String,List<SharesModel>> lowCysMap = shareAnalysisService.findLowCysSomeDayData(cys13LowModels, 10);
 
         model.addAttribute("shareDate",shareDate);
         model.addAttribute("cys13LowModels",cys13LowModels);
@@ -133,7 +134,7 @@ public class SharesController {
 
         Map<String,AnalysisBean> analysisBeanMap = shareAnalysisService.findLowestCysAndT(codes, cysModelListMap);
 
-        model.addAttribute("cysModelListMap",cysModelListMap);
+        model.addAttribute("cysModelListMap", cysModelListMap);
         model.addAttribute("analysisBeanMap",analysisBeanMap);
 
         return "shares/analysisByCode";
@@ -254,8 +255,8 @@ public class SharesController {
     public String sendMail(HttpServletRequest request,HttpServletResponse response,Model model){
         ResultModel resultModel = new ResultModel();
 
-        sharesMailService.sendMail();
-
+//        sharesMailService.sendMail();
+        sharesMailService.sendMailPre();
         resultModel.getBstatus().setCode(0);
         resultModel.getBstatus().setDesc("邮件发送完成");
         return JSON.toJSONString(resultModel);
@@ -331,24 +332,31 @@ public class SharesController {
 
         return JSON.toJSONString(resultModel);
     }
-    @RequestMapping("/analysisVolCyc")
-    @ResponseBody
-    public String analysisVolCyc(HttpServletRequest request,HttpServletResponse response,Model model){
-        shareAnalysisService.analysisVolumeCyc();
-        ResultModel resultModel = new ResultModel();
-        resultModel.getBstatus().setCode(0);
-        resultModel.getBstatus().setDesc("统计完成 请查看邮件");
-        return JSON.toJSONString(resultModel);
-    }
+    @RequestMapping("/analysisBuyTime")
+    public String analysisBuyTime(HttpServletRequest request,HttpServletResponse response,Model model){
 
-    @RequestMapping("/analysisVolCys")
-    @ResponseBody
-    public String analysisVolCys(HttpServletRequest request,HttpServletResponse response,Model model){
-        shareAnalysisService.analysisVolumeCys();
-        ResultModel resultModel = new ResultModel();
-        resultModel.getBstatus().setCode(0);
-        resultModel.getBstatus().setDesc("统计完成 请查看邮件");
-        return JSON.toJSONString(resultModel);
+        String dayStr = request.getParameter("day");
+        String waitDayStr = request.getParameter("waitday");
+        String incStr = request.getParameter("inc");
+        int day = 60;
+        int waitDay = 100;
+        float inc = 0.1f;
+        if(dayStr!=null){
+            day = Integer.parseInt(dayStr);
+        }
+        if(waitDayStr!=null){
+            waitDay = Integer.parseInt(waitDayStr);
+        }
+        if(incStr!=null){
+            inc = Float.parseFloat(incStr);
+        }
+
+        List<AnalysisBuyTimeBean> analysisBuyTimeBeanList = shareAnalysisService.analysisBuyTime(day,waitDay,inc);
+
+        model.addAttribute("buyTimeList",analysisBuyTimeBeanList);
+        model.addAttribute("day",day);
+
+        return "shares/buyTime";
     }
 
 }

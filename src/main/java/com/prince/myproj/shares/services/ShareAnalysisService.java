@@ -2,10 +2,7 @@ package com.prince.myproj.shares.services;
 
 import com.prince.myproj.shares.dao.SharesHistoryDao;
 import com.prince.myproj.shares.dao.SharesTempDao;
-import com.prince.myproj.shares.models.AnalysisVolumeCycBean;
-import com.prince.myproj.shares.models.SharesModel;
-import com.prince.myproj.shares.models.AnalysisBean;
-import com.prince.myproj.shares.models.SharesSingleModel;
+import com.prince.myproj.shares.models.*;
 import com.prince.myproj.util.DateUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -368,11 +365,134 @@ public class ShareAnalysisService {
     }
 
     public List<AnalysisVolumeCycBean> analysisVolumeCysByCode(String code){
-        List<SharesModel> codeModels = getSharesListByCodeDay(code,60);
+        List<SharesModel> codeModels = getSharesListByCodeDay(code, 60);
         List<AnalysisVolumeCycBean> analysisVolumeCycBeans = new ArrayList<AnalysisVolumeCycBean>();
         int size = codeModels.size();
         return analysisVolumeCycBeans;
 
+    }
+
+
+    /**
+     * 分析买入策略
+     * 分析60日内股票
+     * 选择cys最低点的后一日开盘买入
+     * 记录当日买入的cys标准 与最近一个交易日做比较 计算营收
+     */
+    public List<AnalysisBuyTimeBean> analysisBuyTime(int day,int maxWaitDay,float inc){
+        List<SharesSingleModel> codeList = sharesHistoryDataService.getSharesModelsWithOutSC(0, 3000);
+        List<AnalysisBuyTimeBean> analysisBuyTimeBeanList = new ArrayList<AnalysisBuyTimeBean>();
+        int size = codeList.size();
+        for(int i=0;i<size;i++){
+            SharesSingleModel sharesSingleModel = codeList.get(i);
+            String code = sharesSingleModel.getCodeAll();
+            AnalysisBuyTimeBean analysisBuyTimeBean = analysisBuyTimeOne(code ,day,maxWaitDay,inc);
+            if(analysisBuyTimeBean!=null) {
+                analysisBuyTimeBeanList.add(analysisBuyTimeBean);
+            }
+        }
+
+        int ysize = analysisBuyTimeBeanList.size();
+        logger.info("样本总数："+ysize);
+        int successNum = 0;
+        int fallNum = 0;
+        int increaseNum = 0;
+        float waitTime =0;
+        for(int i=0;i<ysize;i++){
+            AnalysisBuyTimeBean analysisBuyTimeBean = analysisBuyTimeBeanList.get(i);
+            if(analysisBuyTimeBean.isSuccess()){
+                successNum++;
+                waitTime += analysisBuyTimeBean.getWaitDay();
+            }else{
+                fallNum++;
+            }
+            if(analysisBuyTimeBean.getIncreasePer()>0){
+                increaseNum ++;
+            }
+        }
+        waitTime = waitTime/increaseNum;
+
+        logger.info("考察范围："+day+"---目标涨幅："+inc+"---容忍时间："+maxWaitDay);
+        logger.info("策略成功的股:"+successNum+"---策略失败的股数："+fallNum+"---平均等待时间："+waitTime);
+        logger.info("策略收涨的股:"+increaseNum);
+        return analysisBuyTimeBeanList;
+    }
+
+    public AnalysisBuyTimeBean analysisBuyTimeOne(String code,int day,int maxWaitDay,float inc){
+        if(code.equals("sh000001") || code.equals("sz399001") || code.equals("sz399006")){
+            return null;
+        }
+        List<SharesModel> codeModels = getSharesListByCodeDay(code, day);
+        Collections.reverse(codeModels);
+        int size = codeModels.size();
+        SharesModel buyModel = null;
+        SharesModel minModel = null;
+        SharesModel todayModel = null;
+        SharesModel sellModel = null;
+
+        if(size>0){
+            todayModel = codeModels.get(size-1);
+        }else {
+            return null;
+        }
+        int minIndex = 0;
+        for(int i=0;i<size;i++){
+            SharesModel current = codeModels.get(i);
+            if(minModel==null){
+                minModel = current;
+                continue;
+            }
+            if(minModel.getCys13()>current.getCys13()){
+                minModel = current;
+                minIndex = i;
+            }
+        }
+
+        if(minIndex<size-1){
+            AnalysisBuyTimeBean analysisBuyTimeBean = new AnalysisBuyTimeBean();
+            buyModel = codeModels.get(minIndex+1);
+
+            float buyPrice = buyModel.getOpen();
+            boolean success = false;
+            int sellIndex = 0;
+            for(int i=minIndex+1;i<size && i<minIndex+maxWaitDay+1;i++){
+                sellModel = codeModels.get(i);
+                sellIndex = i;
+                float highPrice = sellModel.getHigh();
+                if(highPrice>(1+inc)*buyPrice){
+                    success = true;
+                    break;
+                }
+            }
+
+
+            float increaseVal = 0;
+            float increasePer = 0;
+            int waitDay = 0;
+
+            analysisBuyTimeBean.setSuccess(success);
+            if(success){
+                increaseVal = sellModel.getHigh()-buyPrice;
+                increasePer = increaseVal/buyPrice;
+            }else{
+                increaseVal = sellModel.getClose()-buyPrice;
+                increasePer = increaseVal/buyPrice;
+            }
+            waitDay = sellIndex-minIndex;
+
+            analysisBuyTimeBean.setSellModel(sellModel);
+            analysisBuyTimeBean.setBuyModel(buyModel);
+            analysisBuyTimeBean.setMinModel(minModel);
+            analysisBuyTimeBean.setTodayModel(todayModel);
+
+            analysisBuyTimeBean.setIncreasePer(increasePer);
+            analysisBuyTimeBean.setIncreaseVal(increaseVal);
+            analysisBuyTimeBean.setWaitDay(waitDay);
+            analysisBuyTimeBean.setCode(code);
+
+            return analysisBuyTimeBean;
+        }
+        return null;
     }
 
 

@@ -112,6 +112,19 @@ public class SharesHistoryDataService {
         List<SharesSingleModel> sharesModels = sharesDao.getShares(paramMap);
         return sharesModels;
     }
+    public List<SharesSingleModel> getSharesModelsWithOutSC(long start,long end){
+        List<SharesSingleModel> sharesModels = getSharesModels(start,end);
+        int size = sharesModels.size();
+        for(int i=0;i<size;i++){
+            String code = sharesModels.get(i).getCodeAll();
+            if (code.startsWith("sz30")){
+                sharesModels.remove(i);
+                i--;
+            }
+        }
+        return sharesModels;
+    }
+
 
 
     private void downloadOneTable(SharesSingleModel model){
@@ -652,7 +665,7 @@ public class SharesHistoryDataService {
         String code = sharesModel.getCode();
         if(!code.equals("sh000001")&&!code.equals("sz399001")&&!code.equals("sz399006")) {
             List<SharesModel> cacuList = getModelsByStartEndDate(code, "1990-01-01", sharesModel.getDate());
-            SharesModel lastDay = cacuList.get(cacuList.size()-1);
+            SharesModel lastDay = cacuList.get(cacuList.size() - 1);
             cacuList.add(sharesModel);
             int index = cacuList.size() - 1;
             //计算5日cyc cys
