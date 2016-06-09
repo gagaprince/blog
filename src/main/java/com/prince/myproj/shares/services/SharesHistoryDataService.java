@@ -120,6 +120,7 @@ public class SharesHistoryDataService {
             if (code.startsWith("sz30")){
                 sharesModels.remove(i);
                 i--;
+                size--;
             }
         }
         return sharesModels;

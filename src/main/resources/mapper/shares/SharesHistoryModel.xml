@@ -109,6 +109,12 @@
             <if test="code != null">
                 and s.code_all = #{code}
             </if>
+            <if test="date !=null">
+                and s.share_date <![CDATA[ <= ]]> #{date}
+            </if>
+            <if test="beginDate !=null">
+                and s.share_date <![CDATA[ >= ]]> #{beginDate}
+            </if>
             <if test="volume != null">
                 and s.volume != 0
             </if>

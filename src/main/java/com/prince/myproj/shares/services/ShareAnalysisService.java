@@ -133,6 +133,27 @@ public class ShareAnalysisService {
         return codeModels;
     }
 
+    private List<SharesModel> getSharesListByCodeDay(String code,int day,String date){
+        Map<String,Object> paramMap = new HashMap<String, Object>();
+        paramMap.put("code",code);
+        paramMap.put("day", day);
+        paramMap.put("date",date);
+        paramMap.put("volume",1);
+        List<SharesModel> codeModels = sharesHistoryDao.selectModelByCode(paramMap);
+        return codeModels;
+    }
+
+    private List<SharesModel> getSharesListByCodeDay(String code,Integer day,String beginDate ,String date){
+        Map<String,Object> paramMap = new HashMap<String, Object>();
+        paramMap.put("code",code);
+        paramMap.put("day", day);
+        paramMap.put("beginDate",beginDate);
+        paramMap.put("date",date);
+        paramMap.put("volume",1);
+        List<SharesModel> codeModels = sharesHistoryDao.selectModelByCode(paramMap);
+        return codeModels;
+    }
+
     /**
      * 找出每只股票的盈亏率最高和最低的点，还有距离
      * @return
@@ -307,12 +328,12 @@ public class ShareAnalysisService {
 
     public List<AnalysisVolumeCycBean> analysisVolumeCycByCode(String code){
         //拿出最近60个交易日的数据
-        List<SharesModel> codeModels = getSharesListByCodeDay(code,60);
+        List<SharesModel> codeModels = getSharesListByCodeDay(code, 60);
         List<AnalysisVolumeCycBean> analysisVolumeCycBeans = new ArrayList<AnalysisVolumeCycBean>();
         int size = codeModels.size();
         for(int i=0;i+3<size;i++){
             SharesModel yestoday = codeModels.get(i);
-            SharesModel today = codeModels.get(i+1);
+            SharesModel today = codeModels.get(i + 1);
             SharesModel tomorow = codeModels.get(i+2);
             SharesModel afterTom = codeModels.get(i+3);
 
@@ -381,11 +402,19 @@ public class ShareAnalysisService {
      */
     public List<AnalysisBuyTimeBean> analysisBuyTime(int day,int maxWaitDay,float inc){
         List<SharesSingleModel> codeList = sharesHistoryDataService.getSharesModelsWithOutSC(0, 3000);
+        int size = codeList.size();
+        List<String> codes = new ArrayList<String>();
+        for(int i=0;i<size;i++){
+            codes.add(codeList.get(i).getCodeAll());
+        }
+        return analysisBuyTimeByCodeList(codes,day,maxWaitDay,inc);
+    }
+
+    public List<AnalysisBuyTimeBean> analysisBuyTimeByCodeList(List<String> codeList,int day,int maxWaitDay,float inc){
         List<AnalysisBuyTimeBean> analysisBuyTimeBeanList = new ArrayList<AnalysisBuyTimeBean>();
         int size = codeList.size();
         for(int i=0;i<size;i++){
-            SharesSingleModel sharesSingleModel = codeList.get(i);
-            String code = sharesSingleModel.getCodeAll();
+            String code = codeList.get(i);
             AnalysisBuyTimeBean analysisBuyTimeBean = analysisBuyTimeOne(code ,day,maxWaitDay,inc);
             if(analysisBuyTimeBean!=null) {
                 analysisBuyTimeBeanList.add(analysisBuyTimeBean);
@@ -424,6 +453,10 @@ public class ShareAnalysisService {
         }
         List<SharesModel> codeModels = getSharesListByCodeDay(code, day);
         Collections.reverse(codeModels);
+        return analysisBuyTimeOne(codeModels,code,maxWaitDay,inc,true);
+    }
+
+    private AnalysisBuyTimeBean analysisBuyTimeOne(List<SharesModel> codeModels,String code,int maxWaitDay,float inc,boolean isfindmin){
         int size = codeModels.size();
         SharesModel buyModel = null;
         SharesModel minModel = null;
@@ -436,17 +469,22 @@ public class ShareAnalysisService {
             return null;
         }
         int minIndex = 0;
-        for(int i=0;i<size;i++){
-            SharesModel current = codeModels.get(i);
-            if(minModel==null){
-                minModel = current;
-                continue;
+        if(isfindmin){
+            for(int i=0;i<size;i++){
+                SharesModel current = codeModels.get(i);
+                if(minModel==null){
+                    minModel = current;
+                    continue;
+                }
+                if(minModel.getCys13()>current.getCys13()){
+                    minModel = current;
+                    minIndex = i;
+                }
             }
-            if(minModel.getCys13()>current.getCys13()){
-                minModel = current;
-                minIndex = i;
-            }
+        }else {
+            minModel = codeModels.get(0);
         }
+
 
         if(minIndex<size-1){
             AnalysisBuyTimeBean analysisBuyTimeBean = new AnalysisBuyTimeBean();
@@ -495,5 +533,96 @@ public class ShareAnalysisService {
         return null;
     }
 
+    /**
+     * 查看预测的实际效果
+     * @param models
+     * @param maxWaitDay
+     * @param inc
+     * @return
+     */
+    public List<AnalysisBuyTimeBean> testRealInc(List<SharesModel> models,int maxWaitDay,float inc){
+        int size = models.size();
+        List<AnalysisBuyTimeBean> analysisBuyTimeBeanList = new ArrayList<AnalysisBuyTimeBean>();
+        for(int i=0;i<size;i++){
+            AnalysisBuyTimeBean analysisBuyTimeBean = testRealIncOne(models.get(i),maxWaitDay,inc);
+            if(analysisBuyTimeBean!=null){
+                analysisBuyTimeBeanList.add(analysisBuyTimeBean);
+            }
+        }
+
+        int ysize = analysisBuyTimeBeanList.size();
+        logger.info("样本总数："+ysize);
+        int successNum = 0;
+        int fallNum = 0;
+        int increaseNum = 0;
+        float waitTime =0;
+        for(int i=0;i<ysize;i++){
+            AnalysisBuyTimeBean analysisBuyTimeBean = analysisBuyTimeBeanList.get(i);
+            if(analysisBuyTimeBean.isSuccess()){
+                successNum++;
+                waitTime += analysisBuyTimeBean.getWaitDay();
+            }else{
+                fallNum++;
+            }
+            if(analysisBuyTimeBean.getIncreasePer()>0){
+                increaseNum ++;
+            }
+        }
+        waitTime = waitTime/increaseNum;
+
+        logger.info("目标涨幅："+inc+"---容忍时间："+maxWaitDay);
+        logger.info("预测成功的股:"+successNum+"---预测失败的股数："+fallNum+"---平均等待时间："+waitTime);
+        logger.info("预测收涨的股:"+increaseNum);
+
+
+        return analysisBuyTimeBeanList;
+    }
+
+    private AnalysisBuyTimeBean testRealIncOne(SharesModel model,int maxWaitDay,float inc){
+        String code = model.getCode();
+        String beginDate = model.getDate();
+        List<SharesModel> codeModels = getSharesListByCodeDay(code, null, beginDate, null);
+        Collections.reverse(codeModels);
+        return analysisBuyTimeOne(codeModels,code,maxWaitDay,inc,false);
+
+    }
+
+    public List<SharesModel> cacularBuyShares(String date,int day){
+        List<SharesSingleModel> allCodes = sharesHistoryDataService.getSharesModelsWithOutSC(0, 3000);
+        List<SharesModel> cacularResult = new ArrayList<SharesModel>();
+        int size = allCodes.size();
+        for(int i=0;i<size;i++){
+            String code = allCodes.get(i).getCodeAll();
+            SharesModel sharesModel = cacularBuySharesOne(code,date,day);
+            if(sharesModel!=null){
+                cacularResult.add(sharesModel);
+            }
+        }
+        return cacularResult;
+    }
+
+    public SharesModel cacularBuySharesOne(String code,String date ,int day){
+        if(code.equals("sh000001") || code.equals("sz399001") || code.equals("sz399006")){
+            return null;
+        }
+        List<SharesModel> codeModels = getSharesListByCodeDay(code, day, date);
+        Collections.reverse(codeModels);
+
+        int size = codeModels.size();
+        if(size>0){
+            SharesModel lastModel = codeModels.get(size-1);
+            if (!lastModel.getDate().equals(date)){
+                return null;
+            }
+            for(int i=0;i<size;i++){
+                SharesModel current = codeModels.get(i);
+                if(lastModel.getCys13()>current.getCys13()){
+                    return null;
+                }
+            }
+            return lastModel;
+        }
+        return null;
+    }
 
 }

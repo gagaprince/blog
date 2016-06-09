@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -351,12 +352,56 @@ public class SharesController {
             inc = Float.parseFloat(incStr);
         }
 
-        List<AnalysisBuyTimeBean> analysisBuyTimeBeanList = shareAnalysisService.analysisBuyTime(day,waitDay,inc);
+        List<AnalysisBuyTimeBean> analysisBuyTimeBeanList = shareAnalysisService.analysisBuyTime(day, waitDay, inc);
 
-        model.addAttribute("buyTimeList",analysisBuyTimeBeanList);
-        model.addAttribute("day",day);
+        model.addAttribute("buyTimeList", analysisBuyTimeBeanList);
+        model.addAttribute("day", day);
 
         return "shares/buyTime";
+    }
+    @RequestMapping("/analysisBuyShares")
+    public String analysisBuyShares(HttpServletRequest request,HttpServletResponse response,Model model){
+        String date = request.getParameter("date");
+        String dayStr = request.getParameter("day");
+        String waitDayStr = request.getParameter("waitday");
+        String incStr = request.getParameter("inc");
+        int day = 60;
+        int waitDay = 100;
+        float inc = 0.1f;
+        if(dayStr!=null){
+            day = Integer.parseInt(dayStr);
+        }
+        if(waitDayStr!=null){
+            waitDay = Integer.parseInt(waitDayStr);
+        }
+        if(incStr!=null){
+            inc = Float.parseFloat(incStr);
+        }
+        if(date == null){
+            date = dateUtil.getNowDate("yyyy-MM-dd");
+        }
+
+        List<SharesModel> cacularShares = shareAnalysisService.cacularBuyShares(date,day);
+
+        model.addAttribute("cacularShares",cacularShares);
+        model.addAttribute("date",date);
+
+        List<AnalysisBuyTimeBean> analysisBuyTimeBeanList = shareAnalysisService.testRealInc(cacularShares, waitDay, inc);
+
+        model.addAttribute("buyTimeList", analysisBuyTimeBeanList);
+        model.addAttribute("day", day);
+
+        return "shares/cacularBuyShares";
+    }
+
+    @RequestMapping("/cacularBuyShares")
+    @ResponseBody
+    public String cacularBuyShares(HttpServletRequest request,HttpServletResponse response,Model model){
+
+        ResultModel resultModel = new ResultModel();
+        resultModel.getBstatus().setCode(0);
+        resultModel.getBstatus().setDesc("结果已经发送邮件");
+        return JSON.toJSONString(resultModel);
     }
 
 }
