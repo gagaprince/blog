@@ -5,6 +5,7 @@ import com.prince.myproj.blog.dao.DailyDao;
 import com.prince.myproj.blog.models.ResultModel;
 import com.prince.myproj.shares.models.AnalysisBean;
 import com.prince.myproj.shares.models.AnalysisBuyTimeBean;
+import com.prince.myproj.shares.models.AnalysisBuyTimeTotal;
 import com.prince.myproj.shares.models.SharesModel;
 import com.prince.myproj.shares.services.ShareAnalysisService;
 import com.prince.myproj.shares.services.ShareCodeGetService;
@@ -365,9 +366,18 @@ public class SharesController {
         String dayStr = request.getParameter("day");
         String waitDayStr = request.getParameter("waitday");
         String incStr = request.getParameter("inc");
+        String lowCys = request.getParameter("cys");
+        String isPre = request.getParameter("isPre");
         int day = 60;
         int waitDay = 100;
         float inc = 0.1f;
+        float cys=-20;
+        if(isPre == null){
+            isPre = "normal";
+        }
+        if(lowCys!=null){
+            cys = Float.parseFloat(lowCys);
+        }
         if(dayStr!=null){
             day = Integer.parseInt(dayStr);
         }
@@ -381,13 +391,21 @@ public class SharesController {
             date = dateUtil.getNowDate("yyyy-MM-dd");
         }
 
-        List<SharesModel> cacularShares = shareAnalysisService.cacularBuyShares(date,day);
+        List<SharesModel> cacularShares = null;
+        if(isPre.equals("normal")){
+            cacularShares = shareAnalysisService.cacularBuyShares(date,day,cys);
+        }else{
+            cacularShares = shareAnalysisService.cacularBuySharesPre(date,day,cys);
+        }
+
 
         model.addAttribute("cacularShares",cacularShares);
         model.addAttribute("date",date);
 
-        List<AnalysisBuyTimeBean> analysisBuyTimeBeanList = shareAnalysisService.testRealInc(cacularShares, waitDay, inc);
+        AnalysisBuyTimeTotal analysisBuyTimeTotal = shareAnalysisService.testRealInc(cacularShares, waitDay, inc);
+        List<AnalysisBuyTimeBean> analysisBuyTimeBeanList = analysisBuyTimeTotal.getAnalysisBuyTimeBeanList();
 
+        model.addAttribute("analysisTotal",analysisBuyTimeTotal);
         model.addAttribute("buyTimeList", analysisBuyTimeBeanList);
         model.addAttribute("day", day);
 
@@ -401,6 +419,40 @@ public class SharesController {
         ResultModel resultModel = new ResultModel();
         resultModel.getBstatus().setCode(0);
         resultModel.getBstatus().setDesc("结果已经发送邮件");
+        return JSON.toJSONString(resultModel);
+    }
+    @RequestMapping("/tjCacularBuySHares")
+    @ResponseBody
+    public String tjCacularBuySHares(HttpServletRequest request,HttpServletResponse response,Model model){
+        ResultModel resultModel = new ResultModel();
+
+        List<AnalysisBuyTimeTotal> analysisBuyTimeTotalList = new ArrayList<AnalysisBuyTimeTotal>();
+        int allNum = 0;
+        int successNum = 0;
+        int fallNum = 0;
+        int incNum = 0;
+
+        for(int i=0;i<30;i++){
+            String date = dateUtil.getAddDate("2016-06-03","yyyy-MM-dd",-24*60*60*1000*i);
+            List<SharesModel> cacularShares = shareAnalysisService.cacularBuyShares(date, 60, -20);
+            AnalysisBuyTimeTotal analysisBuyTimeTotal = shareAnalysisService.testRealInc(cacularShares, 3, 0.04f);
+            analysisBuyTimeTotalList.add(analysisBuyTimeTotal);
+
+            allNum += analysisBuyTimeTotal.getSuccessNum();
+            successNum += analysisBuyTimeTotal.getSuccessNum();
+            allNum += analysisBuyTimeTotal.getFallNum();
+            fallNum += analysisBuyTimeTotal.getFallNum();
+            incNum += analysisBuyTimeTotal.getIncreaseNum();
+
+
+        }
+        logger.info("总样本数:"+allNum);
+        logger.info("总成功数:"+successNum+"---总失败数："+fallNum+"---预测收涨股:"+incNum);
+
+
+
+        resultModel.getBstatus().setCode(0);
+        resultModel.getBstatus().setDesc("统计结束");
         return JSON.toJSONString(resultModel);
     }
 

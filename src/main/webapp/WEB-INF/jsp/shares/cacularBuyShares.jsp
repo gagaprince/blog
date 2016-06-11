@@ -60,6 +60,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
        <div class="main">
             <h2>预测选股</h2>
 
+           <h2>目标涨幅：${analysisTotal.inc} 容忍时间:${analysisTotal.maxWaitDay}</h2>
+           <h2>预测成功的股：${analysisTotal.successNum} 预测失败的股数:${analysisTotal.fallNum} 平均等待时间:${analysisTotal.waitTime} 预测收涨的股:${analysisTotal.increaseNum}</h2>
 
 
                <div class="all">
@@ -81,6 +83,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                            <th>中期成本</th>
                            <th>长期成本</th>
                            <th>日期</th>
+                           <th>是否成功</th>
+                           <th>是否收涨</th>
                        </tr>
                        </thead>
                        <tbody>
@@ -100,6 +104,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                                <td>${analysisBean.cyc13}</td>
                                <td>${analysisBean.cyc34}</td>
                                <td>${analysisBean.date}</td>
+                               <td>${buyTimeList[status.index].success}</td>
+                               <td>${buyTimeList[status.index].increasePer>0}</td>
                            </tr>
                        </c:forEach>
 

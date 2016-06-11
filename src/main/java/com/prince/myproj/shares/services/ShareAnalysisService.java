@@ -540,7 +540,7 @@ public class ShareAnalysisService {
      * @param inc
      * @return
      */
-    public List<AnalysisBuyTimeBean> testRealInc(List<SharesModel> models,int maxWaitDay,float inc){
+    public AnalysisBuyTimeTotal testRealInc(List<SharesModel> models,int maxWaitDay,float inc){
         int size = models.size();
         List<AnalysisBuyTimeBean> analysisBuyTimeBeanList = new ArrayList<AnalysisBuyTimeBean>();
         for(int i=0;i<size;i++){
@@ -568,14 +568,28 @@ public class ShareAnalysisService {
                 increaseNum ++;
             }
         }
-        waitTime = waitTime/increaseNum;
+        if(increaseNum==0){
+            waitTime=0;
+        }else {
+            waitTime = waitTime/increaseNum;
+        }
+
 
         logger.info("目标涨幅："+inc+"---容忍时间："+maxWaitDay);
         logger.info("预测成功的股:"+successNum+"---预测失败的股数："+fallNum+"---平均等待时间："+waitTime);
         logger.info("预测收涨的股:"+increaseNum);
 
+        AnalysisBuyTimeTotal analysisBuyTimeTotal = new AnalysisBuyTimeTotal();
+        analysisBuyTimeTotal.setInc(inc);
+        analysisBuyTimeTotal.setFallNum(fallNum);
+        analysisBuyTimeTotal.setIncreaseNum(increaseNum);
+        analysisBuyTimeTotal.setMaxWaitDay(maxWaitDay);
+        analysisBuyTimeTotal.setSuccessNum(successNum);
+        analysisBuyTimeTotal.setWaitTime(waitTime);
+        analysisBuyTimeTotal.setAnalysisBuyTimeBeanList(analysisBuyTimeBeanList);
 
-        return analysisBuyTimeBeanList;
+
+        return analysisBuyTimeTotal;
     }
 
     private AnalysisBuyTimeBean testRealIncOne(SharesModel model,int maxWaitDay,float inc){
@@ -587,13 +601,13 @@ public class ShareAnalysisService {
 
     }
 
-    public List<SharesModel> cacularBuyShares(String date,int day){
+    public List<SharesModel> cacularBuyShares(String date,int day,float cys){
         List<SharesSingleModel> allCodes = sharesHistoryDataService.getSharesModelsWithOutSC(0, 3000);
         List<SharesModel> cacularResult = new ArrayList<SharesModel>();
         int size = allCodes.size();
         for(int i=0;i<size;i++){
             String code = allCodes.get(i).getCodeAll();
-            SharesModel sharesModel = cacularBuySharesOne(code,date,day);
+            SharesModel sharesModel = cacularBuySharesOne(code,date,day,cys);
             if(sharesModel!=null){
                 cacularResult.add(sharesModel);
             }
@@ -601,7 +615,21 @@ public class ShareAnalysisService {
         return cacularResult;
     }
 
-    public SharesModel cacularBuySharesOne(String code,String date ,int day){
+    public List<SharesModel> cacularBuySharesPre(String date,int day,float cys){
+        List<SharesSingleModel> allCodes = sharesHistoryDataService.getSharesModelsWithOutSC(0, 3000);
+        List<SharesModel> cacularResult = new ArrayList<SharesModel>();
+        int size = allCodes.size();
+        for(int i=0;i<size;i++){
+            String code = allCodes.get(i).getCodeAll();
+            SharesModel sharesModel = cacularBuySharesOnePre(code, date, day, cys);
+            if(sharesModel!=null){
+                cacularResult.add(sharesModel);
+            }
+        }
+        return cacularResult;
+    }
+
+    public SharesModel cacularBuySharesOne(String code,String date ,int day,float cys){
         if(code.equals("sh000001") || code.equals("sz399001") || code.equals("sz399006")){
             return null;
         }
@@ -614,15 +642,76 @@ public class ShareAnalysisService {
             if (!lastModel.getDate().equals(date)){
                 return null;
             }
-            for(int i=0;i<size;i++){
-                SharesModel current = codeModels.get(i);
-                if(lastModel.getCys13()>current.getCys13()){
-                    return null;
+//            for(int i=0;i<size;i++){
+//                SharesModel current = codeModels.get(i);
+//                if(lastModel.getCys13()>current.getCys13()){
+//                    return null;
+//                }
+//            }
+//            if(lastModel.getCys13()<cys){
+//                return lastModel;
+//            }
+            if(size>1){
+                SharesModel secondModel = codeModels.get(size-2);
+                if(secondModel.getCys13()<0&&lastModel.getCys13()>0&& lastModel.getVolume()>secondModel.getVolume()*1.2){
+                    int num = 0;
+                    for(int i=size-2;i>=0&&i>=size-10;i--){
+                        SharesModel tempModel = codeModels.get(i);
+                        if (tempModel.getCys13()<0){
+                            num++;
+                        }
+                    }
+                    if(num>5){
+                        return lastModel;
+                    }
                 }
             }
-            return lastModel;
         }
         return null;
     }
 
+    private SharesModel cacularBuySharesOnePre(String code,String date ,int day,float cys){
+        if(code.equals("sh000001") || code.equals("sz399001") || code.equals("sz399006")){
+            return null;
+        }
+        List<SharesModel> codeModels = getSharesListByCodeDay(code, day, date);
+        Collections.reverse(codeModels);
+
+        SharesModel todayModel=null;
+        Map<String,Object> paramMap = new HashMap<String, Object>();
+        paramMap.put("code",code);
+        List<SharesModel> todayModels = sharesTempDao.selectByMap(paramMap);
+        logger.info("todayModels:"+todayModels.size());
+        if(todayModels.size()>0){
+            todayModel = todayModels.get(0);
+            codeModels.add(todayModel);
+        }else {
+            return null;
+        }
+
+        int size = codeModels.size();
+        if(size>0){
+            SharesModel lastModel = codeModels.get(size - 1);
+            if (!lastModel.getDate().equals(date)){
+                return null;
+            }
+            if(size>1){
+                SharesModel secondModel = codeModels.get(size-2);
+                if(secondModel.getCys13()<0&&lastModel.getCys13()>0&& lastModel.getVolume()>secondModel.getVolume()*1.2){
+                    int num = 0;
+                    for(int i=size-2;i>=0&&i>=size-10;i--){
+                        SharesModel tempModel = codeModels.get(i);
+                        if (tempModel.getCys13()<0){
+                            num++;
+                        }
+                    }
+                    if(num>5){
+                        return lastModel;
+                    }
+                }
+            }
+        }
+        return null;
+
+    }
 }

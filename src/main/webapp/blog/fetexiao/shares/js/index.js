@@ -9,6 +9,7 @@ $(document).ready(function(){
     var kingkeyUrl = '/shares/cacuAll';//一键完成以上操作
     var cacuAllPre = '/shares/cacuAllPre';//收盘前预测
     var analysisVolCyc = '/shares/analysisVolCyc';//统计
+    var tjCacularBuyShares = '/shares/tjCacularBuySHares';
 
     var Shares = {
         init:function(){
@@ -82,6 +83,14 @@ $(document).ready(function(){
             $("#tjvolcyc").on("click",function(){
                 $("#resultFrame").html("");
                 Util.api(analysisVolCyc,{
+                },function(res){
+                    $("#resultFrame").html(res.bstatus.desc);
+                });
+            });
+
+            $("#tjCacularBuyShares").on("click",function(){
+                $("#resultFrame").html("");
+                Util.api(tjCacularBuyShares,{
                 },function(res){
                     $("#resultFrame").html(res.bstatus.desc);
                 });

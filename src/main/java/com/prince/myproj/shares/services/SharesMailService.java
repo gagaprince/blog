@@ -55,6 +55,13 @@ public class SharesMailService {
         sendMailWithObj(mail);
     }
 
+    public void sendMailPreBuyShares(){
+        Mail mail = new Mail();
+        mail.setSubject(getSubject());
+        mail.setContent(getMailContent("http://localhost:9999/shares/analysisBuyShares?waitday=3&inc=0.02&isPre=pre"));
+        sendMailWithObj(mail);
+    }
+
     public void sendMailWithObj(Mail mail){
         mail.setFrom(config.getFromUser());
         mail.setTo(config.getToUser());
