@@ -681,7 +681,6 @@ public class ShareAnalysisService {
         Map<String,Object> paramMap = new HashMap<String, Object>();
         paramMap.put("code",code);
         List<SharesModel> todayModels = sharesTempDao.selectByMap(paramMap);
-        logger.info("todayModels:"+todayModels.size());
         if(todayModels.size()>0){
             todayModel = todayModels.get(0);
             codeModels.add(todayModel);
@@ -692,9 +691,6 @@ public class ShareAnalysisService {
         int size = codeModels.size();
         if(size>0){
             SharesModel lastModel = codeModels.get(size - 1);
-            if (!lastModel.getDate().equals(date)){
-                return null;
-            }
             if(size>1){
                 SharesModel secondModel = codeModels.get(size-2);
                 if(secondModel.getCys13()<0&&lastModel.getCys13()>0&& lastModel.getVolume()>secondModel.getVolume()*1.2){
