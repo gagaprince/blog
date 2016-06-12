@@ -12,6 +12,26 @@ public class AnalysisBuyTimeTotal {
     int fallNum;
     int increaseNum;
     float waitTime;
+
+    float shIncPer;
+    float szIncPer;
+
+    public float getShIncPer() {
+        return shIncPer;
+    }
+
+    public float getSzIncPer() {
+        return szIncPer;
+    }
+
+    public void setShIncPer(float shIncPer) {
+        this.shIncPer = shIncPer;
+    }
+
+    public void setSzIncPer(float szIncPer) {
+        this.szIncPer = szIncPer;
+    }
+
     List<AnalysisBuyTimeBean> analysisBuyTimeBeanList;
 
     public float getInc() {

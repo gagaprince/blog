@@ -62,6 +62,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
            <h2>目标涨幅：${analysisTotal.inc} 容忍时间:${analysisTotal.maxWaitDay}</h2>
            <h2>预测成功的股：${analysisTotal.successNum} 预测失败的股数:${analysisTotal.fallNum} 平均等待时间:${analysisTotal.waitTime} 预测收涨的股:${analysisTotal.increaseNum}</h2>
+           <h2>上证增幅：${analysisTotal.shIncPer} 深证增幅:${analysisTotal.szIncPer} </h2>
 
 
                <div class="all">

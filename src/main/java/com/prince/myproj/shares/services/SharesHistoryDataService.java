@@ -402,6 +402,15 @@ public class SharesHistoryDataService {
         return getModelsByStartEndDate(sharesSingleModel.getCodeAll(),startDate,endDate);
     }
 
+    //获取对应code对应date的数据
+    public SharesModel getModelByCodeDate(String code,String date){
+        List<SharesModel> sharesModels = getModelsByStartEndDate(code,date,date);
+        if(sharesModels.size()>0){
+            return sharesModels.get(0);
+        }
+        return null;
+    }
+
     //拿出将要计算的model 非停牌的数据
     private List<SharesModel> getModelsByStartEndDate(String code,String startDate,String endDate){
         Map<String,Object> paramMap = new HashMap<String, Object>();

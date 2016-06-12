@@ -327,6 +327,7 @@ public class SharesController {
 //        sharesHistoryDataService.cacularMean();
         sharesHistoryDataService.cacularCycLastDayPre();
         sharesMailService.sendMailPre();
+        sharesMailService.sendMailPreBuyShares();
         long timeEnd = new Date().getTime();
 
         resultModel.getBstatus().setCode(0);
@@ -447,7 +448,7 @@ public class SharesController {
 
         }
         logger.info("总样本数:"+allNum);
-        logger.info("总成功数:"+successNum+"---总失败数："+fallNum+"---预测收涨股:"+incNum);
+        logger.info("总成功数:" + successNum + "---总失败数：" + fallNum+"---预测收涨股:"+incNum);
 
 
 

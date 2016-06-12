@@ -543,7 +543,16 @@ public class ShareAnalysisService {
     public AnalysisBuyTimeTotal testRealInc(List<SharesModel> models,int maxWaitDay,float inc){
         int size = models.size();
         List<AnalysisBuyTimeBean> analysisBuyTimeBeanList = new ArrayList<AnalysisBuyTimeBean>();
+        float shIncPer=0;
+        float szIncPer=0;
         for(int i=0;i<size;i++){
+            SharesModel sharesModel = models.get(i);
+            if(sharesModel.getCode().equals("sh000001")){
+                shIncPer = sharesModel.getIncreasePer();
+            }
+            if(sharesModel.getCode().equals("sz399001")){
+                szIncPer = sharesModel.getIncreasePer();
+            }
             AnalysisBuyTimeBean analysisBuyTimeBean = testRealIncOne(models.get(i),maxWaitDay,inc);
             if(analysisBuyTimeBean!=null){
                 analysisBuyTimeBeanList.add(analysisBuyTimeBean);
@@ -556,6 +565,7 @@ public class ShareAnalysisService {
         int fallNum = 0;
         int increaseNum = 0;
         float waitTime =0;
+        String date = "";
         for(int i=0;i<ysize;i++){
             AnalysisBuyTimeBean analysisBuyTimeBean = analysisBuyTimeBeanList.get(i);
             if(analysisBuyTimeBean.isSuccess()){
@@ -567,6 +577,7 @@ public class ShareAnalysisService {
             if(analysisBuyTimeBean.getIncreasePer()>0){
                 increaseNum ++;
             }
+            date = analysisBuyTimeBean.getTodayModel().getDate();
         }
         if(increaseNum==0){
             waitTime=0;
@@ -574,13 +585,15 @@ public class ShareAnalysisService {
             waitTime = waitTime/increaseNum;
         }
 
-
+        logger.info("时间：" + date +"---上证："+(shIncPer>0)+"---深圳："+(szIncPer>0));
         logger.info("目标涨幅："+inc+"---容忍时间："+maxWaitDay);
         logger.info("预测成功的股:"+successNum+"---预测失败的股数："+fallNum+"---平均等待时间："+waitTime);
         logger.info("预测收涨的股:"+increaseNum);
 
         AnalysisBuyTimeTotal analysisBuyTimeTotal = new AnalysisBuyTimeTotal();
         analysisBuyTimeTotal.setInc(inc);
+        analysisBuyTimeTotal.setShIncPer(shIncPer);
+        analysisBuyTimeTotal.setSzIncPer(szIncPer);
         analysisBuyTimeTotal.setFallNum(fallNum);
         analysisBuyTimeTotal.setIncreaseNum(increaseNum);
         analysisBuyTimeTotal.setMaxWaitDay(maxWaitDay);
@@ -594,6 +607,9 @@ public class ShareAnalysisService {
 
     private AnalysisBuyTimeBean testRealIncOne(SharesModel model,int maxWaitDay,float inc){
         String code = model.getCode();
+        if(code.equals("sh000001") || code.equals("sz399001") || code.equals("sz399006")){
+            return null;
+        }
         String beginDate = model.getDate();
         List<SharesModel> codeModels = getSharesListByCodeDay(code, null, beginDate, null);
         Collections.reverse(codeModels);
@@ -612,6 +628,8 @@ public class ShareAnalysisService {
                 cacularResult.add(sharesModel);
             }
         }
+        cacularResult.add(0,sharesHistoryDataService.getModelByCodeDate("sz399001",date));
+        cacularResult.add(0,sharesHistoryDataService.getModelByCodeDate("sh000001",date));
         return cacularResult;
     }
 
@@ -629,6 +647,7 @@ public class ShareAnalysisService {
         return cacularResult;
     }
 
+    //选股策略
     public SharesModel cacularBuySharesOne(String code,String date ,int day,float cys){
         if(code.equals("sh000001") || code.equals("sz399001") || code.equals("sz399006")){
             return null;

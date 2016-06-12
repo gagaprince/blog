@@ -40,7 +40,7 @@ public class SharesMailService {
     //发送分析邮件
     public void sendMail(){
         Mail mail = new Mail();
-        mail.setSubject(getSubject());
+        mail.setSubject(getSubject("股票市场分析邮件"));
         mail.setContent(getMailContent());
         sendMailWithObj(mail);
     }
@@ -50,14 +50,14 @@ public class SharesMailService {
      */
     public void sendMailPre(){
         Mail mail = new Mail();
-        mail.setSubject(getSubject());
+        mail.setSubject(getSubject("股票收盘前分析邮件"));
         mail.setContent(getMailContent("http://localhost:9999/shares/preToday"));
         sendMailWithObj(mail);
     }
 
     public void sendMailPreBuyShares(){
         Mail mail = new Mail();
-        mail.setSubject(getSubject());
+        mail.setSubject(getSubject("股票收盘前预测"));
         mail.setContent(getMailContent("http://localhost:9999/shares/analysisBuyShares?waitday=3&inc=0.02&isPre=pre"));
         sendMailWithObj(mail);
     }
@@ -71,9 +71,9 @@ public class SharesMailService {
         MailService.send(mail);
     }
 
-    private String getSubject(){
-        String dateStr = dateUtil.getNowDate();
-        return dateStr+"股票市场分析";
+    private String getSubject(String title){
+        String dateStr = dateUtil.getNowDate("yyyy-MM-dd hh:mm");
+        return title+dateStr;
     }
 
 
