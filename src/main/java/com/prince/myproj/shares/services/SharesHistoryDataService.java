@@ -50,18 +50,25 @@ public class SharesHistoryDataService {
     public void downloadTable(){
         long start = 0;
         long end = 3000;
-        Map<String,Object> paramMap = new HashMap<String, Object>();
-        paramMap.put("code","sh000001");
-        SharesModel lastModel = sharesHistoryDao.selectLastModel(paramMap);
-        String dateStart = "19901219";
-        if(lastModel!=null){
-            dateStart = lastModel.getDate().replaceAll("-","");
-        }
+
+
+        String dateStart = giveMeLastDate().replaceAll("-","");
 
         String dateEnd = dateUtil.getNowDate();
         logger.info("dateStart:"+dateStart);
         logger.info("dateEnd:" + dateEnd);
         updateTodayHistory(start,end,dateStart,dateEnd);
+    }
+
+    public String giveMeLastDate(){
+        Map<String,Object> paramMap = new HashMap<String, Object>();
+        paramMap.put("code","sh000001");
+        SharesModel lastModel = sharesHistoryDao.selectLastModel(paramMap);
+        String dateStart = "19901219";
+        if(lastModel!=null){
+            dateStart = lastModel.getDate();
+        }
+        return dateStart;
     }
 
     public void downloadTable(long start,long end){

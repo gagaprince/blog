@@ -587,8 +587,8 @@ public class ShareAnalysisService {
 
         logger.info("时间：" + date +"---上证："+(shIncPer>0)+"---深圳："+(szIncPer>0));
         logger.info("目标涨幅："+inc+"---容忍时间："+maxWaitDay);
-        logger.info("预测成功的股:"+successNum+"---预测失败的股数："+fallNum+"---平均等待时间："+waitTime);
-        logger.info("预测收涨的股:"+increaseNum);
+        logger.info("预测成功的股:" + successNum + "---预测失败的股数：" + fallNum + "---平均等待时间：" + waitTime);
+        logger.info("预测收涨的股:" + increaseNum);
 
         AnalysisBuyTimeTotal analysisBuyTimeTotal = new AnalysisBuyTimeTotal();
         analysisBuyTimeTotal.setInc(inc);
@@ -628,8 +628,14 @@ public class ShareAnalysisService {
                 cacularResult.add(sharesModel);
             }
         }
-        cacularResult.add(0,sharesHistoryDataService.getModelByCodeDate("sz399001",date));
-        cacularResult.add(0,sharesHistoryDataService.getModelByCodeDate("sh000001",date));
+        SharesModel szCode = sharesHistoryDataService.getModelByCodeDate("sz399001", date);
+        if(szCode!=null){
+            cacularResult.add(0,szCode);
+        }
+        SharesModel shCode = sharesHistoryDataService.getModelByCodeDate("sh000001", date);
+        if(shCode!=null){
+            cacularResult.add(0,shCode);
+        }
         return cacularResult;
     }
 

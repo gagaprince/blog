@@ -392,7 +392,7 @@ public class SharesController {
             inc = Float.parseFloat(incStr);
         }
         if(date == null){
-            date = dateUtil.getNowDate("yyyy-MM-dd");
+            date = sharesHistoryDataService.giveMeLastDate();
         }
 
         List<SharesModel> cacularShares = null;
