@@ -310,6 +310,7 @@ public class SharesController {
         sharesHistoryDataService.cacularMean();
         sharesHistoryDataService.cacularCycLastDay();
         sharesMailService.sendMail();
+        sharesMailService.sendMailBuyShares();
 
         resultModel.getBstatus().setCode(0);
         resultModel.getBstatus().setDesc("上述过程已经完成");

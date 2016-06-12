@@ -55,10 +55,17 @@ public class SharesMailService {
         sendMailWithObj(mail);
     }
 
+    public void sendMailBuyShares(){
+        Mail mail = new Mail();
+        mail.setSubject(getSubject("股票预测"));
+        mail.setContent(getMailContent("http://localhost:9999/shares/analysisBuyShares?waitday=3&inc=0.04"));
+        sendMailWithObj(mail);
+    }
+
     public void sendMailPreBuyShares(){
         Mail mail = new Mail();
         mail.setSubject(getSubject("股票收盘前预测"));
-        mail.setContent(getMailContent("http://localhost:9999/shares/analysisBuyShares?waitday=3&inc=0.02&isPre=pre"));
+        mail.setContent(getMailContent("http://localhost:9999/shares/analysisBuyShares?waitday=3&inc=0.04&isPre=pre"));
         sendMailWithObj(mail);
     }
 
