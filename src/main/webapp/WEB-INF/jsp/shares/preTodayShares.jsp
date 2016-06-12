@@ -65,6 +65,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                    <thead>
                    <tr>
                        <th>股票代码</th>
+                       <th>名称</th>
                        <th>开盘</th>
                        <th>收盘</th>
                        <th>最高</th>
@@ -85,6 +86,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                    <c:forEach var="model" items="${cys5LowModels}" varStatus="status">
                        <tr>
                            <td><a target="_blank" href="http://gagalulu.wang/shares/analysisByCode?codes=${model.code}&day=60">${model.code}</a></td>
+                           <td>${codeMap[model.code]}</td>
                            <td>${model.open}</td>
                            <td>${model.close}</td>
                            <td>${model.high}</td>
@@ -110,6 +112,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                    <thead>
                    <tr>
                        <th>股票代码</th>
+                       <th>名称</th>
                        <th>开盘</th>
                        <th>收盘</th>
                        <th>最高</th>
@@ -130,6 +133,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                    <c:forEach var="model" items="${cys13LowModels}" varStatus="status">
                        <tr>
                            <td><a target="_blank" href="http://gagalulu.wang/shares/analysisByCode?codes=${model.code}&day=60">${model.code}</a></td>
+                           <td>${codeMap[model.code]}</td>
                            <td>${model.open}</td>
                            <td>${model.close}</td>
                            <td>${model.high}</td>
@@ -155,6 +159,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                    <thead>
                    <tr>
                        <th>股票代码</th>
+                       <th>名称</th>
                        <th>开盘</th>
                        <th>收盘</th>
                        <th>最高</th>
@@ -175,6 +180,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                    <c:forEach var="model" items="${cys34LowModels}" varStatus="status">
                        <tr>
                            <td><a target="_blank" href="http://gagalulu.wang/shares/analysisByCode?codes=${model.code}&day=60">${model.code}</a></td>
+                           <td>${codeMap[model.code]}</td>
                            <td>${model.open}</td>
                            <td>${model.close}</td>
                            <td>${model.high}</td>
@@ -200,6 +206,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                    <thead>
                    <tr>
                        <th>股票代码</th>
+                       <th>名称</th>
                        <th>开盘</th>
                        <th>收盘</th>
                        <th>最高</th>
@@ -220,6 +227,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                    <c:forEach var="model" items="${cys5HighModels}" varStatus="status">
                        <tr>
                            <td><a target="_blank" href="http://gagalulu.wang/shares/analysisByCode?codes=${model.code}&day=60">${model.code}</a></td>
+                           <td>${codeMap[model.code]}</td>
                            <td>${model.open}</td>
                            <td>${model.close}</td>
                            <td>${model.high}</td>
@@ -245,6 +253,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                    <thead>
                    <tr>
                        <th>股票代码</th>
+                       <th>名称</th>
                        <th>开盘</th>
                        <th>收盘</th>
                        <th>最高</th>
@@ -265,6 +274,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                    <c:forEach var="model" items="${cys13HighModels}" varStatus="status">
                        <tr>
                            <td><a target="_blank" href="http://gagalulu.wang/shares/analysisByCode?codes=${model.code}&day=60">${model.code}</a></td>
+                           <td>${codeMap[model.code]}</td>
                            <td>${model.open}</td>
                            <td>${model.close}</td>
                            <td>${model.high}</td>
@@ -290,6 +300,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                    <thead>
                    <tr>
                        <th>股票代码</th>
+                       <th>名称</th>
                        <th>开盘</th>
                        <th>收盘</th>
                        <th>最高</th>
@@ -310,6 +321,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                    <c:forEach var="model" items="${cys34HighModels}" varStatus="status">
                        <tr>
                            <td><a target="_blank" href="http://gagalulu.wang/shares/analysisByCode?codes=${model.code}&day=60">${model.code}</a></td>
+                           <td>${codeMap[model.code]}</td>
                            <td>${model.open}</td>
                            <td>${model.close}</td>
                            <td>${model.high}</td>

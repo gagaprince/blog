@@ -71,6 +71,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                        <thead>
                        <tr>
                            <th>股票代码</th>
+                           <th>股票名称</th>
                            <th>开盘</th>
                            <th>收盘</th>
                            <th>最高</th>
@@ -92,6 +93,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                        <c:forEach var="analysisBean" items="${cacularShares}" varStatus="status">
                            <tr>
                                <td><a target="_blank" href="http://gagalulu.wang/shares/analysisByCode?codes=${analysisBean.code}&day=60">${analysisBean.code}</a></td>
+                               <td>${codeMap[analysisBean.code]}</td>
                                <td>${analysisBean.open}</td>
                                <td>${analysisBean.close}</td>
                                <td>${analysisBean.high}</td>
@@ -115,9 +117,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                </div>
 
            <c:forEach var="analysisBean" items="${buyTimeList}" varStatus="status">
-
+                <c:set var="minModel" value="${analysisBean.minModel}"></c:set>
+                <c:set var="buyModel" value="${analysisBean.buyModel}"></c:set>
+                <c:set var="sellModel" value="${analysisBean.sellModel}"></c:set>
+                <c:set var="todayModel" value="${analysisBean.todayModel}"></c:set>
                <div class="all">
-                   <p class="title">${analysisBean.code} ${day}日策略结果</p>
+                   <p class="title">${analysisBean.code} ${codeMap[analysisBean.code]} ${day}日策略结果</p>
                    <p class="title">策略结果 ${analysisBean.success}</p>
                    <p class="title">等待时间 ${analysisBean.waitDay}</p>
                    <p class="title">收益率 ${analysisBean.increasePer}</p>
@@ -142,10 +147,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                        </tr>
                        </thead>
                        <tbody>
-                       <c:set var="minModel" value="${analysisBean.minModel}"></c:set>
-                       <c:set var="buyModel" value="${analysisBean.buyModel}"></c:set>
-                       <c:set var="sellModel" value="${analysisBean.sellModel}"></c:set>
-                       <c:set var="todayModel" value="${analysisBean.todayModel}"></c:set>
+
                        <tr>
                            <td>计算当日</td>
                            <td>${minModel.open}</td>

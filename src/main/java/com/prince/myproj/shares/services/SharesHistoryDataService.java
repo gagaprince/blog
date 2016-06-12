@@ -112,6 +112,18 @@ public class SharesHistoryDataService {
         List<SharesSingleModel> sharesModels = sharesDao.getShares(paramMap);
         return sharesModels;
     }
+    //获取code和name的对应关系
+    public Map<String,String> getCodeNameMap(){
+        List<SharesSingleModel> singleModels = getSharesModels(0,3000);
+        Map<String,String> codeMap = new HashMap<String, String>();
+        int size = singleModels.size();
+        for(int i=0;i<size;i++){
+            SharesSingleModel singleModel = singleModels.get(i);
+            codeMap.put(singleModel.getCodeAll(),singleModel.getName());
+        }
+        return codeMap;
+    }
+
     public List<SharesSingleModel> getSharesModelsWithOutSC(long start,long end){
         List<SharesSingleModel> sharesModels = getSharesModels(start,end);
         int size = sharesModels.size();

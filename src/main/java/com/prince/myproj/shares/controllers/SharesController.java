@@ -76,12 +76,13 @@ public class SharesController {
         model.addAttribute("cys5HighModels",cys5HighModels);
         model.addAttribute("cys13HighModels",cys13HighModels);
         model.addAttribute("cys34HighModels",cys34HighModels);
+        model.addAttribute("codeMap",sharesHistoryDataService.getCodeNameMap());
 
         return "shares/todayShares";
     }
 
     @RequestMapping("/preToday")
-    public String viewPreTodayShares(HttpServletRequest request,HttpServletResponse response,Model model){
+    public String viewPreTodayShares(HttpServletRequest request,HttpServletResponse response, Model model){
 
         String shareDate = dateUtil.getNowDate("yyyy-MM-dd");
 
@@ -99,6 +100,7 @@ public class SharesController {
         model.addAttribute("cys5HighModels",cys5HighModels);
         model.addAttribute("cys13HighModels",cys13HighModels);
         model.addAttribute("cys34HighModels",cys34HighModels);
+        model.addAttribute("codeMap",sharesHistoryDataService.getCodeNameMap());
 
         return "shares/preTodayShares";
     }
@@ -402,6 +404,7 @@ public class SharesController {
 
 
         model.addAttribute("cacularShares",cacularShares);
+        model.addAttribute("codeMap",sharesHistoryDataService.getCodeNameMap());
         model.addAttribute("date",date);
 
         AnalysisBuyTimeTotal analysisBuyTimeTotal = shareAnalysisService.testRealInc(cacularShares, waitDay, inc);
@@ -413,6 +416,7 @@ public class SharesController {
 
         return "shares/cacularBuyShares";
     }
+
 
     @RequestMapping("/cacularBuyShares")
     @ResponseBody
