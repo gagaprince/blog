@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.prince.myproj.shares.dao.CheckSharesDao">
+    <resultMap id="CheckShareModelResultMap" type="CheckShareModel">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="code" property="code" jdbcType="VARCHAR" />
+        <result column="min_prince" property="minPrice" jdbcType="FLOAT" />
+        <result column="max_prince" property="maxPrice" jdbcType="FLOAT" />
+        <result column="status" property="status" jdbcType="INTEGER" />
+    </resultMap>
+
+    <insert id="save"
+            parameterType="CheckShareModel"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into check_shares(
+        <trim suffixOverrides=",">
+            <if test="id != null"> id ,</if>
+            <if test="code != null"> code ,</if>
+            <if test="maxPrice != null"> max_price ,</if>
+            <if test="minPrice != null"> min_price ,</if>
+            <if test="status != null"> status ,</if>
+        </trim>
+        )values(
+        <trim suffixOverrides=",">
+            <if test="id != null"> #{id} ,</if>
+            <if test="code != null"> #{code} ,</if>
+            <if test="maxPrice != null"> #{maxPrice} ,</if>
+            <if test="minPrice != null"> #{minPrice} ,</if>
+            <if test="status != null"> #{status} ,</if>
+        </trim>
+        )
+    </insert>
+
+
+
+
+    <select id="getCheckShares" parameterType="map" resultMap="CheckShareModelResultMap">
+        select * from check_shares s
+        <where>
+            1=1
+            <if test="code != null">
+                and s.code = #{code}
+            </if>
+            <if test="status != null">
+                and s.status = #{status}
+            </if>
+        </where>
+        <if test="fromIndex != null and toIndex != null">
+        limit #{fromIndex}, #{toIndex}
+        </if>
+    </select>
+
+    <update id="update" parameterType="CheckShareModel">
+        update  check_shares
+        <trim prefix="set" suffixOverrides=",">
+            <if test="maxPrice != null">max_price = #{maxPrice},</if>
+            <if test="minPrice != null">min_price = #{minPrice},</if>
+            <if test="status != null">status = #{status},</if>
+        </trim>
+        where code = #{code}
+    </update>
+
+</mapper>

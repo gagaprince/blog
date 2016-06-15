@@ -46,3 +46,12 @@ body{
     color:#fff;
     padding:20px;
 }
+.checkFrame{
+    width:90%;
+    margin:10px auto;
+}
+.checkFrame input{
+    width:100px;
+    height:40px;
+    display:block;
+}

@@ -98,4 +98,11 @@ public class SharesMailService {
 
         return sb.toString();
     }
+
+    public void sendCheckMail(String content){
+        Mail mail = new Mail();
+        mail.setSubject(getSubject("股票监测"));
+        mail.setContent(content);
+        sendMailWithObj(mail);
+    }
 }

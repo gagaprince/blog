@@ -52,7 +52,7 @@ public class SharesHistoryDataService {
         long end = 3000;
 
 
-        String dateStart = giveMeLastDate().replaceAll("-","");
+        String dateStart = giveMeLastDate().replaceAll("-", "");
 
         String dateEnd = dateUtil.getNowDate();
         logger.info("dateStart:"+dateStart);
@@ -256,9 +256,10 @@ public class SharesHistoryDataService {
     private boolean isExitHistory(SharesModel sharesModel,String type){
         Map<String,Object> keyMap = new HashMap<String, Object>();
         keyMap.put("code", sharesModel.getCode());
-        keyMap.put("date", sharesModel.getDate());
+
         List<SharesModel> exitList=null;
         if("history".equals(type)){
+            keyMap.put("date", sharesModel.getDate());
             exitList = sharesHistoryDao.selectByMap(keyMap);
         }else{
             exitList = sharesTempDao.selectByMap(keyMap);
