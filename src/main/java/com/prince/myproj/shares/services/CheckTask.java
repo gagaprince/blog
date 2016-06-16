@@ -100,7 +100,7 @@ public class CheckTask {
 
 
     private void parseContent(String content){
-        String[] codeContents = content.split(";");
+        String[] codeContents = content.split(";\n");
         int length = codeContents.length;
         logger.info("length:" + length);
         for(int i=0;i<length;i++){
@@ -108,6 +108,7 @@ public class CheckTask {
             String[] fields = codeContent.split(",");
             if(fields.length>=32){
                 String code = fields[0].substring(11,19);
+                logger.info(code);
                 CheckShareModel checkShareModel = checkMap.get(code);
                 if(checkShareModel==null)continue;
 
