@@ -116,9 +116,11 @@ public class CheckTask {
                 float minPrice = checkShareModel.getMinPrice();
                 if(nowPrice>maxPrice){
                     sharesMailService.sendCheckMail("代码："+code+" 现价："+nowPrice+" 超过监测价："+maxPrice+" 请决策是否卖出");
+                    removeCheckInList(checkShareModel);
                 }
                 if(nowPrice<minPrice){
                     sharesMailService.sendCheckMail("代码："+code+" 现价："+nowPrice+" 低于监测价："+minPrice+" 请决策是否买入");
+                    removeCheckInList(checkShareModel);
                 }
             }
 
