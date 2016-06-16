@@ -6,8 +6,8 @@
     <resultMap id="CheckShareModelResultMap" type="CheckShareModel">
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="code" property="code" jdbcType="VARCHAR" />
-        <result column="min_prince" property="minPrice" jdbcType="FLOAT" />
-        <result column="max_prince" property="maxPrice" jdbcType="FLOAT" />
+        <result column="min_price" property="minPrice" jdbcType="FLOAT" />
+        <result column="max_price" property="maxPrice" jdbcType="FLOAT" />
         <result column="status" property="status" jdbcType="INTEGER" />
     </resultMap>
 
