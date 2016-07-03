@@ -3,6 +3,7 @@ package com.prince.myproj.blog.controllers;
 import com.alibaba.fastjson.JSON;
 import com.prince.myproj.blog.models.ResultModel;
 import com.prince.myproj.blog.services.SpiderService;
+import com.prince.myproj.blog.spiders.spiderServices.TravelPicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +22,9 @@ public class SpiderController {
     @Autowired
     private SpiderService spiderService;
 
+    @Autowired
+    private TravelPicService travelPicService;
+
     @RequestMapping("/spider/begin")
     @ResponseBody
     public String beginSpider(HttpServletRequest request,HttpServletResponse response){
@@ -35,5 +39,12 @@ public class SpiderController {
             resultModel.getBstatus().setDesc("扫描失败");
         }
         return JSON.toJSONString(resultModel);
+    }
+
+    @RequestMapping("/spider/travel")
+    @ResponseBody
+    public String beginSpiderTravelPic(HttpServletRequest request,HttpServletResponse response){
+        travelPicService.analysis();
+        return "抓取百度旅行";
     }
 }
