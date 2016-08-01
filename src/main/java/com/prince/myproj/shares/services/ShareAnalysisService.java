@@ -133,7 +133,7 @@ public class ShareAnalysisService {
         return codeModels;
     }
 
-    private List<SharesModel> getSharesListByCodeDay(String code,int day,String date){
+    public List<SharesModel> getSharesListByCodeDay(String code,int day,String date){
         Map<String,Object> paramMap = new HashMap<String, Object>();
         paramMap.put("code",code);
         paramMap.put("day", day);
@@ -541,6 +541,7 @@ public class ShareAnalysisService {
      * @return
      */
     public AnalysisBuyTimeTotal testRealInc(List<SharesModel> models,int maxWaitDay,float inc){
+        if(models==null)return null;
         int size = models.size();
         List<AnalysisBuyTimeBean> analysisBuyTimeBeanList = new ArrayList<AnalysisBuyTimeBean>();
         float shIncPer=0;
