@@ -10,7 +10,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <meta name="baidu-site-verification" content="IlBwkvnFa1" />
         <meta name="baidu_union_verify" content="8dcbc42830416c07c5a1164f8d7d9de1">
         <%@ include file="../common/meta.jsp"%>
-        <title>预测买入</title>
+        <title>预测结果</title>
         <script type="text/javascript" src="/blog/js/jquery.js"></script>
         <%@ include file="../common/tongji.jsp"%>
         <link href="/blog/css/shares/shares.css" rel="stylesheet">
@@ -58,7 +58,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     </style>
 
        <div class="main">
-            <h2>预测选股</h2>
+
+        <c:forEach var="selectItem" items="${resultMap}">
+            <c:set var="analysisTotal" value="${selectItem.value}"/>
+            <c:set var="buyTimeList" value="${analysisTotal.analysisBuyTimeBeanList}"/>
+            <h2>预测选股 ${selectItem.key}</h2>
 
            <h2>目标涨幅：${analysisTotal.inc} 容忍时间:${analysisTotal.maxWaitDay}</h2>
            <h2>预测成功的股：${analysisTotal.successNum} 预测失败的股数:${analysisTotal.fallNum} 平均等待时间:${analysisTotal.waitTime} 预测收涨的股:${analysisTotal.increaseNum}</h2>
@@ -216,6 +220,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                    </table>
                </div>
            </c:forEach>
+
+
+
+        </c:forEach>
+
+
 
         </div>
     </body>

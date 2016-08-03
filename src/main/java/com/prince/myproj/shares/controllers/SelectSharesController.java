@@ -40,7 +40,7 @@ public class SelectSharesController {
     @RequestMapping("/select")
     public String selectShares(HttpServletRequest request,HttpServletResponse response,Model model){
         int type = parseUtil.parseInt(request.getParameter("type"), 0);
-        float inc = parseUtil.parseFloat(request.getParameter("inc"), 5);
+        float inc = parseUtil.parseFloat(request.getParameter("inc"), 0.05f);
         String date = parseUtil.parseString(request.getParameter("date"),dateUtil.getNowDate("yyyy-MM-dd"));
         int waitDay = 5;
 
@@ -49,16 +49,16 @@ public class SelectSharesController {
         if(type==0){
             //duan qi
             cacularSharesMap = selectSharesService.selectSharesList(date);
-            waitDay=5;
+            waitDay=10;
         }else{
             waitDay=15;
         }
-
+        Map<String,AnalysisBuyTimeTotal> resultMap=null;
         if(cacularSharesMap!=null){
-            Map<String,AnalysisBuyTimeTotal> resultMap = shareAnalysisService.testRealInc(cacularSharesMap, waitDay, inc);
+            resultMap = shareAnalysisService.testRealInc(cacularSharesMap, waitDay, inc);
         }
 
-
+        model.addAttribute("resultMap",resultMap);
 
 
         return "shares/select";

@@ -4,6 +4,7 @@ import com.prince.myproj.shares.models.SharesModel;
 import com.prince.myproj.shares.services.ShareAnalysisService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -19,7 +20,9 @@ public class LargerVolumSelectShares implements SelectSharesCelue {
             return null;
         }
         List<SharesModel> codeModels = shareAnalysisService.getSharesListByCodeDay(code, 60, date);
+        Collections.reverse(codeModels);
         int size = codeModels.size();
+
         if(size>0){
             SharesModel lastModel = codeModels.get(size-1);
             if (!lastModel.getDate().equals(date)){

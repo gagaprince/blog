@@ -43,4 +43,12 @@ public class SelectSharesService {
         }
         return resultMap;
     }
+
+    public List<SelectSharesCelue> getSelectShares() {
+        return selectShares;
+    }
+
+    public void setSelectShares(List<SelectSharesCelue> selectShares) {
+        this.selectShares = selectShares;
+    }
 }
