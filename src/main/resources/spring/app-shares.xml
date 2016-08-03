@@ -24,6 +24,13 @@
         <property name="stmp" value="smtp.163.com"></property>
         <property name="toUser" value="923731573@qq.com"></property>
         <property name="fromUser" value="wangzidongprince@163.com"></property>
-
+    </bean>
+    <bean id="selectSharesService" class="com.prince.myproj.shares.services.SelectSharesService">
+        <property name="selectShares">
+            <list>
+                <bean class="com.prince.myproj.shares.celue.LargerVolumSelectShares"></bean>
+                <bean class="com.prince.myproj.shares.celue.SmallVolumSelectShares"></bean>
+            </list>
+        </property>
     </bean>
 </beans>

@@ -533,6 +533,22 @@ public class ShareAnalysisService {
         return null;
     }
 
+    public Map<String,AnalysisBuyTimeTotal> testRealInc(Map<String,List<SharesModel>> sharesListMap,int maxWaitDay,float inc){
+        if(sharesListMap==null)return null;
+        Map<String,AnalysisBuyTimeTotal> resultMap = new HashMap<String, AnalysisBuyTimeTotal>();
+        Set<String> sharesKey = sharesListMap.keySet();
+        Iterator<String> it = sharesKey.iterator();
+        while(it.hasNext()){
+            String key = it.next();
+            List<SharesModel> shares = sharesListMap.get(key);
+            if(shares!=null){
+                AnalysisBuyTimeTotal analysisBuyTimeTotal = testRealInc(shares,maxWaitDay,inc);
+                resultMap.put(key,analysisBuyTimeTotal);
+            }
+        }
+        return resultMap;
+    }
+
     /**
      * 查看预测的实际效果
      * @param models

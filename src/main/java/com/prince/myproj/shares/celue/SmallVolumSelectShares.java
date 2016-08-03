@@ -1,9 +1,11 @@
 package com.prince.myproj.shares.celue;
 
+import com.prince.myproj.shares.mathutils.MathBasicFun;
 import com.prince.myproj.shares.models.SharesModel;
 import com.prince.myproj.shares.services.ShareAnalysisService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,15 +33,17 @@ public class SmallVolumSelectShares implements SelectSharesCelue {
                 SharesModel secondModel = codeModels.get(size-2);
                 //最后一日的cys值小于16 属于超跌   //交易量小于前一日的0.8  //跌
                 if(lastModel.getCys13()<lowLimit&& lastModel.getVolume()<secondModel.getVolume()*0.8 && lastModel.getClose()<secondModel.getClose()){
-                    int num = 0;
-                    //
+                    List<Float> closeS = new ArrayList<Float>();
                     for(int i=size-2;i>=0&&i>=size-10;i--){
                         SharesModel tempModel = codeModels.get(i);
-                        if (tempModel.getCys13()<0){
-                            num++;
-                        }
+                        closeS.add(tempModel.getClose());
                     }
-                    if(num>5){
+                    MathBasicFun mathBasicFun = new MathBasicFun(closeS);
+                    mathBasicFun.excute();
+                    float mean = mathBasicFun.getMean();
+                    float range = mathBasicFun.getRange();
+                    //极差振幅不超过3%认为是横盘 地位横盘10个交易日 有机会商鞅
+                    if(range/mean<0.03){
                         return lastModel;
                     }
                 }
