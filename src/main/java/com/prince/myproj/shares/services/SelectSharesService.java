@@ -39,6 +39,14 @@ public class SelectSharesService {
                     cacularResult.add(sharesModel);
                 }
             }
+            SharesModel szCode = sharesHistoryDataService.getModelByCodeDate("sz399001", date);
+            if(szCode!=null){
+                cacularResult.add(0,szCode);
+            }
+            SharesModel shCode = sharesHistoryDataService.getModelByCodeDate("sh000001", date);
+            if(shCode!=null){
+                cacularResult.add(0,shCode);
+            }
             resultMap.put(selectCelue.getName(),cacularResult);
         }
         return resultMap;

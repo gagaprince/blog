@@ -18,7 +18,7 @@ public class SmallVolumSelectShares implements SelectSharesCelue {
     @Autowired
     private ShareAnalysisService shareAnalysisService;
 
-    private float lowLimit = -16;
+    private float lowLimit = -20;
 
 
     public SharesModel select(String code, String date) {

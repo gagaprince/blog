@@ -602,7 +602,7 @@ public class ShareAnalysisService {
             waitTime = waitTime/increaseNum;
         }
 
-        logger.info("时间：" + date +"---上证："+(shIncPer>0)+"---深圳："+(szIncPer>0));
+        logger.info("时间：" + date +"---上证："+(shIncPer)+"---深圳："+(szIncPer));
         logger.info("目标涨幅："+inc+"---容忍时间："+maxWaitDay);
         logger.info("预测成功的股:" + successNum + "---预测失败的股数：" + fallNum + "---平均等待时间：" + waitTime);
         logger.info("预测收涨的股:" + increaseNum);
