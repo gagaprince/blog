@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>点菜</title>
+    <script src="http://gagalulu.wang/blog/js/jquery.js"></script>
+</head>
+<body>
+
+</body>
+<script>
+    var order = [];
+    order.push({name:"鲜花椒鲈鱼",price:"114"});
+    order.push({name:"葱爆海参",price:"98"});
+    order.push({name:"宫保虾球",price:"88"});
+    order.push({name:"精致猪手",price:"88"});
+    order.push({name:"私房毛血旺",price:"68"});
+    order.push({name:"梅菜扣肉",price:"68"});
+    order.push({name:"杭椒牛柳",price:"68"});
+    order.push({name:"荷芹炒腊味",price:"58"});
+    order.push({name:"歌乐山辣子鸡",price:"48"});
+    order.push({name:"腊八蒜炒鲍鱼菇",price:"46"});
+    order.push({name:"干锅有机花菜",price:"38"});
+    order.push({name:"娃娃菜炖豆腐",price:"38"});
+    order.push({name:"生菜",price:"26"});
+    order.push({name:"香茄豆角",price:"22"});
+
+    order.push({name:"清蒸鲈鱼",price:"114"});
+    order.push({name:"精致猪手",price:"88"});
+    order.push({name:"铁板黑椒牛柳",price:"78"});
+    order.push({name:"实鲜河虾",price:"78"});
+    order.push({name:"大葱爆羊肉",price:"68"});
+    order.push({name:"尖椒爆鸽珍",price:"58"});
+    order.push({name:"小白菜炒肉筋",price:"32"});
+    order.push({name:"炒凉粉",price:"28"});
+
+    order.push({name:"卤水拼盘",price:"88"});
+    order.push({name:"话梅小排",price:"68"});
+    order.push({name:"手撕凤兔",price:"58"});
+    order.push({name:"广式烧鹅",price:"78"});
+    order.push({name:"汾香牛展",price:"66"});
+    order.push({name:"万年青拌腰果",price:"38"});
+    order.push({name:"夫妻肺片",price:"38"});
+    order.push({name:"桂花糖藕",price:"28"});
+    order.push({name:"蓝莓山药",price:"28"});
+    order.push({name:"深山黑木耳",price:"18"});
+    order.push({name:"家乡蒸菜",price:"28"});
+    order.push({name:"双味茄子",price:"18"});
+
+    order.push({name:"椒盐银鱼",price:"48"});
+    order.push({name:"巴淑腾叫鸡",price:"38"});
+    order.push({name:"土芹洋葱娃娃菜",price:"32"});
+    order.push({name:"陈皮兔丁",price:"28"});
+
+
+
+    order.push({name:"灌汤小笼包",price:"38"});
+    order.push({name:"花园小烧饼",price:"38"});
+    order.push({name:"手工饺子",price:"28"});
+    order.push({name:"香茜豆腐羹",price:"18"});
+    order.push({name:"甜品",price:"6"});
+    order.push({name:"脆皮炸酸奶",price:"38"});
+
+    order.push({name:"餐后水果",price:"38"});
+
+
+    var html = "";
+    for(var i=0;i<order.length;i++){
+        var orderItem = order[i];
+        html+='<div><input type="checkbox" checked="true" price="'+orderItem.price+'"> '+orderItem.name+' '+orderItem.price+'</div>';
+    }
+
+    html += '<div>合计：<font id="total">0</font></div>';
+    $("body").html(html);
+
+    function cal(){
+        var inputs = $("input");
+        var total = 0;
+        for(var i=0;i<inputs.length;i++){
+            var inputItem = inputs[i];
+            if(inputItem.checked){
+                var price = $(inputItem).attr("price");
+                total += parseInt(price);
+            }
+        }
+        $("#total").html(total);
+    }
+
+    $("input").on("change",function(){
+        cal();
+    });
+
+    cal();
+</script>
+</html>

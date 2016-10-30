@@ -3,6 +3,7 @@ package com.prince.myproj.blog.controllers;
 import com.alibaba.fastjson.JSON;
 import com.prince.myproj.blog.models.ResultModel;
 import com.prince.myproj.blog.services.SpiderService;
+import com.prince.myproj.blog.services.TestService;
 import com.prince.myproj.blog.spiders.spiderServices.TravelPicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,6 +26,9 @@ public class SpiderController {
     @Autowired
     private TravelPicService travelPicService;
 
+    @Autowired
+    private TestService testService;
+
     @RequestMapping("/spider/begin")
     @ResponseBody
     public String beginSpider(HttpServletRequest request,HttpServletResponse response){
@@ -46,5 +50,13 @@ public class SpiderController {
     public String beginSpiderTravelPic(HttpServletRequest request,HttpServletResponse response){
         travelPicService.analysis();
         return "抓取百度旅行";
+    }
+
+    @RequestMapping("/spider/data")
+    @ResponseBody
+    public String dataAna(HttpServletRequest request,HttpServletResponse response){
+//        testService.ana();
+        testService.anaNode();
+        return "";
     }
 }

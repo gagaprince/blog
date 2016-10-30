@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="http://gagalulu.wang/blog/js/jquery.js"></script>
+    <link rel="stylesheet" type="text/css" href="./src/css/index.css">
+</head>
+<body>
+    <!--<div class="line1"></div>
+    <div class="line2"></div>-->
+    <script>
+        var pnum = window.innerWidth;
+        for(var i=0;i<pnum*2;i++){
+            $("body").append('<div class="lineH" style="width:'+(i+1)*0.5+'px"></div>');
+        }
+    </script>
+</body>
+</html>

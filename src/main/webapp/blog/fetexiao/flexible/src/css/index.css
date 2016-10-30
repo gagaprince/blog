@@ -1,0 +1,45 @@
+*{
+    margin:0;
+    padding:0;
+}
+.line{
+    height:6.67rem;
+    background:#654321;
+    width:3.75rem;
+}
+.font{
+    color:red;
+
+}
+.flexfont{
+    color:red;
+    font-size:0.32rem;
+}
+.btn{
+    margin:5px;
+    width:.8rem;
+    height:.4rem;
+    border: 0.5px solid #123454;
+}
+.flexbtn{
+    margin:0.05rem;
+    width:.8rem;
+    height:.4rem;
+    font-size:0.32rem;
+    border: 0.01rem solid #123454;
+}
+.line1{
+    width:498px;
+    height:10px;
+    background:red;
+}
+.line2{
+    width:499px;
+    height:10px;
+    background:blue;
+}
+.lineH{
+    height:1px;
+    background:blue;
+    /*border-bottom:1px solid #000;*/
+}
