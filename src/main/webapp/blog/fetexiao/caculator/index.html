@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>计算器</title>
+    <style>
+        *{
+            margin:0;
+            padding:0;
+        }
+        .content{
+            width:100%;
+            margin-top:20px;
+        }
+        .cacular_frame{
+            margin:auto;
+            width:437px;
+            height: 448px;
+            background:url("./src/img/siverbg.png");
+            overflow: hidden;
+        }
+        .cacular_frame .text{
+            width:370px;
+            height:57px;
+            margin: auto;
+            margin-top:16px;
+        }
+        .cacular_frame .text input{
+            width:100%;
+            height:100%;
+            font-size: 30px;
+            font-weight:bold;
+            border: none;
+            text-align: right;
+            letter-spacing: 3px;
+            background: rgba(0,0,0,0);
+        }
+        .btns{
+            width: 398px;
+            margin: auto;
+            height: 300px;
+            margin-top:50px;
+        }
+        .btns .btn_line{
+            width:100%;
+            height: 60px;
+        }
+        .btns .btn_line .btn_row{
+            width:25%;
+            height:100%;
+            overflow: hidden;
+            float: left;
+        }
+        .btns .btn_line .btn_row .btn{
+            line-height:40px;
+            color:#fff;
+            text-align: center;
+            margin:10px 5px;
+            height:40px;
+            border-radius:3px;
+            border: 2px solid #000;
+            cursor: pointer;
+            background-image: linear-gradient(to bottom ,rgb(70,100,140) 0%,rgb(30,60,90) 100%);
+        }
+        .org{
+            background-image: linear-gradient(to bottom ,rgb(250,150,30) 0%,rgb(190,90,0) 100%) !important;
+        }
+        .blue{
+            background-image: linear-gradient(to bottom ,rgb(60,120,200) 0%,rgb(40,70,120) 100%) !important;
+        }
+        .zong{
+            background-image: linear-gradient(to bottom ,rgb(140,95,70) 0%,rgb(90,60,40) 100%) !important;
+        }
+
+    </style>
+</head>
+<body>
+<div class="content">
+    <div class="cacular_frame">
+        <div class="text">
+            <input id="result" type="text" readonly/>
+        </div>
+        <div class="btns">
+            <div class="btn_line">
+                <div class="btn_row">
+                    <div id="acBtn" class="btn org">AC</div>
+                </div>
+                <div class="btn_row">
+                    <div id="delBtn" class="btn">退格</div>
+                </div>
+                <div class="btn_row">
+                    <div class="btn">没用</div>
+                </div>
+                <div class="btn_row">
+                    <div id="equalBtn" class="btn org">=</div>
+                </div>
+            </div>
+            <div class="btn_line">
+                <div class="btn_row">
+                    <div id="numBtn7" class="btn blue">7</div>
+                </div>
+                <div class="btn_row">
+                    <div id="numBtn8" class="btn blue">8</div>
+                </div>
+                <div class="btn_row">
+                    <div id="numBtn9" class="btn blue">9</div>
+                </div>
+                <div class="btn_row">
+                    <div  id="plusBtn" class="btn zong">+</div>
+                </div>
+            </div>
+            <div class="btn_line">
+                <div class="btn_row">
+                    <div id="numBtn4" class="btn blue">4</div>
+                </div>
+                <div class="btn_row">
+                    <div id="numBtn5" class="btn blue">5</div>
+                </div>
+                <div class="btn_row">
+                    <div id="numBtn6" class="btn blue">6</div>
+                </div>
+                <div class="btn_row">
+                    <div id="minusBtn" class="btn zong">-</div>
+                </div>
+            </div>
+            <div class="btn_line">
+                <div class="btn_row">
+                    <div id="numBtn1" class="btn blue">1</div>
+                </div>
+                <div class="btn_row">
+                    <div id="numBtn2" class="btn blue">2</div>
+                </div>
+                <div class="btn_row">
+                    <div id="numBtn3" class="btn blue">3</div>
+                </div>
+                <div class="btn_row">
+                    <div id="multiBtn" class="btn zong">×</div>
+                </div>
+            </div>
+            <div class="btn_line">
+                <div class="btn_row">
+                    <div id="numBtn0" class="btn blue">0</div>
+                </div>
+                <div class="btn_row">
+                    <div id="dotBtn" class="btn blue">.</div>
+                </div>
+                <div class="btn_row">
+                    <div id="pmBtn" class="btn blue">+/-</div>
+                </div>
+                <div class="btn_row">
+                    <div id="diviBtn" class="btn zong">÷</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="./src/js/EventManage.js"></script>
+<script src="./src/js/Result.js"></script>
+<script src="./src/js/Btn.js"></script>
+<script src="./src/js/NumBtn.js"></script>
+<script src="./src/js/AcBtn.js"></script>
+<script src="./src/js/DelBtn.js"></script>
+<script src="./src/js/OpBtn.js"></script>
+<script src="./src/js/PlusBtn.js"></script>
+<script src="./src/js/MinusBtn.js"></script>
+<script src="./src/js/MultiBtn.js"></script>
+<script src="./src/js/DiviBtn.js"></script>
+<script src="./src/js/EqualBtn.js"></script>
+<script src="./src/js/PmBtn.js"></script>
+<script src="./src/js/DotBtn.js"></script>
+<script src="./src/js/CacuNum.js"></script>
+<script src="./src/js/caculator.js"></script>
+<script src="./src/js/main.js"></script>
+</body>
+</html>
