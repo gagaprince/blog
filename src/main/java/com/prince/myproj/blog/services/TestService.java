@@ -137,42 +137,42 @@ public class TestService {
     }
 
     public void anaTest1(){
-        String path = "D:\\work\\temp\\20161130_userapi_log.csv";
-        File f = new File(path);
-        String desFrom = "490";
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(f));
-            String line = null;
-            Set<String> uidSet = new HashSet<String>();
-            line = br.readLine();
-            System.out.println(line);
-            List<DataModel> indexDatas = new ArrayList<DataModel>();
-            while ((line=br.readLine())!=null){
-                String[] datas = line.split(",");
-                if(datas.length>10){
-                    String logDay = datas[0];
-                    String logTime = datas[1];
-                    String page = datas[2];
-                    String actionName = datas[3];
-                    String actionTarget = datas[4];
-                    String nfrom = datas[6];
-                    String uid = datas[10];
-                    if(nfrom.equals(desFrom)&&actionTarget.equals("js-index-transferCard")){
-                        DataModel dataModel = new DataModel(uid,nfrom,actionTarget);
-                        indexDatas.add(dataModel);
-                    }
-
-                }
-            }
-            Set<String> index = getUV(indexDatas);
-            System.out.println("from :"+desFrom+" pv:"+indexDatas.size());
-            System.out.println("from :"+desFrom+" uv:"+index.size());
-            br.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        String path = "D:\\work\\temp\\20161130_userapi_log.csv";
+//        File f = new File(path);
+//        String desFrom = "490";
+//        try {
+//            BufferedReader br = new BufferedReader(new FileReader(f));
+//            String line = null;
+//            Set<String> uidSet = new HashSet<String>();
+//            line = br.readLine();
+//            System.out.println(line);
+//            List<DataModel> indexDatas = new ArrayList<DataModel>();
+//            while ((line=br.readLine())!=null){
+//                String[] datas = line.split(",");
+//                if(datas.length>10){
+//                    String logDay = datas[0];
+//                    String logTime = datas[1];
+//                    String page = datas[2];
+//                    String actionName = datas[3];
+//                    String actionTarget = datas[4];
+//                    String nfrom = datas[6];
+//                    String uid = datas[10];
+//                    if(nfrom.equals(desFrom)&&actionTarget.equals("js-index-transferCard")){
+//                        DataModel dataModel = new DataModel(uid,nfrom,actionTarget);
+//                        indexDatas.add(dataModel);
+//                    }
+//
+//                }
+//            }
+//            Set<String> index = getUV(indexDatas);
+//            System.out.println("from :"+desFrom+" pv:"+indexDatas.size());
+//            System.out.println("from :"+desFrom+" uv:"+index.size());
+//            br.close();
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
     public static void main(String[] args) {
