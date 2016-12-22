@@ -7,14 +7,14 @@ public class WaveModel {
     private String startDate;
     private String endDate;
     private float waveSwing;
-    private int initMoney;
+    private float initMoney;
     private String shareCode;
 
     public float getWaveSwing() {
         return waveSwing;
     }
 
-    public int getInitMoney() {
+    public float getInitMoney() {
         return initMoney;
     }
 
@@ -39,7 +39,7 @@ public class WaveModel {
         this.shareCode = shareCode;
     }
 
-    public void setInitMoney(int initMoney) {
+    public void setInitMoney(float initMoney) {
         this.initMoney = initMoney;
     }
 
@@ -51,14 +51,7 @@ public class WaveModel {
         this.waveSwing = waveSwing;
     }
 
-    public String toString(){
-        StringBuffer sb = new StringBuffer();
-        sb.append("shareCode:"+shareCode).append("\n")
-                .append("initMoney:" + initMoney).append("\n")
-                .append("startDate:" + startDate).append("\n")
-                .append("endDate:" + endDate).append("\n")
-                .append("waveSwing:" + waveSwing).append("\n");
-        return sb.toString();
-    }
+
+
 
 }

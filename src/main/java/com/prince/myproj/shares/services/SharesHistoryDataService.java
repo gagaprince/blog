@@ -96,7 +96,7 @@ public class SharesHistoryDataService {
     }
 
     //获取要操作的股票代码
-    private List<SharesSingleModel> getSharesModels(String codes){
+    public List<SharesSingleModel> getSharesModels(String codes){
         HashMap<String,Object> paramMap = new HashMap<String, Object>();
         List<String> codeList = new ArrayList<String>();
         String[] codeItems = codes.split(",");
@@ -432,7 +432,7 @@ public class SharesHistoryDataService {
     }
 
     //拿出将要计算的model 非停牌的数据
-    private List<SharesModel> getModelsByStartEndDate(String code,String startDate,String endDate){
+    public List<SharesModel> getModelsByStartEndDate(String code,String startDate,String endDate){
         Map<String,Object> paramMap = new HashMap<String, Object>();
         paramMap.put("codeAll", code);
         paramMap.put("startDate", startDate);

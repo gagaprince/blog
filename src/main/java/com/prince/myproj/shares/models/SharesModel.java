@@ -254,4 +254,17 @@ public class SharesModel {
         }
     }
 
+    public String toString(){
+        StringBuffer sb = new StringBuffer();
+        sb.append("\n")
+                .append("代码:"+code).append(" ")
+                .append("最高:"+high).append(" ")
+                .append("最低:"+low).append(" ")
+                .append("开始:"+open).append(" ")
+                .append("结束:"+close).append("")
+                .append("日期:" + date).append("\n");
+
+        return sb.toString();
+    }
+
 }
