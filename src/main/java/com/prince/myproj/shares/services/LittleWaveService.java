@@ -22,7 +22,7 @@ public class LittleWaveService {
     private SharesHistoryDataService sharesHistoryDataService;
 
     public void beginWave(WaveModel waveModel){
-        //¸ù¾İÆğÊ¼ÈÕÆÚ ºÍ ´úÂë Ñ¡³öÒ»¸öÊı×é
+        //æ ¹æ®èµ·å§‹æ—¥æœŸ å’Œ ä»£ç  é€‰å‡ºä¸€ä¸ªæ•°ç»„
         String code = waveModel.getShareCode();
         String start = waveModel.getStartDate();
         String end = waveModel.getEndDate();
@@ -35,8 +35,8 @@ public class LittleWaveService {
             }
         }
 
-        //Ê×ÏÈÍ¶ÈëÒ»°ëµÄ×Ê½ğ£¬È»ºó½øĞĞ²ßÂÔµü´ú
-
+        //é¦–å…ˆæŠ•å…¥ä¸€åŠçš„èµ„é‡‘ï¼Œç„¶åè¿›è¡Œç­–ç•¥è¿­ä»£
+        List<SingleWaveModel> singleWaveModels = cacularByWave(waveModel,sharesModels);
 
 
     }
@@ -49,14 +49,14 @@ public class LittleWaveService {
             if(i==0){
                 singleWaveModel = initBuy(waveModel,sharesModel);
             }else{
-
+                singleWaveModel = appendBuy(waveModel,sharesModel,singleWaveModels.get(i-1));
             }
             singleWaveModels.add(singleWaveModel);
         }
         return singleWaveModels;
     }
     private SingleWaveModel initBuy(WaveModel waveModel,SharesModel sharesModel){
-        //Ê×´ÎÂòÈë ÒÔ¿ªÊ¼¼ÛÇ®ÂòÈë Ê¹ÓÃ×Ê½ğµÄÒ»°ë
+        //é¦–æ¬¡ä¹°å…¥ ä»¥å¼€å§‹ä»·é’±ä¹°å…¥ ä½¿ç”¨èµ„é‡‘çš„ä¸€åŠ
         SingleWaveModel singleWaveModel = new SingleWaveModel();
 
         float initMoney = waveModel.getInitMoney();
@@ -78,9 +78,44 @@ public class LittleWaveService {
 
         return singleWaveModel;
     }
-    private SingleWaveModel appendBuy(WaveModel waveModel,SharesModel sharesModel){
-        SingleWaveModel singleWaveModel = new SingleWaveModel();
-        
+    private SingleWaveModel appendBuy(WaveModel waveModel,SharesModel sharesModel,SingleWaveModel preSingleWaveModel){
+        SingleWaveModel singleWaveModel = preSingleWaveModel.clonePre();
+
+        float buyPrice = singleWaveModel.getBuyPrice();
+        float sellPrice = singleWaveModel.getSellPrice();
+
+        float closePrice = sharesModel.getClose();
+        float lowPrice = sharesModel.getLow();
+
+        int littleShareNum = waveModel.getWaveShareNum();
+
+        int currentShareNum = singleWaveModel.getCurrentShareNum();
+        //å¯ä»¥å–å‡ºçš„è‚¡ç¥¨æ•°é‡
+        int newBuyShareNum = singleWaveModel.getNewBuyShareNum();
+        float surplusMoney = singleWaveModel.getLiveMoney();
+
+        //æ¨¡æ‹Ÿä¹°å…¥
+        while (lowPrice<buyPrice){
+            //å¯ä»¥ä¹°å…¥
+            float useMoney = buyPrice*littleShareNum*100;
+            float surplusMoneyTemp = surplusMoney-useMoney;
+            if(surplusMoneyTemp>0){
+                //ä¹°å…¥æˆåŠŸ
+                currentShareNum+=littleShareNum;
+                surplusMoney = surplusMoneyTemp;
+            }
+        }
+        if(closePrice>sellPrice){
+            //å¯ä»¥å–å‡º
+            if(currentShareNum>littleShareNum){
+                currentShareNum-=littleShareNum;
+                surplusMoney+=sellPrice*littleShareNum*100;
+            }
+        }
+
+
+
+
         return singleWaveModel;
     }
     private List<SharesModel> getSharesByCodeAndDate(String codes,String start,String end){

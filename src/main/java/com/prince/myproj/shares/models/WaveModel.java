@@ -9,6 +9,15 @@ public class WaveModel {
     private float waveSwing;
     private float initMoney;
     private String shareCode;
+    private int waveShareNum;
+
+    public int getWaveShareNum() {
+        return waveShareNum;
+    }
+
+    public void setWaveShareNum(int waveShareNum) {
+        this.waveShareNum = waveShareNum;
+    }
 
     public float getWaveSwing() {
         return waveSwing;

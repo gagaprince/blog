@@ -4,26 +4,57 @@ package com.prince.myproj.shares.models;
  * Created by zidong.wang on 2016/12/22.
  */
 public class SingleWaveModel {
-    private float liveMoney;
-    private int currentShareNum;
-    private float sharePrice;
-    private float buyPrice;
-    private float sellPrice;
-    private float allMoney;
+    private float liveMoney=0;
+    private int currentShareNum=0;
+    private int newBuyShareNum=0;
+    private int allShareNum=0;
+    private float sharePrice=0;
+    private float buyPrice=0;
+    private float sellPrice=0;
+    private float allMoney=0;
 
     public String toString(){
         StringBuffer sb = new StringBuffer();
-        sb.append("ªÓ∂Ø◊ Ω:"+liveMoney).append("\n")
-                .append("µ±«∞≥÷π…:" + currentShareNum).append("\n")
-                .append("π…º€:" + sharePrice).append("\n")
-                .append("¬Ú»Îº€∏Ò:" + buyPrice).append("\n")
-                .append("¬Ù≥ˆº€∏Ò:" + sellPrice).append("\n")
-                .append("◊‹◊ ≤˙:" + allMoney).append("\n");
+        sb.append("Ê¥ªÂä®ËµÑÈáë:"+liveMoney).append("\n")
+                .append("ÂΩìÂâçÊåÅËÇ°:" + allShareNum).append("\n")
+                .append("ËÇ°‰ª∑:" + sharePrice).append("\n")
+                .append("‰π∞ÂÖ•‰ª∑Ê†º:" + buyPrice).append("\n")
+                .append("ÂçñÂá∫‰ª∑Ê†º:" + sellPrice).append("\n")
+                .append("ÊÄªËµÑ‰∫ß:" + allMoney).append("\n");
         return sb.toString();
     }
 
     public void cacuAll(){
         this.allMoney = liveMoney+sharePrice*currentShareNum*100;
+        this.allShareNum = currentShareNum+newBuyShareNum;
+    }
+
+    public SingleWaveModel clonePre(){
+        SingleWaveModel singleWaveModel = new SingleWaveModel();
+        singleWaveModel.setAllMoney(allMoney);
+        singleWaveModel.setBuyPrice(buyPrice);
+        singleWaveModel.setSellPrice(sellPrice);
+        singleWaveModel.setAllShareNum(allShareNum);
+        singleWaveModel.setCurrentShareNum(allShareNum);
+        singleWaveModel.setLiveMoney(liveMoney);
+        singleWaveModel.setSharePrice(sharePrice);
+        return singleWaveModel;
+    }
+
+    public int getAllShareNum() {
+        return allShareNum;
+    }
+
+    public void setAllShareNum(int allShareNum) {
+        this.allShareNum = allShareNum;
+    }
+
+    public int getNewBuyShareNum() {
+        return newBuyShareNum;
+    }
+
+    public void setNewBuyShareNum(int newBuyShareNum) {
+        this.newBuyShareNum = newBuyShareNum;
     }
 
     public float getAllMoney() {

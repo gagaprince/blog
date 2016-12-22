@@ -69,5 +69,7 @@
     <orderEntry type="library" name="Maven: org.apache.lucene:lucene-sandbox:5.4.0" level="project" />
     <orderEntry type="library" name="Maven: org.lionsoul.jcseg:jcseg-core:1.9.6.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.lionsoul.jcseg:jcseg-analyzer:1.9.6.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.jackson:jackson-mapper-asl:1.9.8" level="project" />
+    <orderEntry type="library" name="Maven: org.codehaus.jackson:jackson-core-asl:1.9.8" level="project" />
   </component>
 </module>

@@ -80,12 +80,14 @@
 	        var startDate = $("#startDate").val();
 	        var endDate = $("#endDate").val();
 	        var initMoney = $("#initMoney").val();
+	        var waveShareNum = $("#waveShareNum").val();
 	        var data = {
 	            shareCode:shareCode,
 	            waveSwing:waveSwing,
 	            startDate:startDate,
 	            endDate:endDate,
-	            initMoney:initMoney
+	            initMoney:initMoney,
+	            waveShareNum:waveShareNum
 	        };
 	        var url="/shares/littleWave/waveBegin";
 	        this._api(url,data,function(res){

@@ -7,35 +7,35 @@ import java.util.Date;
  */
 public class SharesModel {
     private long id;
-    private String code;    //¹ÉÆ±´úÂë
-    private String name;    //¹ÉÆ±Ãû³Æ
+    private String code;    //è‚¡ç¥¨ä»£ç 
+    private String name;    //è‚¡ç¥¨åç§°
     private float open;
     private float close;
     private float high;
     private float low;
-    private float volume;   //³É½»Á¿
+    private float volume;   //æˆäº¤é‡
     private String date;
     private Date createTime=new Date();
 
 
-    private float increasePer;  //ÕÇµø·ù
-    private float increaseVal;  //ÕÇµø¶î
-    private float changePer;    //»»ÊÖÂÊ
-    private float volumeVal;    //³É½»½ğ¶î
-    private float totalValue;   //×ÜÊĞÖµ
-    private float transValue;   //Á÷Í¨ÊĞÖµ
+    private float increasePer;  //æ¶¨è·Œå¹…
+    private float increaseVal;  //æ¶¨è·Œé¢
+    private float changePer;    //æ¢æ‰‹ç‡
+    private float volumeVal;    //æˆäº¤é‡‘é¢
+    private float totalValue;   //æ€»å¸‚å€¼
+    private float transValue;   //æµé€šå¸‚å€¼
 
 
-    private float sixMean;//6ÈÕ¾ùÖµ
-    private float tweentyMean;  //21ÈÕ¾ùÖµ
+    private float sixMean;//6æ—¥å‡å€¼
+    private float tweentyMean;  //21æ—¥å‡å€¼
 
-    private float cyc5; //5ÈÕÆ½¾ù³É±¾
-    private float cyc13;    //13ÈÕÆ½¾ù³É±¾
-    private float cyc34;    //34ÈÕÆ½¾ù³É±¾
+    private float cyc5; //5æ—¥å¹³å‡æˆæœ¬
+    private float cyc13;    //13æ—¥å¹³å‡æˆæœ¬
+    private float cyc34;    //34æ—¥å¹³å‡æˆæœ¬
 
-    private float cys5;     //5ÈÕÓ¯¿÷ÂÊ ¶ÌÏß²ßÂÔ
-    private float cys13;    //13ÈÕÓ¯¿÷ÂÊ    ÖĞÏß
-    private float cys34;    //34ÈÕÓ¯¿÷ÂÊ ³¤Ïß
+    private float cys5;     //5æ—¥ç›ˆäºç‡ çŸ­çº¿ç­–ç•¥
+    private float cys13;    //13æ—¥ç›ˆäºç‡    ä¸­çº¿
+    private float cys34;    //34æ—¥ç›ˆäºç‡ é•¿çº¿
 
     public float getCyc13() {
         return cyc13;
@@ -257,12 +257,12 @@ public class SharesModel {
     public String toString(){
         StringBuffer sb = new StringBuffer();
         sb.append("\n")
-                .append("´úÂë:"+code).append(" ")
-                .append("×î¸ß:"+high).append(" ")
-                .append("×îµÍ:"+low).append(" ")
-                .append("¿ªÊ¼:"+open).append(" ")
-                .append("½áÊø:"+close).append("")
-                .append("ÈÕÆÚ:" + date).append("\n");
+                .append("ä»£ç :"+code).append(" ")
+                .append("æœ€é«˜:"+high).append(" ")
+                .append("æœ€ä½:"+low).append(" ")
+                .append("å¼€å§‹:"+open).append(" ")
+                .append("ç»“æŸ:"+close).append("")
+                .append("æ—¥æœŸ:" + date).append("\n");
 
         return sb.toString();
     }
