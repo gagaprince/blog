@@ -81,41 +81,30 @@ public class LittleWaveService {
     private SingleWaveModel appendBuy(WaveModel waveModel,SharesModel sharesModel,SingleWaveModel preSingleWaveModel){
         SingleWaveModel singleWaveModel = preSingleWaveModel.clonePre();
 
-        float buyPrice = singleWaveModel.getBuyPrice();
-        float sellPrice = singleWaveModel.getSellPrice();
-
         float closePrice = sharesModel.getClose();
         float lowPrice = sharesModel.getLow();
+        float highPrice = sharesModel.getHigh();
 
         int littleShareNum = waveModel.getWaveShareNum();
-
-        int currentShareNum = singleWaveModel.getCurrentShareNum();
-        //可以卖出的股票数量
-        int newBuyShareNum = singleWaveModel.getNewBuyShareNum();
-        float surplusMoney = singleWaveModel.getLiveMoney();
-
-        //模拟买入
-        while (lowPrice<buyPrice){
-            //可以买入
-            float useMoney = buyPrice*littleShareNum*100;
-            float surplusMoneyTemp = surplusMoney-useMoney;
-            if(surplusMoneyTemp>0){
-                //买入成功
-                currentShareNum+=littleShareNum;
-                surplusMoney = surplusMoneyTemp;
+        float waveSwing = waveModel.getWaveSwing();
+        //模拟
+        if(highPrice-closePrice>closePrice-lowPrice){
+            //上坡
+            while(highPrice>singleWaveModel.getSellPrice()){
+                singleWaveModel.sell(littleShareNum,waveSwing);
+            }
+            while(closePrice<singleWaveModel.getBuyPrice()){
+                singleWaveModel.buy(littleShareNum, waveSwing);
+            }
+        }else{
+            //下坡
+            while(lowPrice<singleWaveModel.getBuyPrice()){
+                singleWaveModel.buy(littleShareNum,waveSwing);
+            }
+            while(closePrice>singleWaveModel.getSellPrice()){
+                singleWaveModel.sell(littleShareNum,waveSwing);
             }
         }
-        if(closePrice>sellPrice){
-            //可以卖出
-            if(currentShareNum>littleShareNum){
-                currentShareNum-=littleShareNum;
-                surplusMoney+=sellPrice*littleShareNum*100;
-            }
-        }
-
-
-
-
         return singleWaveModel;
     }
     private List<SharesModel> getSharesByCodeAndDate(String codes,String start,String end){

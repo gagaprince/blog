@@ -24,6 +24,27 @@ public class SingleWaveModel {
         return sb.toString();
     }
 
+    public void sell(int num,float swing){
+        //计算剩余是否大于卖出
+        if(currentShareNum>num){
+            liveMoney += num*100*sellPrice;
+            currentShareNum -=num;
+            sellPrice+=swing;
+            buyPrice+=swing;
+        }
+    }
+
+    public void buy(int num,float swing){
+        //计算剩余是否可以买
+        float useMoney = num*100*buyPrice;
+        if(liveMoney>useMoney){
+            liveMoney-=useMoney;
+            newBuyShareNum+=num;
+            sellPrice-=swing;
+            buyPrice-=swing;
+        }
+    }
+
     public void cacuAll(){
         this.allMoney = liveMoney+sharePrice*currentShareNum*100;
         this.allShareNum = currentShareNum+newBuyShareNum;
