@@ -105,6 +105,7 @@ public class LittleWaveService {
                 singleWaveModel.sell(littleShareNum,waveSwing);
             }
         }
+        singleWaveModel.setSharePrice(sharesModel.getClose());
         singleWaveModel.cacuAll();
         return singleWaveModel;
     }
