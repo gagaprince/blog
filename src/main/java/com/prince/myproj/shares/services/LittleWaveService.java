@@ -21,7 +21,7 @@ public class LittleWaveService {
     @Autowired
     private SharesHistoryDataService sharesHistoryDataService;
 
-    public void beginWave(WaveModel waveModel){
+    public List<SingleWaveModel> beginWave(WaveModel waveModel){
         //根据起始日期 和 代码 选出一个数组
         String code = waveModel.getShareCode();
         String start = waveModel.getStartDate();
@@ -37,7 +37,7 @@ public class LittleWaveService {
 
         //首先投入一半的资金，然后进行策略迭代
         List<SingleWaveModel> singleWaveModels = cacularByWave(waveModel,sharesModels);
-
+        return singleWaveModels;
 
     }
     private List<SingleWaveModel> cacularByWave(WaveModel waveModel ,List<SharesModel> sharesModels){
@@ -105,6 +105,7 @@ public class LittleWaveService {
                 singleWaveModel.sell(littleShareNum,waveSwing);
             }
         }
+        singleWaveModel.cacuAll();
         return singleWaveModel;
     }
     private List<SharesModel> getSharesByCodeAndDate(String codes,String start,String end){
