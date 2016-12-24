@@ -4,6 +4,7 @@ package com.prince.myproj.shares.models;
  * Created by zidong.wang on 2016/12/22.
  */
 public class SingleWaveModel {
+    private float cbMoney=0;//成本资金
     private float liveMoney=0;
     private int currentShareNum=0;
     private int newBuyShareNum=0;
@@ -12,6 +13,9 @@ public class SingleWaveModel {
     private float buyPrice=0;
     private float sellPrice=0;
     private float allMoney=0;
+    private String today;
+    private float cbPrice=0;//成本
+
 
     public String toString(){
         StringBuffer sb = new StringBuffer();
@@ -20,34 +24,67 @@ public class SingleWaveModel {
                 .append("股价:" + sharePrice).append("\n")
                 .append("买入价格:" + buyPrice).append("\n")
                 .append("卖出价格:" + sellPrice).append("\n")
+                .append("成本价格:" + cbPrice).append("\n")
+                .append("盈亏:" + allShareNum*100*(sharePrice-cbPrice)).append("\n")
                 .append("总资产:" + allMoney).append("\n");
         return sb.toString();
     }
 
-    public void sell(int num,float swing){
+    public float getCbMoney() {
+        return cbMoney;
+    }
+
+    public void setCbMoney(float cbMoney) {
+        this.cbMoney = cbMoney;
+    }
+
+    public String getToday() {
+        return today;
+    }
+
+    public void setToday(String today) {
+        this.today = today;
+    }
+
+    public float getCbPrice() {
+        return cbPrice;
+    }
+
+    public void setCbPrice(float cbPrice) {
+        this.cbPrice = cbPrice;
+    }
+
+    public boolean sell(int num,float swing){
         //计算剩余是否大于卖出
-        if(currentShareNum>num){
+        if(currentShareNum>=num){
             liveMoney += num*100*sellPrice;
+            cbMoney -= num*100*sellPrice;
             currentShareNum -=num;
             sellPrice+=swing;
             buyPrice+=swing;
+            return true;
         }
+        return false;
     }
 
-    public void buy(int num,float swing){
+    public boolean buy(int num,float swing){
         //计算剩余是否可以买
         float useMoney = num*100*buyPrice;
         if(liveMoney>useMoney){
             liveMoney-=useMoney;
+            cbMoney += useMoney;
             newBuyShareNum+=num;
             sellPrice-=swing;
             buyPrice-=swing;
+            return true;
         }
+        return false;
     }
 
     public void cacuAll(){
-        this.allMoney = liveMoney+sharePrice*currentShareNum*100;
         this.allShareNum = currentShareNum+newBuyShareNum;
+        this.allMoney = liveMoney+sharePrice*allShareNum*100;
+        this.cbPrice = cbMoney/allShareNum/100;
     }
 
     public SingleWaveModel clonePre(){
@@ -59,6 +96,7 @@ public class SingleWaveModel {
         singleWaveModel.setCurrentShareNum(allShareNum);
         singleWaveModel.setLiveMoney(liveMoney);
         singleWaveModel.setSharePrice(sharePrice);
+        singleWaveModel.setCbMoney(cbMoney);
         return singleWaveModel;
     }
 

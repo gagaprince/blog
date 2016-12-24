@@ -72,9 +72,11 @@ public class LittleWaveService {
         singleWaveModel.setCurrentShareNum(buyNum);
         singleWaveModel.setLiveMoney(surplusMoney);
         singleWaveModel.setSharePrice(sharesModel.getClose());
+        singleWaveModel.setCbMoney(useMoney);
         singleWaveModel.cacuAll();
         singleWaveModel.setBuyPrice(nextBuyPrice);
         singleWaveModel.setSellPrice(nextSellPrice);
+        singleWaveModel.setToday(sharesModel.getDate());
 
         return singleWaveModel;
     }
@@ -87,26 +89,41 @@ public class LittleWaveService {
 
         int littleShareNum = waveModel.getWaveShareNum();
         float waveSwing = waveModel.getWaveSwing();
+        logger.info("收盘价："+closePrice+" 最高价："+highPrice+" 最低价："+lowPrice);
         //模拟
         if(highPrice-closePrice>closePrice-lowPrice){
             //上坡
             while(highPrice>singleWaveModel.getSellPrice()){
-                singleWaveModel.sell(littleShareNum,waveSwing);
+                logger.info("上坡 卖");
+                if(!singleWaveModel.sell(littleShareNum, waveSwing)){
+                    break;
+                }
             }
             while(closePrice<singleWaveModel.getBuyPrice()){
-                singleWaveModel.buy(littleShareNum, waveSwing);
+                logger.info("上坡 买");
+                if(!singleWaveModel.buy(littleShareNum, waveSwing)){
+                    break;
+                }
             }
         }else{
             //下坡
             while(lowPrice<singleWaveModel.getBuyPrice()){
-                singleWaveModel.buy(littleShareNum,waveSwing);
+                logger.info("下坡 买");
+                if(!singleWaveModel.buy(littleShareNum,waveSwing)){
+                    break;
+                }
             }
             while(closePrice>singleWaveModel.getSellPrice()){
-                singleWaveModel.sell(littleShareNum,waveSwing);
+                logger.info("下坡 卖");
+                if(!singleWaveModel.sell(littleShareNum,waveSwing)){
+                    break;
+                }
             }
         }
         singleWaveModel.setSharePrice(sharesModel.getClose());
         singleWaveModel.cacuAll();
+        singleWaveModel.setToday(sharesModel.getDate());
+        logger.info("单日结束："+singleWaveModel.toString());
         return singleWaveModel;
     }
     private List<SharesModel> getSharesByCodeAndDate(String codes,String start,String end){
