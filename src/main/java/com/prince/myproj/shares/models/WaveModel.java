@@ -8,8 +8,17 @@ public class WaveModel {
     private String endDate;
     private float waveSwing;
     private float initMoney;
+    private float initPercent;
     private String shareCode;
     private int waveShareNum;
+
+    public float getInitPercent() {
+        return initPercent;
+    }
+
+    public void setInitPercent(float initPercent) {
+        this.initPercent = initPercent;
+    }
 
     public int getWaveShareNum() {
         return waveShareNum;

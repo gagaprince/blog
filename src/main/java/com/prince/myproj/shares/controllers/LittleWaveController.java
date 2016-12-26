@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -30,9 +32,12 @@ public class LittleWaveController {
     @RequestMapping(value="/waveBegin",method = RequestMethod.POST)
     public String waveBegin(@RequestBody WaveModel waveModel){
 
-        List<SingleWaveModel> singleWaveModels = littleWaveService.beginWave(waveModel);
-
-
-        return JSON.toJSONString(singleWaveModels);
+        Map<String,List<SingleWaveModel>> singleWaveModelsMap = littleWaveService.beginWave(waveModel);
+        return JSON.toJSONString(singleWaveModelsMap);
+    }
+    @RequestMapping("/testWave")
+    public String testWave(HttpServletRequest request){
+        String codes = request.getParameter("codes");
+        return "";
     }
 }
