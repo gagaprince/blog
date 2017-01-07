@@ -10,8 +10,10 @@ var index = {
     _api:function(url,data,callback){
         $.ajax({
             url:url,
-            data:data,
+            data:JSON.stringify(data),
+            contentType:"application/json; charset=UTF-8",
             type : 'POST',
+            dataType : 'json',
             timeout : 3e4,
             success:function(res){
                 if(callback){
