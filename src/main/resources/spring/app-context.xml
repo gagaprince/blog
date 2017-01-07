@@ -61,4 +61,16 @@
         </property>
     </bean>
 
+    <bean id="textMsgCenter" class="com.prince.myproj.weixin.services.msgtool.TextMsgCenter">
+        <property name="msgType" value="text"></property>
+    </bean>
+
+    <bean id="msgCenterFactory" class="com.prince.myproj.weixin.services.msgtool.MsgCenterFactory">
+        <property name="msgCenterList">
+            <list>
+                <ref bean="textMsgCenter"></ref>
+            </list>
+        </property>
+    </bean>
+
 </beans>

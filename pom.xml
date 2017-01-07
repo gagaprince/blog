@@ -162,6 +162,12 @@
       <version>1.8.3</version>
     </dependency>
 
+
+    <!--mvn install:install-file -Dfile=ueditor-1.1.2.jar -DgroupId=org.apache.lucene -DartifactId=ueditor -Dversion=1.1.2 -Dpackaging=jar-->
+    <!--mvn install:install-file -Dfile=jcseg-core-1.9.6.jar -DgroupId=org.lionsoul.jcseg -DartifactId=jcseg-core -Dversion=1.9.6.RELEASE -Dpackaging=jar-->
+    <!--mvn install:install-file -Dfile=jcseg-analyzer-1.9.6.jar -DgroupId=org.lionsoul.jcseg -DartifactId=jcseg-analyzer -Dversion=1.9.6.RELEASE -Dpackaging=jar-->
+
+
     <dependency>
       <groupId>org.apache.lucene</groupId>
       <artifactId>lucene-queryparser</artifactId>

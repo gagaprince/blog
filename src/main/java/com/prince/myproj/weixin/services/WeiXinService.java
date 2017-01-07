@@ -21,8 +21,7 @@ public class WeiXinService {
 	private WeiXinConfig wxConfig;
 	@Autowired
 	private WeiXinErrorService wxErrorService;
-	@Autowired
-	private HttpUtil httpUtil;
+	private HttpUtil httpUtil = HttpUtil.getInstance();
 	
 	private static final Logger logger =  Logger.getLogger(WeiXinService.class);
 	/**
