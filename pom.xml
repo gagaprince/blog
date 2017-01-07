@@ -162,22 +162,22 @@
       <version>1.8.3</version>
     </dependency>
 
-    <!--<dependency>-->
-      <!--<groupId>org.apache.lucene</groupId>-->
-      <!--<artifactId>lucene-queryparser</artifactId>-->
-      <!--<version>5.4.0</version>-->
-    <!--</dependency>-->
+    <dependency>
+      <groupId>org.apache.lucene</groupId>
+      <artifactId>lucene-queryparser</artifactId>
+      <version>5.4.0</version>
+    </dependency>
 
-    <!--<dependency>-->
-      <!--<groupId>org.lionsoul.jcseg</groupId>-->
-      <!--<artifactId>jcseg-core</artifactId>-->
-      <!--<version>1.9.6.RELEASE</version>-->
-    <!--</dependency>-->
-    <!--<dependency>-->
-      <!--<groupId>org.lionsoul.jcseg</groupId>-->
-      <!--<artifactId>jcseg-analyzer</artifactId>-->
-      <!--<version>1.9.6.RELEASE</version>-->
-    <!--</dependency>-->
+    <dependency>
+      <groupId>org.lionsoul.jcseg</groupId>
+      <artifactId>jcseg-core</artifactId>
+      <version>1.9.6.RELEASE</version>
+    </dependency>
+    <dependency>
+      <groupId>org.lionsoul.jcseg</groupId>
+      <artifactId>jcseg-analyzer</artifactId>
+      <version>1.9.6.RELEASE</version>
+    </dependency>
 
     <dependency>
       <groupId>org.codehaus.jackson</groupId>
