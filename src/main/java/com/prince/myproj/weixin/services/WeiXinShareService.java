@@ -21,6 +21,10 @@ public class WeiXinShareService {
 	public WXShareConfigModel getCanUseShareConfig(HttpServletRequest request){
 		String url = getUrlFromReq(request);
 //		logger.info("url:"+url);
+		return getCanUseShareConfig(url);
+	}
+
+	public WXShareConfigModel getCanUseShareConfig(String url){
 		WXShareConfigModel shareModel = new WXShareConfigModel();
 		shareModel.setAppId(wxConfig.getWxBasic().getAppId());
 		shareModel.setTimestamp((new Date().getTime()/1000)+"");

@@ -3,9 +3,11 @@ package com.prince.myproj.weixin.controller;
 import com.alibaba.fastjson.JSON;
 import com.prince.myproj.weixin.bean.WXAccessToken;
 import com.prince.myproj.weixin.bean.WXIps;
+import com.prince.myproj.weixin.bean.WXShareConfigModel;
 import com.prince.myproj.weixin.services.WeiXinInService;
 import com.prince.myproj.weixin.services.WeiXinMsgService;
 import com.prince.myproj.weixin.services.WeiXinService;
+import com.prince.myproj.weixin.services.WeiXinShareService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -36,9 +38,13 @@ public class WXController {
 	private WeiXinInService wxInService;
 	@Autowired
 	private WeiXinMsgService wxMsgService;
+	@Autowired
+	private WeiXinShareService wxShareService;
 	
 	private static final Logger logger =  Logger.getLogger(WXController.class);
-	
+
+	private Thread self=null;
+
 	@RequestMapping(value = "/index")
 	@ResponseBody
 	public String wxCall(HttpServletRequest request){
@@ -66,11 +72,14 @@ public class WXController {
 	@ResponseBody
 	public String getWeiXinAccessToken(HttpServletRequest request, Model model){
 		WXAccessToken wxAccessToken = wxService.getCanUseToken();
+		if(self==null){
+			initSelfThread();
+		}
 		return wxAccessToken.getAccessToken();
 	}
 	@RequestMapping(value = "/reloadToken", method = RequestMethod.GET)
 	@ResponseBody
-	public String reloadWeiXinAccessToken(HttpServletRequest request, Model model){
+	public String reloadWeiXinAccessToken(){
 		wxService.reloadToken();
 		WXAccessToken wxAccessToken = wxService.getCanUseToken();
 		return wxAccessToken.getAccessToken();
@@ -85,7 +94,7 @@ public class WXController {
 	
 	@RequestMapping(value = "/reloadTicket", method = RequestMethod.GET)
 	@ResponseBody
-	public String reloadJsapiTicket(HttpServletRequest request){
+	public String reloadJsapiTicket(){
 		wxService.reloadTicket();
 		String ticket = wxService.getCanUseTicket();
 		return ticket;
@@ -98,7 +107,14 @@ public class WXController {
 		WXIps wxIps = wxService.iNeedWxIps();
 		return JSON.toJSONString(wxIps);
 	}
-	
+	@RequestMapping(value = "/getShareBisic")
+	@ResponseBody
+	public String getShareBisicMsg(HttpServletRequest request){
+		String url = request.getParameter("location");
+		WXShareConfigModel wxShareConfigModel = wxShareService.getCanUseShareConfig(url);
+		return JSON.toJSONString(wxShareConfigModel);
+	}
+
 	private String getRequestBody(HttpServletRequest request) throws IOException {
 		InputStreamReader isr = new InputStreamReader(request.getInputStream());
 		BufferedReader br = new BufferedReader(isr);
@@ -109,5 +125,22 @@ public class WXController {
 		}
 		br.close();
 		return sb.toString();
+	}
+	private void initSelfThread(){
+		final WXController _this = this;
+		self = new Thread(new Runnable() {
+			public void run() {
+				while(true){
+					try {
+						Thread.sleep(7100000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					_this.reloadJsapiTicket();
+					_this.reloadWeiXinAccessToken();
+				}
+			}
+		});
+		self.start();
 	}
 }
