@@ -61,12 +61,6 @@
     <orderEntry type="library" name="Maven: commons-collections:commons-collections:3.2.1" level="project" />
     <orderEntry type="library" name="Maven: net.sf.ezmorph:ezmorph:1.0.6" level="project" />
     <orderEntry type="library" name="Maven: org.jsoup:jsoup:1.8.3" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.lucene:lucene-queryparser:5.4.0" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.lucene:lucene-core:5.4.0" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.lucene:lucene-queries:5.4.0" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.lucene:lucene-sandbox:5.4.0" level="project" />
-    <orderEntry type="library" name="Maven: org.lionsoul.jcseg:jcseg-core:1.9.6.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.lionsoul.jcseg:jcseg-analyzer:1.9.6.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.jackson:jackson-mapper-asl:1.9.8" level="project" />
     <orderEntry type="library" name="Maven: org.codehaus.jackson:jackson-core-asl:1.9.8" level="project" />
     <orderEntry type="library" name="Maven: commons-configuration:commons-configuration:1.10" level="project" />
