@@ -1,7 +1,7 @@
 var index = {
     init:function(){
         this._api("/blog/wx/getShareBisic",{
-            location:window.location
+            location:window.location.href
         },function(res){
             console.log(res);
             $("body").html(JSON.stringify(res));

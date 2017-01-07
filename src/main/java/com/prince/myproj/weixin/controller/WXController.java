@@ -111,6 +111,7 @@ public class WXController {
 	@ResponseBody
 	public String getShareBisicMsg(HttpServletRequest request){
 		String url = request.getParameter("location");
+		logger.info(url);
 		WXShareConfigModel wxShareConfigModel = wxShareService.getCanUseShareConfig(url);
 		return JSON.toJSONString(wxShareConfigModel);
 	}
