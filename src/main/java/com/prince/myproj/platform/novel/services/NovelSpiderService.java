@@ -34,7 +34,7 @@ public class NovelSpiderService {
             NovelModel novelModel = new NovelModel();
             String contentStr = contentEle.html();
             contentStr = contentStr.replace("<br>\n<br>","<br/>");
-            logger.info(contentStr);
+//            logger.info(contentStr);
             novelModel.setContent(contentStr);
             ajaxModel.setStatus(ErrorCode.SUCCESS);
             ajaxModel.setData(novelModel);
