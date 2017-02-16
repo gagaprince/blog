@@ -88,7 +88,7 @@ public class NovelService {
         List<NovelModel>novelModels = novelDao.getAllNovels();
         novelListFilterDes(novelModels);
         Map<String,List> map = new HashMap<String, List>();
-        map.put("novelList",novelModels);
+        map.put("novelList", novelModels);
         ajaxModel.setData(map);
         ajaxModel.setStatus(ErrorCode.SUCCESS);
         return ajaxModel;
@@ -98,6 +98,21 @@ public class NovelService {
             NovelModel novelModel = novelModels.get(i);
             novelModel.setDescripe("");
         }
+    }
+
+    public AjaxModel giveMeNovelListPage(int pno,int psize){
+        AjaxModel ajaxModel = new AjaxModel();
+        Map<String,Object> map = new HashMap<String, Object>();
+        map.put("fromIndex",pno*psize);
+        map.put("toIndex",psize);
+
+        List<NovelModel>novelModels = novelDao.getNovelList(map);
+        novelListFilterDes(novelModels);
+        Map<String,List> returnmap = new HashMap<String, List>();
+        returnmap.put("novelList",novelModels);
+        ajaxModel.setData(returnmap);
+        ajaxModel.setStatus(ErrorCode.SUCCESS);
+        return ajaxModel;
     }
 
 }

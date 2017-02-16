@@ -53,4 +53,21 @@ public class NovelController {
         return ajaxModel;
     }
 
+    @RequestMapping(value = "/novelListPage")
+    @ResponseBody
+    public AjaxModel novelListPage(HttpServletRequest request){
+        String pnoStr = request.getParameter("pno");
+        if(pnoStr==null){
+            pnoStr="0";
+        }
+        int pno = Integer.parseInt(pnoStr);
+        String psizeStr = request.getParameter("psize");
+        if(psizeStr==null){
+            psizeStr="10";
+        }
+        int psize = Integer.parseInt(psizeStr);
+        AjaxModel ajaxModel = novelService.giveMeNovelListPage(pno,psize);
+        return ajaxModel;
+    }
+
 }
