@@ -5,4 +5,5 @@ package com.prince.myproj.platform.common.statics;
  */
 public class Constant {
     public static final String zw37Url="http://www.37zw.com/0/330/153065.html";
+    public static final String zw37AllUrl="http://www.37zw.com/xiaoshuodaquan/";
 }

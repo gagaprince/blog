@@ -1,16 +1,65 @@
 package com.prince.myproj.platform.novel.models;
 
+import java.util.Date;
+import java.util.List;
+
 /**
  * Created by zidong.wang on 2017/2/13.
  */
 public class NovelModel {
     private String name;
     private String author;
-    private String desc;
+    private String cate;
+    private String descripe;
     private long id;
     private String source;
+    private String sourceUrl;
     private String sourceId;
     private String content;
+    private Date createTime;
+    private Date updateTime;
+
+    public String getDescripe() {
+        return descripe;
+    }
+
+    public void setDescripe(String descripe) {
+        this.descripe = descripe;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    private List<ChapterModel> chapters;
+
+    public String getSourceUrl() {
+        return sourceUrl;
+    }
+
+    public void setSourceUrl(String sourceUrl) {
+        this.sourceUrl = sourceUrl;
+    }
+
+    public String getCate() {
+        return cate;
+    }
+
+    public void setCate(String cate) {
+        this.cate = cate;
+    }
 
     public String getContent() {
         return content;
@@ -28,9 +77,6 @@ public class NovelModel {
         return author;
     }
 
-    public String getDesc() {
-        return desc;
-    }
 
     public String getName() {
         return name;
@@ -48,9 +94,6 @@ public class NovelModel {
         this.author = author;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
-    }
 
     public void setId(long id) {
         this.id = id;
@@ -66,5 +109,13 @@ public class NovelModel {
 
     public void setSourceId(String sourceId) {
         this.sourceId = sourceId;
+    }
+
+    public List<ChapterModel> getChapters() {
+        return chapters;
+    }
+
+    public void setChapters(List<ChapterModel> chapters) {
+        this.chapters = chapters;
     }
 }

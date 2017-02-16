@@ -1,8 +1,6 @@
 package com.prince.myproj.platform.novel.controllers;
 
 import com.prince.myproj.platform.common.models.AjaxModel;
-import com.prince.myproj.platform.common.statics.ErrorCode;
-import com.prince.myproj.platform.novel.models.NovelModel;
 import com.prince.myproj.platform.novel.services.NovelService;
 import com.prince.myproj.platform.novel.services.NovelSpiderService;
 import org.apache.log4j.Logger;
@@ -18,23 +16,27 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Controller
 @RequestMapping("/blog/pl/nv")
-public class NovelController {
+public class NovelSpiderController {
 
-    private static final Logger logger =  Logger.getLogger(NovelController.class);
-
+    private static final Logger logger =  Logger.getLogger(NovelSpiderController.class);
 
     @Autowired
-    public NovelService novelService;
+    private NovelSpiderService novelSpiderService;
 
-    @RequestMapping(value = "/getNovelContent")
+
+    //  /blog/pl/nv/spiderAll
+    @RequestMapping(value = "/spiderAll")
     @ResponseBody
-    public String novelContent(HttpServletRequest request){
-        String pno = request.getParameter("pno");
-        logger.info(pno);
-        if(pno==null){
-            pno="0";
-        }
-        AjaxModel ajaxModel = novelService.spiderNovelByPno(pno);
+    public String spiderAll(HttpServletRequest request){
+        AjaxModel ajaxModel = novelSpiderService.spiderAll();
+        return ajaxModel.toString();
+    }
+
+    //  /blog/pl/nv/spiderUpdate
+    @RequestMapping(value = "/spiderUpdate")
+    @ResponseBody
+    public String spiderUpdate(){
+        AjaxModel ajaxModel = novelSpiderService.spiderUpdate();
         return ajaxModel.toString();
     }
 

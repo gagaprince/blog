@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.prince.myproj.platform.novel.dao.ChapterDao">
+    <resultMap id="ChapterModelResultMap" type="ChapterModel">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="novel_id" property="novelId" jdbcType="BIGINT" />
+        <result column="chapter" property="chapter" jdbcType="BIGINT" />
+        <result column="source_url" property="sourceUrl" jdbcType="VARCHAR" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="DATE" />
+        <result column="update_time" property="updateTime" jdbcType="DATE" />
+    </resultMap>
+
+    <insert id="save"
+            parameterType="ChapterModel"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into touch_novel_chapter(
+        <trim suffixOverrides=",">
+            <if test="id != null"> id ,</if>
+            <if test="novelId != null"> novel_id ,</if>
+            <if test="chapter != null"> chapter ,</if>
+            <if test="name != null"> name ,</if>
+            <if test="sourceUrl != null"> source_url ,</if>
+            <if test="createTime != null"> create_time ,</if>
+        </trim>
+        )values(
+        <trim suffixOverrides=",">
+            <if test="id != null"> #{id} ,</if>
+            <if test="novelId != null"> #{novelId} ,</if>
+            <if test="chapter != null"> #{chapter} ,</if>
+            <if test="name != null"> #{name} ,</if>
+            <if test="sourceUrl != null"> #{sourceUrl} ,</if>
+            <if test="createTime != null"> #{createTime} ,</if>
+        </trim>
+        )
+    </insert>
+
+    <!--<select id="getDailyById" parameterType="map"  resultMap="DailyModelResultMap">-->
+        <!--select * from daily s-->
+        <!--<where>-->
+            <!--1 = 1-->
+            <!--<if test="id != null">-->
+                <!--and s.id = #{id}-->
+            <!--</if>-->
+        <!--</where>-->
+    <!--</select>-->
+
+    <update id="update" parameterType="ChapterModel">
+        update  touch_novel_chapter
+        <trim prefix="set" suffixOverrides=",">
+            <if test="novelId != null">novel_id = #{novelId},</if>
+            <if test="chapter != null">chapter = #{chapter},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="sourceUrl != null">source_url = #{sourceUrl},</if>
+            <if test="createTime != null"> create_time = #{createTime} ,</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <select id="getChapterListByNovelId" parameterType="map" resultMap="ChapterModelResultMap">
+        select * from touch_novel_chapter s
+        <where>
+            1=1
+            <if test="novelId != null">
+                and s.novel_id = #{novelId}
+            </if>
+        </where>
+        order by chapter desc
+        <if test="fromIndex != null and toIndex != null">
+        limit #{fromIndex}, #{toIndex}
+        </if>
+    </select>
+</mapper>
