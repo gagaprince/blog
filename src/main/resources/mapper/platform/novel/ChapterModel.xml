@@ -59,6 +59,19 @@
         where id = #{id}
     </update>
 
+    <select id="getChapterByNovelIdAndChapter" parameterType="ChapterModel" resultMap="ChapterModelResultMap">
+        select * from touch_novel_chapter s
+        <where>
+            1=1
+            <if test="novelId != null">
+                and s.novel_id = #{novelId}
+            </if>
+            <if test="chapter != null">
+                and s.chapter = #{chapter}
+            </if>
+        </where>
+    </select>
+
     <select id="getChapterListByNovelId" parameterType="map" resultMap="ChapterModelResultMap">
         select * from touch_novel_chapter s
         <where>

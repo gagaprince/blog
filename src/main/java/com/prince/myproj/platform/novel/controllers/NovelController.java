@@ -28,14 +28,29 @@ public class NovelController {
 
     @RequestMapping(value = "/getNovelContent")
     @ResponseBody
-    public String novelContent(HttpServletRequest request){
-        String pno = request.getParameter("pno");
-        logger.info(pno);
-        if(pno==null){
-            pno="0";
+    public AjaxModel novelContent(HttpServletRequest request){
+        String chapterStr = request.getParameter("chapter");
+        if(chapterStr==null){
+            chapterStr="0";
         }
-        AjaxModel ajaxModel = novelService.spiderNovelByPno(pno);
-        return ajaxModel.toString();
+        String novelIdStr = request.getParameter("novelId");
+        if(novelIdStr==null){
+            AjaxModel ajaxModel = new AjaxModel();
+            ajaxModel.setStatus(ErrorCode.NOT_NOVEL_ID_ERROR);
+            return ajaxModel;
+        }
+        long chapter = Long.parseLong(chapterStr);
+        long novelId = Long.parseLong(novelIdStr);
+        AjaxModel ajaxModel = novelService.spiderNovelByNovelIdAndChapter(novelId, chapter);
+        return ajaxModel;
+    }
+
+
+    @RequestMapping(value = "/novelListAll")
+    @ResponseBody
+    public AjaxModel novelListAll(){
+        AjaxModel ajaxModel = novelService.giveMeNovelListAll();
+        return ajaxModel;
     }
 
 }

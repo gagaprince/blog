@@ -10,46 +10,30 @@ import com.prince.myproj.platform.common.statics.ErrorCode;
  */
 public class AjaxModel {
     private Object data;
-    private int code;
-    private String des;
+    private Map<String,Object> status;
 
-    public int getCode() {
-        return code;
-    }
 
     public Object getData() {
         return data;
     }
 
-    public String getDes() {
-        return des;
-    }
 
-    public void setCode(int code) {
-        this.code = code;
-    }
 
     public void setData(Object data) {
         this.data = data;
     }
 
-    public void setDes(String des) {
-        this.des = des;
-    }
 
     public void setStatus(ErrorCode c){
-        this.setCode(c.getCode());
-        this.setDes(c.getDes());
+        if(status==null){
+            status = new HashMap<String, Object>();
+        }
+        status.clear();
+        status.put("code",c.getCode());
+        status.put("des",c.getDes());
     }
 
-    @Override
-    public String toString() {
-        Map<String,Object> returnMap = new HashMap<String, Object>();
-        Map<String,Object> status = new HashMap<String, Object>();
-        status.put("code",code);
-        status.put("des",des);
-        returnMap.put("data",data);
-        returnMap.put("status",status);
-        return JSON.toJSONString(returnMap);
+    public Map<String, Object> getStatus() {
+        return status;
     }
 }

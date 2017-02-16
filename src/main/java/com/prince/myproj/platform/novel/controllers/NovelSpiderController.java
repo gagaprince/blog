@@ -27,17 +27,17 @@ public class NovelSpiderController {
     //  /blog/pl/nv/spiderAll
     @RequestMapping(value = "/spiderAll")
     @ResponseBody
-    public String spiderAll(HttpServletRequest request){
+    public AjaxModel spiderAll(HttpServletRequest request){
         AjaxModel ajaxModel = novelSpiderService.spiderAll();
-        return ajaxModel.toString();
+        return ajaxModel;
     }
 
     //  /blog/pl/nv/spiderUpdate
     @RequestMapping(value = "/spiderUpdate")
     @ResponseBody
-    public String spiderUpdate(){
+    public AjaxModel spiderUpdate(){
         AjaxModel ajaxModel = novelSpiderService.spiderUpdate();
-        return ajaxModel.toString();
+        return ajaxModel;
     }
 
 }

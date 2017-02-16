@@ -12,5 +12,6 @@ public interface ChapterDao {
     public void save(ChapterModel chapterModel);
     public void update(ChapterModel chapterModel);
     public List<ChapterModel> getChapterListByNovelId(Map<String,Long> idMap);
+    public ChapterModel getChapterByNovelIdAndChapter(ChapterModel chapterModel);
 
 }
