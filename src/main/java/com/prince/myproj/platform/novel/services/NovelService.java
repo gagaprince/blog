@@ -41,6 +41,7 @@ public class NovelService {
         ChapterModel chapterModel = getChapterByNovelIdAndChapter(novelId, chapter);
 
         if(novelModel!=null&&chapterModel!=null){
+            novelModel.setChapterTitle(chapterModel.getName());
             String novelSourceUrl = novelModel.getSourceUrl();
             String chapterSourceUrl = chapterModel.getSourceUrl();
             String url = novelSourceUrl+chapterSourceUrl;

@@ -18,6 +18,15 @@ public class NovelModel {
     private String content;
     private Date createTime;
     private Date updateTime;
+    private String chapterTitle;
+
+    public String getChapterTitle() {
+        return chapterTitle;
+    }
+
+    public void setChapterTitle(String chapterTitle) {
+        this.chapterTitle = chapterTitle;
+    }
 
     public String getDescripe() {
         return descripe;

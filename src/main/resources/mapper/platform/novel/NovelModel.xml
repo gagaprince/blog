@@ -103,7 +103,6 @@
                 and s.cate = #{cate}
             </if>
         </where>
-        order by create_time desc
         <if test="fromIndex != null and toIndex != null">
         limit #{fromIndex}, #{toIndex}
         </if>
