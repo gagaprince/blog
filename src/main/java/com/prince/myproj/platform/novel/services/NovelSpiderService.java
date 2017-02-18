@@ -206,10 +206,10 @@ public class NovelSpiderService {
     }
 
     private ChapterModel getLastestChapter(NovelModel novelModel){
-        Map<String,Long> params = new HashMap<String,Long>();
+        Map<String,Object> params = new HashMap<String,Object>();
         params.put("novelId",novelModel.getId());
-        params.put("fromIndex",0L);
-        params.put("toIndex",1L);
+        params.put("fromIndex",0);
+        params.put("toIndex",1);
 
         List<ChapterModel> chapterModelsInDB = chapterDao.getChapterListByNovelId(params);
         if (chapterModelsInDB.size()>0){

@@ -116,4 +116,18 @@ public class NovelService {
         return ajaxModel;
     }
 
+    public AjaxModel giveMeNovelIndexListPage(long novelId,int pno,int psize){
+        AjaxModel ajaxModel = new AjaxModel();
+        Map<String,Object> map = new HashMap<String, Object>();
+        map.put("fromIndex",pno*psize);
+        map.put("toIndex",psize);
+        map.put("novelId", novelId);
+        List<ChapterModel> chapterModels = chapterDao.getChapterListByNovelId(map);
+        Map<String,List> returnmap = new HashMap<String, List>();
+        returnmap.put("indexList",chapterModels);
+        ajaxModel.setData(returnmap);
+        ajaxModel.setStatus(ErrorCode.SUCCESS);
+        return ajaxModel;
+    }
+
 }

@@ -66,7 +66,28 @@ public class NovelController {
             psizeStr="10";
         }
         int psize = Integer.parseInt(psizeStr);
-        AjaxModel ajaxModel = novelService.giveMeNovelListPage(pno,psize);
+        AjaxModel ajaxModel = novelService.giveMeNovelListPage(pno, psize);
+        return ajaxModel;
+    }
+    @RequestMapping(value = "/novelIndexListPage")
+    @ResponseBody
+    public AjaxModel novelIndexListPage(HttpServletRequest request){
+        String pnoStr = request.getParameter("pno");
+        if(pnoStr==null){
+            pnoStr="0";
+        }
+        int pno = Integer.parseInt(pnoStr);
+        String psizeStr = request.getParameter("psize");
+        if(psizeStr==null){
+            psizeStr="10";
+        }
+        String novelIdStr = request.getParameter("novelId");
+        if(novelIdStr==null){
+            novelIdStr="140";
+        }
+        long novelId = Long.parseLong(novelIdStr);
+        int psize = Integer.parseInt(psizeStr);
+        AjaxModel ajaxModel = novelService.giveMeNovelIndexListPage(novelId, pno, psize);
         return ajaxModel;
     }
 
