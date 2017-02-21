@@ -67,7 +67,7 @@ public class CheckTask {
             String todayContent = httpUtil.getContentByUrl(url);
             parseContent(todayContent);
         }else{
-            logger.info("检测队列为空");
+//            logger.info("检测队列为空");
         }
 
     }

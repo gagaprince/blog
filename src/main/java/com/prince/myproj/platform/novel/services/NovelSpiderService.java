@@ -187,7 +187,7 @@ public class NovelSpiderService {
 
     private void updateOneNovel(NovelModel novelModel){
         String sourceUrl = novelModel.getSourceUrl();
-        logger.info(sourceUrl);
+//        logger.info(sourceUrl);
         String htmlContent = httpUtil.getContentByUrl(sourceUrl);
         Document doc = Jsoup.parse(htmlContent);
         List<ChapterModel> chapterModels = parseChaptersByDoc(doc);
