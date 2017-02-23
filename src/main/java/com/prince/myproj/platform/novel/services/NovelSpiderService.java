@@ -138,6 +138,16 @@ public class NovelSpiderService {
                 }
             }
         }
+        //封面
+        String cover = this.parseCover(doc);
+        novelModel.setCover(cover);
+    }
+
+    private String parseCover(Document doc){
+        Element imgP = doc.getElementById("fmimg");
+        Element coverImg = imgP.getElementsByTag("img").get(0);
+        String cover = coverImg.attr("src");
+        return cover;
     }
 
     private void spiderOneNovelChapters(NovelModel novelModel,Document doc){
@@ -168,14 +178,14 @@ public class NovelSpiderService {
     }
 
     //更新
-    public AjaxModel spiderUpdate(){
+    public AjaxModel spiderUpdate(String type){
         AjaxModel ajaxModel = new AjaxModel();
 
         List<NovelModel> allNovels = novelDao.getAllNovels();
         for(int i=0;i<allNovels.size();i++){
             NovelModel novelModel = allNovels.get(i);
             try {
-                updateOneNovel(novelModel);
+                updateOneNovel(novelModel,type);
             }catch (Exception e){
                 e.printStackTrace();
             }
@@ -185,7 +195,7 @@ public class NovelSpiderService {
         return ajaxModel;
     }
 
-    private void updateOneNovel(NovelModel novelModel){
+    private void updateOneNovel(NovelModel novelModel,String type){
         String sourceUrl = novelModel.getSourceUrl();
 //        logger.info(sourceUrl);
         String htmlContent = httpUtil.getContentByUrl(sourceUrl);
@@ -208,6 +218,12 @@ public class NovelSpiderService {
             chapterModel.setNovelId(novelId);
             chapterModel.setCreateTime(new Date());
             chapterDao.save(chapterModel);
+        }
+        if(type.equals("1")){
+            //需要更新封面
+            String cover = this.parseCover(doc);
+            novelModel.setCover(cover);
+            novelDao.update(novelModel);
         }
     }
 

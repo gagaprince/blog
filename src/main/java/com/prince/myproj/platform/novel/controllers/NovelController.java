@@ -90,5 +90,16 @@ public class NovelController {
         AjaxModel ajaxModel = novelService.giveMeNovelIndexListPage(novelId, pno, psize);
         return ajaxModel;
     }
+    @RequestMapping(value = "/novelRandomBooks")
+    @ResponseBody
+    public AjaxModel randomBooks(HttpServletRequest request){
+        String numStr = request.getParameter("num");
+        if(numStr==null){
+            numStr = "3";
+        }
+        int num = Integer.parseInt(numStr);
+        AjaxModel ajaxModel = novelService.givemeRandomBooks(num);
+        return ajaxModel;
+    }
 
 }

@@ -9,6 +9,7 @@
         <result column="author" property="author" jdbcType="VARCHAR" />
         <result column="descripe" property="descripe" jdbcType="VARCHAR" />
         <result column="cate" property="cate" jdbcType="VARCHAR" />
+        <result column="cover" property="cover" jdbcType="VARCHAR" />
         <result column="source" property="source" jdbcType="VARCHAR" />
         <result column="source_url" property="sourceUrl" jdbcType="VARCHAR" />
         <result column="create_time" property="createTime" jdbcType="DATE" />
@@ -25,6 +26,7 @@
             <if test="author != null"> author ,</if>
             <if test="cate != null"> cate ,</if>
             <if test="descripe != null"> descripe ,</if>
+            <if test="cover != null"> cover ,</if>
             <if test="source != null"> source ,</if>
             <if test="sourceUrl != null"> source_url ,</if>
             <if test="createTime != null"> create_time ,</if>
@@ -37,6 +39,7 @@
             <if test="author != null"> #{author} ,</if>
             <if test="cate != null"> #{cate} ,</if>
             <if test="descripe != null"> #{descripe} ,</if>
+            <if test="cover != null"> #{cover} ,</if>
             <if test="source != null"> #{source} ,</if>
             <if test="sourceUrl != null"> #{sourceUrl} ,</if>
             <if test="createTime != null"> #{createTime} ,</if>
@@ -62,6 +65,7 @@
             <if test="author != null">author = #{author},</if>
             <if test="cate != null">cate = #{cate},</if>
             <if test="descripe != null">descripe = #{descripe},</if>
+            <if test="cover != null">cover = #{cover},</if>
             <if test="source != null">source = #{source},</if>
             <if test="sourceUrl != null"> source_url = #{sourceUrl} ,</if>
             <if test="createTime != null"> create_time = #{createTime} ,</if>

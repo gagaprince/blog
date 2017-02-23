@@ -19,6 +19,15 @@ public class NovelModel {
     private Date createTime;
     private Date updateTime;
     private String chapterTitle;
+    private String cover;
+
+    public String getCover() {
+        return cover;
+    }
+
+    public void setCover(String cover) {
+        this.cover = cover;
+    }
 
     public String getChapterTitle() {
         return chapterTitle;

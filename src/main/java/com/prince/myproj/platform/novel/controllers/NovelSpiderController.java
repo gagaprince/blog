@@ -35,8 +35,12 @@ public class NovelSpiderController {
     //  /blog/pl/nv/spiderUpdate
     @RequestMapping(value = "/spiderUpdate")
     @ResponseBody
-    public AjaxModel spiderUpdate(){
-        AjaxModel ajaxModel = novelSpiderService.spiderUpdate();
+    public AjaxModel spiderUpdate(HttpServletRequest request){
+        String type = request.getParameter("type");
+        if(type==null){
+            type="0";
+        }
+        AjaxModel ajaxModel = novelSpiderService.spiderUpdate(type);
         return ajaxModel;
     }
 

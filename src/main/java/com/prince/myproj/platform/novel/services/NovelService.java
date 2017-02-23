@@ -15,9 +15,7 @@ import org.jsoup.nodes.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by zidong.wang on 2017/2/13.
@@ -103,17 +101,21 @@ public class NovelService {
 
     public AjaxModel giveMeNovelListPage(int pno,int psize){
         AjaxModel ajaxModel = new AjaxModel();
-        Map<String,Object> map = new HashMap<String, Object>();
-        map.put("fromIndex",pno*psize);
-        map.put("toIndex",psize);
-
-        List<NovelModel>novelModels = novelDao.getNovelList(map);
+        List<NovelModel>novelModels = this.giveMeNovelModelListPage(pno,psize);
         novelListFilterDes(novelModels);
         Map<String,List> returnmap = new HashMap<String, List>();
         returnmap.put("novelList",novelModels);
         ajaxModel.setData(returnmap);
         ajaxModel.setStatus(ErrorCode.SUCCESS);
         return ajaxModel;
+    }
+
+    private List<NovelModel> giveMeNovelModelListPage(int pno,int psize){
+        Map<String,Object> map = new HashMap<String, Object>();
+        map.put("fromIndex",pno * psize);
+        map.put("toIndex",psize);
+        List<NovelModel>novelModels = novelDao.getNovelList(map);
+        return novelModels;
     }
 
     public AjaxModel giveMeNovelIndexListPage(long novelId,int pno,int psize){
@@ -130,4 +132,29 @@ public class NovelService {
         return ajaxModel;
     }
 
+    //获取随机的书本
+    public AjaxModel givemeRandomBooks(int num){
+        List<NovelModel> novelModels = this.giveMeNovelModelListPage(0,50);
+        int size = novelModels.size();
+        List<NovelModel> returnNovelModels = null;
+        if(num>=size){
+            returnNovelModels = novelModels;
+        }else{
+            returnNovelModels = new ArrayList<NovelModel>();
+            Random r = new Random();
+            for(int i=0;i<num;i++){
+                int index = r.nextInt(size);
+                NovelModel add = novelModels.get(index);
+                if(returnNovelModels.contains(add)){
+                    i--;
+                }else{
+                    returnNovelModels.add(add);
+                }
+            }
+        }
+        AjaxModel ajaxModel = new AjaxModel();
+        ajaxModel.setData(returnNovelModels);
+        ajaxModel.setStatus(ErrorCode.SUCCESS);
+        return ajaxModel;
+    }
 }
