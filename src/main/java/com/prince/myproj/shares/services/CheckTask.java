@@ -61,7 +61,6 @@ public class CheckTask {
 
     public void runTaskOne(){
         String url = parseUrl();
-        logger.info(url);
         if(url!=null){
             HttpUtil httpUtil = HttpUtil.getInstance();
             String todayContent = httpUtil.getContentByUrl(url);
