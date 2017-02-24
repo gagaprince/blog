@@ -9,6 +9,7 @@ import com.prince.myproj.platform.novel.models.ChapterModel;
 import com.prince.myproj.platform.novel.models.NovelModel;
 import com.prince.util.httputil.HttpUtil;
 import org.apache.log4j.Logger;
+import org.aspectj.weaver.AjAttribute;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -112,10 +113,18 @@ public class NovelService {
 
     private List<NovelModel> giveMeNovelModelListPage(int pno,int psize){
         Map<String,Object> map = new HashMap<String, Object>();
-        map.put("fromIndex",pno * psize);
-        map.put("toIndex",psize);
+        map.put("fromIndex", pno * psize);
+        map.put("toIndex", psize);
         List<NovelModel>novelModels = novelDao.getNovelList(map);
         return novelModels;
+    }
+
+    public AjaxModel giveMeNovelById(long novelId){
+        NovelModel novelModel = this.getNovelById(novelId);
+        AjaxModel ajaxModel = new AjaxModel();
+        ajaxModel.setData(novelModel);
+        ajaxModel.setStatus(ErrorCode.SUCCESS);
+        return ajaxModel;
     }
 
     public AjaxModel giveMeNovelIndexListPage(long novelId,int pno,int psize){
@@ -134,13 +143,17 @@ public class NovelService {
 
     //获取随机的书本
     public AjaxModel givemeRandomBooks(int num){
+        NovelModel novelModel = this.getNovelById(6);
         List<NovelModel> novelModels = this.giveMeNovelModelListPage(0,50);
         int size = novelModels.size();
         List<NovelModel> returnNovelModels = null;
+        num--;
         if(num>=size){
             returnNovelModels = novelModels;
+            returnNovelModels.add(novelModel);
         }else{
             returnNovelModels = new ArrayList<NovelModel>();
+            returnNovelModels.add(novelModel);
             Random r = new Random();
             for(int i=0;i<num;i++){
                 int index = r.nextInt(size);
@@ -152,6 +165,7 @@ public class NovelService {
                 }
             }
         }
+
         AjaxModel ajaxModel = new AjaxModel();
         ajaxModel.setData(returnNovelModels);
         ajaxModel.setStatus(ErrorCode.SUCCESS);

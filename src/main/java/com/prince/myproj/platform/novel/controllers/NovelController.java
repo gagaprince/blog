@@ -5,6 +5,7 @@ import com.prince.myproj.platform.common.statics.ErrorCode;
 import com.prince.myproj.platform.novel.models.NovelModel;
 import com.prince.myproj.platform.novel.services.NovelService;
 import com.prince.myproj.platform.novel.services.NovelSpiderService;
+import com.prince.myproj.util.StringUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,18 +30,13 @@ public class NovelController {
     @RequestMapping(value = "/getNovelContent")
     @ResponseBody
     public AjaxModel novelContent(HttpServletRequest request){
-        String chapterStr = request.getParameter("chapter");
-        if(chapterStr==null){
-            chapterStr="0";
-        }
-        String novelIdStr = request.getParameter("novelId");
-        if(novelIdStr==null){
+        long chapter = StringUtil.parseLongFromRequest(request,"chapter",0);
+        long novelId = StringUtil.parseLongFromRequest(request,"novelId",-1);
+        if(novelId==-1){
             AjaxModel ajaxModel = new AjaxModel();
             ajaxModel.setStatus(ErrorCode.NOT_NOVEL_ID_ERROR);
             return ajaxModel;
         }
-        long chapter = Long.parseLong(chapterStr);
-        long novelId = Long.parseLong(novelIdStr);
         AjaxModel ajaxModel = novelService.spiderNovelByNovelIdAndChapter(novelId, chapter);
         return ajaxModel;
     }
@@ -56,50 +52,40 @@ public class NovelController {
     @RequestMapping(value = "/novelListPage")
     @ResponseBody
     public AjaxModel novelListPage(HttpServletRequest request){
-        String pnoStr = request.getParameter("pno");
-        if(pnoStr==null){
-            pnoStr="0";
-        }
-        int pno = Integer.parseInt(pnoStr);
-        String psizeStr = request.getParameter("psize");
-        if(psizeStr==null){
-            psizeStr="10";
-        }
-        int psize = Integer.parseInt(psizeStr);
+        int pno = StringUtil.parseIntFromRequest(request,"pno",0);
+        int psize = StringUtil.parseIntFromRequest(request, "psize", 10);
         AjaxModel ajaxModel = novelService.giveMeNovelListPage(pno, psize);
         return ajaxModel;
     }
     @RequestMapping(value = "/novelIndexListPage")
     @ResponseBody
     public AjaxModel novelIndexListPage(HttpServletRequest request){
-        String pnoStr = request.getParameter("pno");
-        if(pnoStr==null){
-            pnoStr="0";
-        }
-        int pno = Integer.parseInt(pnoStr);
-        String psizeStr = request.getParameter("psize");
-        if(psizeStr==null){
-            psizeStr="10";
-        }
-        String novelIdStr = request.getParameter("novelId");
-        if(novelIdStr==null){
-            novelIdStr="140";
-        }
-        long novelId = Long.parseLong(novelIdStr);
-        int psize = Integer.parseInt(psizeStr);
+        int pno = StringUtil.parseIntFromRequest(request, "pno", 0);
+        int psize = StringUtil.parseIntFromRequest(request, "psize", 10);
+        long novelId = StringUtil.parseLongFromRequest(request, "novelId", 140);
         AjaxModel ajaxModel = novelService.giveMeNovelIndexListPage(novelId, pno, psize);
         return ajaxModel;
     }
     @RequestMapping(value = "/novelRandomBooks")
     @ResponseBody
     public AjaxModel randomBooks(HttpServletRequest request){
-        String numStr = request.getParameter("num");
-        if(numStr==null){
-            numStr = "3";
-        }
-        int num = Integer.parseInt(numStr);
+        int num = StringUtil.parseIntFromRequest(request, "num", 3);
         AjaxModel ajaxModel = novelService.givemeRandomBooks(num);
         return ajaxModel;
+    }
+
+    @RequestMapping(value = "/novelById")
+    @ResponseBody
+    public AjaxModel novelById(HttpServletRequest request){
+        long novelId = StringUtil.parseLongFromRequest(request,"id",-1);
+        if(novelId==-1){
+            AjaxModel ajaxModel = new AjaxModel();
+            ajaxModel.setStatus(ErrorCode.NOT_FIND_ERROR);
+            return ajaxModel;
+        }
+        AjaxModel ajaxModel = novelService.giveMeNovelById(novelId);
+        return  ajaxModel;
+
     }
 
 }
