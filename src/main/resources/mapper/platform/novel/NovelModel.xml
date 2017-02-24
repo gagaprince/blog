@@ -84,6 +84,17 @@
         </where>
     </select>
 
+    <select id="getNovel" parameterType="map" resultMap="NovelModelResultMap">
+        select * from touch_novel s
+        <where>
+            1=1
+            <if test="name != null">
+                and s.name = #{name}
+            </if>
+        </where>
+    </select>
+
+
     <select id="getNovelBySourceUrl" parameterType="map" resultMap="NovelModelResultMap">
         select * from touch_novel s
         <where>

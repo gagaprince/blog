@@ -73,6 +73,12 @@ public class NovelService {
         return novelDao.getNovelById(map);
     }
 
+    public NovelModel getNovelByName(String name){
+        Map<String,Object> map=new HashMap<String, Object>();
+        map.put("name",name);
+        return novelDao.getNovel(map);
+    }
+
     public ChapterModel getChapterByNovelIdAndChapter(long novelId,long chapter){
         ChapterModel chapterModel = new ChapterModel();
         chapterModel.setNovelId(novelId);
@@ -143,7 +149,7 @@ public class NovelService {
 
     //获取随机的书本
     public AjaxModel givemeRandomBooks(int num){
-        NovelModel novelModel = this.getNovelById(6);
+        NovelModel novelModel = this.getNovelByName("大主宰");
         List<NovelModel> novelModels = this.giveMeNovelModelListPage(0,50);
         int size = novelModels.size();
         List<NovelModel> returnNovelModels = null;
