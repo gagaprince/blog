@@ -125,8 +125,15 @@ public class NovelService {
         return novelModels;
     }
 
-    public AjaxModel giveMeNovelById(long novelId){
+    public AjaxModel giveMeNovelById(long novelId,int needAll){
         NovelModel novelModel = this.getNovelById(novelId);
+        if(needAll==1){
+            //添加章节信息
+            Map<String,Object> map = new HashMap<String, Object>();
+            map.put("novelId", novelId);
+            List<ChapterModel> chapterModels = chapterDao.getChapterListByNovelId(map);
+            novelModel.setChapters(chapterModels);
+        }
         AjaxModel ajaxModel = new AjaxModel();
         ajaxModel.setData(novelModel);
         ajaxModel.setStatus(ErrorCode.SUCCESS);

@@ -83,7 +83,8 @@ public class NovelController {
             ajaxModel.setStatus(ErrorCode.NOT_FIND_ERROR);
             return ajaxModel;
         }
-        AjaxModel ajaxModel = novelService.giveMeNovelById(novelId);
+        int needAll = StringUtil.parseIntFromRequest(request,"needAll",0);
+        AjaxModel ajaxModel = novelService.giveMeNovelById(novelId,needAll);
         return  ajaxModel;
 
     }

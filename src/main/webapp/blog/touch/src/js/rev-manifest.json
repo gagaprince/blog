@@ -1,7 +1,8 @@
 {
-  "bookshelf.js": "bookshelf-949e7458a5.js",
+  "bookshelf.js": "bookshelf-81e5130ebf.js",
   "index.js": "index-7d9a4dd686.js",
-  "novelIndexList.js": "novelIndexList-c4759517e8.js",
-  "novelList.js": "novelList-ed842d6915.js",
-  "novelread.js": "novelread-8fec233dad.js"
+  "novelDetail.js": "novelDetail-d8b744f6cf.js",
+  "novelIndexList.js": "novelIndexList-0ed2b9b69a.js",
+  "novelList.js": "novelList-685723e263.js",
+  "novelread.js": "novelread-e85c054870.js"
 }
