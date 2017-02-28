@@ -184,4 +184,48 @@ public class NovelService {
         ajaxModel.setStatus(ErrorCode.SUCCESS);
         return ajaxModel;
     }
+
+    public List<NovelModel> giveMeRecommendList(){
+        List<String> nameList = new ArrayList<String>();
+        nameList.add("大主宰");
+        nameList.add("武动乾坤");
+        nameList.add("斗破苍穹");
+        List<NovelModel> novelModels = novelDao.getNovelListByNames(nameList);
+        return novelModels;
+    }
+
+    public List<NovelModel> giveMeBoyRecommendList(int num){
+        List<String> keyList = new ArrayList<String>();
+        keyList.add("斗");
+        return giveMeRecommendListByKeyList(keyList,num);
+    }
+
+    public List<NovelModel> giveMeGirlRecommendList(int num){
+        List<String> keyList = new ArrayList<String>();
+        keyList.add("霸道");
+        keyList.add("少爷");
+        keyList.add("极品");
+        return giveMeRecommendListByKeyList(keyList,num);
+    }
+
+    public List<NovelModel> giveMeRecommendListByKeyList(List<String>keyList, int num){
+        List<NovelModel> novelModels = new ArrayList<NovelModel>();
+
+        List<NovelModel> novelModels1 = novelDao.getNovelListByNameKey(keyList);
+        Random r = new Random();
+        int size = novelModels1.size();
+        if(size>0){
+            for(int i=0;i<size&&i<num;i++){
+                int index = r.nextInt(size);
+                NovelModel novelModel = novelModels1.get(index);
+                if(novelModels.contains(novelModel)){
+                    i--;
+                }else{
+                    novelModels.add(novelModel);
+                }
+            }
+        }
+
+        return novelModels;
+    }
 }

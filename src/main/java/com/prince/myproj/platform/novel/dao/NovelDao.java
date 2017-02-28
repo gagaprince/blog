@@ -16,5 +16,8 @@ public interface NovelDao {
     public NovelModel getNovelBySourceUrl(NovelModel novelModel);
     public List<NovelModel> getAllNovels();
     public List<NovelModel> getNovelList(Map<String,Object> cateMap);
+    public List<NovelModel> getNovelListByNameKey(List<String> keyList);
+    public List<NovelModel> getUpdateList();
+    public List<NovelModel> getNovelListByNames(List<String> nameList);
 
 }

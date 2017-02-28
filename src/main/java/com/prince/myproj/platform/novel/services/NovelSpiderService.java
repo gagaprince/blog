@@ -225,6 +225,9 @@ public class NovelSpiderService {
             novelModel.setCover(cover);
             novelDao.update(novelModel);
         }
+        //最后需要更新novelmodel的updatetime
+        novelModel.setUpdateTime(new Date());
+        novelDao.update(novelModel);
     }
 
     private ChapterModel getLastestChapter(NovelModel novelModel){

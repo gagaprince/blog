@@ -122,4 +122,31 @@
         limit #{fromIndex}, #{toIndex}
         </if>
     </select>
+    <select id="getNovelListByNameKey" parameterType="java.util.List" resultMap="NovelModelResultMap">
+        select * from touch_novel s
+        <where>
+            1=0
+            <foreach collection="list" item="item" open="" separator="" close="">
+                or s.name like '%${item}%'
+            </foreach>
+        </where>
+        limit 100
+    </select>
+
+    <select id="getUpdateList" resultMap="NovelModelResultMap">
+        select * from touch_novel s order by update_time desc limit 100;
+    </select>
+
+    <select id="getNovelListByNames" parameterType="java.util.List" resultMap="NovelModelResultMap">
+        select * from touch_novel s
+        <where>
+            1=1
+            and s.name in
+            <foreach collection="list" item="item" open="(" separator="," close=")">
+                 #{item}
+            </foreach>
+        </where>
+    </select>
+
+
 </mapper>

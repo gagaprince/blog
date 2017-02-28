@@ -13,6 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * Created by zidong.wang on 2017/2/13.
@@ -84,9 +88,30 @@ public class NovelController {
             return ajaxModel;
         }
         int needAll = StringUtil.parseIntFromRequest(request,"needAll",0);
-        AjaxModel ajaxModel = novelService.giveMeNovelById(novelId,needAll);
+        AjaxModel ajaxModel = novelService.giveMeNovelById(novelId, needAll);
         return  ajaxModel;
 
+    }
+
+    @RequestMapping(value = "/recommendPage")
+    @ResponseBody
+    public AjaxModel recommendPage(HttpServletRequest request){
+        AjaxModel ajaxModel = new AjaxModel();
+
+        Map<String,Object> map = new HashMap<String,Object>();
+
+        List<NovelModel> recommendList = novelService.giveMeRecommendList();
+        map.put("recommend",recommendList);
+
+        List<NovelModel> recommendBoyList = novelService.giveMeBoyRecommendList(6);
+        map.put("boy",recommendBoyList);
+
+        List<NovelModel> recommendGirList = novelService.giveMeGirlRecommendList(6);
+        map.put("girl",recommendGirList);
+
+        ajaxModel.setData(map);
+        ajaxModel.setStatus(ErrorCode.SUCCESS);
+        return ajaxModel;
     }
 
 }
