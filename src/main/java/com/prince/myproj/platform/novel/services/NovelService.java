@@ -108,8 +108,8 @@ public class NovelService {
 
     public AjaxModel giveMeNovelListPage(int pno,int psize){
         AjaxModel ajaxModel = new AjaxModel();
-        List<NovelModel>novelModels = this.giveMeNovelModelListPage(pno,psize);
-        novelListFilterDes(novelModels);
+        List<NovelModel>novelModels = this.giveMeNovelModelListPage(pno,psize,null);
+//        novelListFilterDes(novelModels);
         Map<String,List> returnmap = new HashMap<String, List>();
         returnmap.put("novelList",novelModels);
         ajaxModel.setData(returnmap);
@@ -117,10 +117,24 @@ public class NovelService {
         return ajaxModel;
     }
 
-    private List<NovelModel> giveMeNovelModelListPage(int pno,int psize){
+    public AjaxModel giveMeNovelCateListPage(int pno,int psize,String cate){
+        AjaxModel ajaxModel = new AjaxModel();
+        List<NovelModel>novelModels = this.giveMeNovelModelListPage(pno,psize,cate);
+//        novelListFilterDes(novelModels);
+        Map<String,List> returnmap = new HashMap<String, List>();
+        returnmap.put("novelList",novelModels);
+        ajaxModel.setData(returnmap);
+        ajaxModel.setStatus(ErrorCode.SUCCESS);
+        return ajaxModel;
+    }
+
+    private List<NovelModel> giveMeNovelModelListPage(int pno,int psize,String cate){
         Map<String,Object> map = new HashMap<String, Object>();
         map.put("fromIndex", pno * psize);
         map.put("toIndex", psize);
+        if(cate!=null){
+            map.put("cate",cate);
+        }
         List<NovelModel>novelModels = novelDao.getNovelList(map);
         return novelModels;
     }
@@ -157,7 +171,7 @@ public class NovelService {
     //获取随机的书本
     public AjaxModel givemeRandomBooks(int num){
         NovelModel novelModel = this.getNovelByName("大主宰");
-        List<NovelModel> novelModels = this.giveMeNovelModelListPage(0,50);
+        List<NovelModel> novelModels = this.giveMeNovelModelListPage(0,50,null);
         int size = novelModels.size();
         List<NovelModel> returnNovelModels = null;
         num--;
@@ -190,6 +204,7 @@ public class NovelService {
         nameList.add("大主宰");
         nameList.add("武动乾坤");
         nameList.add("斗破苍穹");
+        nameList.add("完美世界");
         List<NovelModel> novelModels = novelDao.getNovelListByNames(nameList);
         return novelModels;
     }
@@ -227,5 +242,14 @@ public class NovelService {
         }
 
         return novelModels;
+    }
+
+    public List<NovelModel> updateList(int num){
+        List<NovelModel> novelModels = novelDao.getUpdateList();
+        List<NovelModel> returnNovels = new ArrayList<NovelModel>();
+        for(int i=0;i<novelModels.size()&&i<num;i++){
+            returnNovels.add(novelModels.get(i));
+        }
+        return returnNovels;
     }
 }

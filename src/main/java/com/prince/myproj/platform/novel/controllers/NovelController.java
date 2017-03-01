@@ -58,7 +58,7 @@ public class NovelController {
     public AjaxModel novelListPage(HttpServletRequest request){
         int pno = StringUtil.parseIntFromRequest(request,"pno",0);
         int psize = StringUtil.parseIntFromRequest(request, "psize", 10);
-        AjaxModel ajaxModel = novelService.giveMeNovelListPage(pno, psize);
+        AjaxModel ajaxModel = novelService.giveMeNovelCateListPage(pno, psize,null);
         return ajaxModel;
     }
     @RequestMapping(value = "/novelIndexListPage")
@@ -103,14 +103,28 @@ public class NovelController {
         List<NovelModel> recommendList = novelService.giveMeRecommendList();
         map.put("recommend",recommendList);
 
-        List<NovelModel> recommendBoyList = novelService.giveMeBoyRecommendList(6);
+        List<NovelModel> recommendBoyList = novelService.giveMeBoyRecommendList(8);
         map.put("boy",recommendBoyList);
 
-        List<NovelModel> recommendGirList = novelService.giveMeGirlRecommendList(6);
+        List<NovelModel> recommendGirList = novelService.giveMeGirlRecommendList(8);
         map.put("girl",recommendGirList);
+
+        List<NovelModel> updateList = novelService.updateList(8);
+        map.put("update",updateList);
 
         ajaxModel.setData(map);
         ajaxModel.setStatus(ErrorCode.SUCCESS);
+        return ajaxModel;
+    }
+
+    @RequestMapping(value = "/novelCateListPage")
+    @ResponseBody
+    public AjaxModel novelCateListPage(HttpServletRequest request){
+        int pno = StringUtil.parseIntFromRequest(request,"pno",0);
+        int psize = StringUtil.parseIntFromRequest(request, "psize", 10);
+        String cate = StringUtil.parseStringFromRequest(request,"cate","玄幻小说");
+        logger.info("cate:"+cate);
+        AjaxModel ajaxModel = novelService.giveMeNovelCateListPage(pno, psize,cate);
         return ajaxModel;
     }
 

@@ -45,8 +45,12 @@ public class StringUtil {
 	public static String parseStringFromRequest(HttpServletRequest request,String key,String defaultVal){
 		String valStr = request.getParameter(key);
 		String val = defaultVal;
-		if(valStr!=null){
-			val = valStr;
+		if(valStr!=null&&!valStr.equals("")){
+			try {
+				val = new String(valStr.getBytes("ISO8859-1"),"utf-8");
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
 		}
 		return val;
 	}
