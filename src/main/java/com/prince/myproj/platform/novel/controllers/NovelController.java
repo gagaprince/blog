@@ -8,6 +8,7 @@ import com.prince.myproj.platform.novel.services.NovelSpiderService;
 import com.prince.myproj.util.StringUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jmx.export.metadata.AbstractJmxAttribute;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -58,7 +59,7 @@ public class NovelController {
     public AjaxModel novelListPage(HttpServletRequest request){
         int pno = StringUtil.parseIntFromRequest(request,"pno",0);
         int psize = StringUtil.parseIntFromRequest(request, "psize", 10);
-        AjaxModel ajaxModel = novelService.giveMeNovelCateListPage(pno, psize,null);
+        AjaxModel ajaxModel = novelService.giveMeNovelCateListPage(pno, psize, null);
         return ajaxModel;
     }
     @RequestMapping(value = "/novelIndexListPage")
@@ -122,9 +123,26 @@ public class NovelController {
     public AjaxModel novelCateListPage(HttpServletRequest request){
         int pno = StringUtil.parseIntFromRequest(request,"pno",0);
         int psize = StringUtil.parseIntFromRequest(request, "psize", 10);
-        String cate = StringUtil.parseStringFromRequest(request,"cate","玄幻小说");
-        logger.info("cate:"+cate);
-        AjaxModel ajaxModel = novelService.giveMeNovelCateListPage(pno, psize,cate);
+        String cate = StringUtil.parseStringFromRequest(request, "cate", "玄幻小说");
+        logger.info("cate:" + cate);
+        AjaxModel ajaxModel = novelService.giveMeNovelCateListPage(pno, psize, cate);
+        return ajaxModel;
+    }
+
+    @RequestMapping(value = "/novelSearchListPage")
+    @ResponseBody
+    public AjaxModel novelSearchListPage(HttpServletRequest request){
+        int pno = StringUtil.parseIntFromRequest(request,"pno",0);
+        int psize = StringUtil.parseIntFromRequest(request, "psize", 10);
+        String key = StringUtil.parseStringFromRequest(request, "key", "");
+
+        if("".equals(key)){
+            AjaxModel ajaxModel = new AjaxModel();
+            ajaxModel.setStatus(ErrorCode.NOT_SEARCHKEY_FOUND);
+            return ajaxModel;
+        }
+
+        AjaxModel ajaxModel = novelService.giveMeSearchResult(pno, psize, key);
         return ajaxModel;
     }
 

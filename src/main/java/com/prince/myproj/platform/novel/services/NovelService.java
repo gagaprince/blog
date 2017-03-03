@@ -252,4 +252,26 @@ public class NovelService {
         }
         return returnNovels;
     }
+
+    public List<NovelModel> giveMeSearchModelListPage(int pno,int psize,String key){
+        Map<String,Object> map = new HashMap<String, Object>();
+        map.put("fromIndex", pno * psize);
+        map.put("toIndex", psize);
+        if(key!=null){
+            map.put("key",key);
+        }
+        List<NovelModel>novelModels = novelDao.getNovelList(map);
+        return novelModels;
+    }
+
+    public AjaxModel giveMeSearchResult(int pno,int psize,String key){
+        AjaxModel ajaxModel = new AjaxModel();
+        List<NovelModel>novelModels = this.giveMeSearchModelListPage(pno, psize, key);
+//        novelListFilterDes(novelModels);
+        Map<String,List> returnmap = new HashMap<String, List>();
+        returnmap.put("novelList",novelModels);
+        ajaxModel.setData(returnmap);
+        ajaxModel.setStatus(ErrorCode.SUCCESS);
+        return ajaxModel;
+    }
 }

@@ -117,6 +117,12 @@
             <if test="cate != null">
                 and s.cate = #{cate}
             </if>
+            <if test="key != null">
+                and s.name like '%${key}%'
+            </if>
+            <if test="key != null">
+                and s.cate like '%${key}%'
+            </if>
         </where>
         <if test="fromIndex != null and toIndex != null">
         limit #{fromIndex}, #{toIndex}
