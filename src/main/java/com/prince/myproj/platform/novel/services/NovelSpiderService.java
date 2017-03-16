@@ -81,13 +81,12 @@ public class NovelSpiderService {
         String name = novelModel.getName();
         logger.info("完整单本信息开始：name:" + name + " link:" + soureUrl);
 
-        String htmlContent = httpUtil.getContentByUrl(soureUrl);
-//        logger.info(htmlContent);
-
-        Document doc = Jsoup.parse(htmlContent);
-
         //先判断库里有没有
         if(novelDao.getNovelBySourceUrl(novelModel)==null){
+            String htmlContent = httpUtil.getContentByUrl(soureUrl);
+//        logger.info(htmlContent);
+
+            Document doc = Jsoup.parse(htmlContent);
             spiderOneNovelInfo(novelModel, doc);
             spiderOneNovelChapters(novelModel,doc);
 
@@ -134,6 +133,9 @@ public class NovelSpiderService {
                 }else if(property.contains("book_name")){
                     novelModel.setName(content);
                 }else if(property.contains("desc")){
+                    if(content.length()>1000){
+                        content = content.substring(0,1000);
+                    }
                     novelModel.setDescripe(content);
                 }
             }
@@ -182,17 +184,64 @@ public class NovelSpiderService {
         AjaxModel ajaxModel = new AjaxModel();
 
         List<NovelModel> allNovels = novelDao.getAllNovels();
-        for(int i=0;i<allNovels.size();i++){
-            NovelModel novelModel = allNovels.get(i);
-            try {
-                updateOneNovel(novelModel,type);
-            }catch (Exception e){
-                e.printStackTrace();
-            }
+        List<NovelModel> allRealNovels = spiderAllNovels();
+        Map<String,NovelModel> realNovelMap = makeRealNovelMap(allRealNovels);
+        if(type.equals("2")){
+            for(int i=0;i<allNovels.size();i++){
+                NovelModel novelModel = allNovels.get(i);
+                //从realNovelMap中去除
+                String key = makeNovelKey(novelModel);
+                realNovelMap.remove(key);
 
+            }
+        }else{
+            for(int i=0;i<allNovels.size();i++){
+                NovelModel novelModel = allNovels.get(i);
+                //从realNovelMap中去除
+                String key = makeNovelKey(novelModel);
+                realNovelMap.remove(key);
+
+                try {
+                    updateOneNovel(novelModel,type);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+            }
         }
+
+        //遍历剩下的小说
+        Set<String> keySet = realNovelMap.keySet();
+        Iterator<String> it = keySet.iterator();
+        while(it.hasNext()){
+            String key  = it.next();
+            NovelModel novelModel = realNovelMap.get(key);
+            logger.info("有一本新书更新了："+key);
+            spiderOneNovel(novelModel);
+        }
+
         ajaxModel.setStatus(ErrorCode.SUCCESS);
         return ajaxModel;
+    }
+
+    private Map<String,NovelModel> makeRealNovelMap(List<NovelModel> novelModelList){
+        Map<String,NovelModel> novelModelMap = new HashMap<String, NovelModel>();
+
+        int size = novelModelList.size();
+        for(int i=0;i<size;i++){
+            NovelModel novelModel = novelModelList.get(i);
+            String key = makeNovelKey(novelModel);
+            novelModelMap.put(key,novelModel);
+        }
+
+        return novelModelMap;
+    }
+
+    private String makeNovelKey(NovelModel novelModel){
+//        String name = novelModel.getName();
+//        String author = novelModel.getAuthor();
+//        String key = name+"_"+author;
+        return novelModel.getSourceUrl();
     }
 
     private void updateOneNovel(NovelModel novelModel,String type){
