@@ -149,7 +149,6 @@ public class NovelController {
         int pno = StringUtil.parseIntFromRequest(request,"pno",0);
         int psize = StringUtil.parseIntFromRequest(request, "psize", 10);
         String key = StringUtil.parseStringFromRequest(request, "key", "");
-
         if("".equals(key)){
             AjaxModel ajaxModel = new AjaxModel();
             ajaxModel.setStatus(ErrorCode.NOT_SEARCHKEY_FOUND);

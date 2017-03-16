@@ -123,15 +123,23 @@
     <select id="getNovelList" parameterType="map" resultMap="NovelModelResultMap">
         select * from touch_novel s
         <where>
-            1=1
+            <if test="cate != null">
+                1=1
+            </if>
             <if test="cate != null">
                 and s.cate = #{cate}
             </if>
             <if test="key != null">
-                and s.name like '%${key}%'
+                1=0
             </if>
             <if test="key != null">
-                and s.cate like '%${key}%'
+                or s.name like '%${key}%'
+            </if>
+            <if test="key != null">
+                or s.cate like '%${key}%'
+            </if>
+            <if test="key != null">
+                or s.author like '%${key}%'
             </if>
         </where>
         <if test="fromIndex != null and toIndex != null">
