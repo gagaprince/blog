@@ -73,6 +73,12 @@ public class NovelService {
         return novelDao.getNovelById(map);
     }
 
+    public List<NovelModel> getNovelsByIds(String ids){
+        Map<String,String> map=new HashMap<String, String>();
+        map.put("ids",ids);
+        return novelDao.getNovelsByIds(map);
+    }
+
     public NovelModel getNovelByName(String name){
         Map<String,Object> map=new HashMap<String, Object>();
         map.put("name",name);
@@ -150,6 +156,14 @@ public class NovelService {
         }
         AjaxModel ajaxModel = new AjaxModel();
         ajaxModel.setData(novelModel);
+        ajaxModel.setStatus(ErrorCode.SUCCESS);
+        return ajaxModel;
+    }
+
+    public AjaxModel giveMeNovelsByIds(String novelIds){
+        List<NovelModel> novelModels = this.getNovelsByIds(novelIds);
+        AjaxModel ajaxModel = new AjaxModel();
+        ajaxModel.setData(novelModels);
         ajaxModel.setStatus(ErrorCode.SUCCESS);
         return ajaxModel;
     }

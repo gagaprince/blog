@@ -94,6 +94,20 @@ public class NovelController {
 
     }
 
+    @RequestMapping(value = "/novelByIds")
+    @ResponseBody
+    public AjaxModel novelByIds(HttpServletRequest request){
+        String novelIds = StringUtil.parseStringFromRequest(request,"ids","");
+        if("".equals(novelIds)){
+            AjaxModel ajaxModel = new AjaxModel();
+            ajaxModel.setStatus(ErrorCode.NOT_FIND_ERROR);
+            return ajaxModel;
+        }
+        AjaxModel ajaxModel = novelService.giveMeNovelsByIds(novelIds);
+        return  ajaxModel;
+
+    }
+
     @RequestMapping(value = "/recommendPage")
     @ResponseBody
     public AjaxModel recommendPage(HttpServletRequest request){

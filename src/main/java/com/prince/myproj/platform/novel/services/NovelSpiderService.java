@@ -212,12 +212,14 @@ public class NovelSpiderService {
         }
         long novelId = novelModel.getId();
         String novelName = novelModel.getName();
+        boolean isUpdate = false;
         for(int i=beginSize;i<chapterModels.size();i++){
             ChapterModel chapterModel = chapterModels.get(i);
             logger.info("更新小说："+novelName+": 更新章节："+chapterModel.getName()+":"+chapterModel.getChapter());
             chapterModel.setNovelId(novelId);
             chapterModel.setCreateTime(new Date());
             chapterDao.save(chapterModel);
+            isUpdate = true;
         }
         if(type.equals("1")){
             //需要更新封面
@@ -226,8 +228,10 @@ public class NovelSpiderService {
             novelDao.update(novelModel);
         }
         //最后需要更新novelmodel的updatetime
-        novelModel.setUpdateTime(new Date());
-        novelDao.update(novelModel);
+        if(isUpdate){
+            novelModel.setUpdateTime(new Date());
+            novelDao.update(novelModel);
+        }
     }
 
     private ChapterModel getLastestChapter(NovelModel novelModel){
