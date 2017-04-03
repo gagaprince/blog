@@ -12,6 +12,7 @@ public interface NovelDao {
     public void save(NovelModel novelModel);
     public void update(NovelModel novelModel);
     public NovelModel getNovelById(Map<String,Long> idMap);
+    public List<NovelModel> getNovelsByIds(Map<String,String> idsMap);
     public NovelModel getNovel(Map<String,Object> map);
     public NovelModel getNovelBySourceUrl(NovelModel novelModel);
     public List<NovelModel> getAllNovels();

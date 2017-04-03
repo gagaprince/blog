@@ -32,7 +32,7 @@ public class NovelSpiderController {
         return ajaxModel;
     }
 
-    //  /blog/pl/nv/spiderUpdate
+    //  /blog/pl/nv/spiderUpdate   type=0 正常更新  1 更新图片  2 只抓新书
     @RequestMapping(value = "/spiderUpdate")
     @ResponseBody
     public AjaxModel spiderUpdate(HttpServletRequest request){
