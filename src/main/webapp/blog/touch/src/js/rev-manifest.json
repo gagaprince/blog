@@ -1,9 +1,11 @@
 {
-  "bookshelf.js": "bookshelf-4f8baf53d7.js",
-  "index.js": "index-71045a5a85.js",
-  "novelDetail.js": "novelDetail-351eb85107.js",
-  "novelIndexList.js": "novelIndexList-257ba2f747.js",
-  "novelList.js": "novelList-3de1f1f40a.js",
-  "novelread.js": "novelread-14fcec95fd.js",
-  "optj.js": "optj-06c2b88577.js"
+  "bookshelf.js": "bookshelf-12d266ea92.js",
+  "index.js": "index-b7f76e28e7.js",
+  "mmindex.js": "mmindex-cf21898f95.js",
+  "novelDetail.js": "novelDetail-6583c5a5ba.js",
+  "novelIndexList.js": "novelIndexList-0fec5ec79f.js",
+  "novelList.js": "novelList-4eb103c6e1.js",
+  "novelindex.js": "novelindex-b7f76e28e7.js",
+  "novelread.js": "novelread-872b50c37d.js",
+  "optj.js": "optj-a0443ba0f9.js"
 }
