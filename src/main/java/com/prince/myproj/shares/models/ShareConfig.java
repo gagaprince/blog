@@ -15,6 +15,43 @@ public class ShareConfig {
     private String toUser;
     private String fromUser;
 
+    private String divisionAllUrl;//公司列表
+    private String divisionSearchUrl;//根据公司搜索公司下的division
+    private String lhbListUrl;//龙虎榜list地址
+    private String lhbDetailUrl;//龙虎榜详情地址
+
+    public String getLhbDetailUrl() {
+        return lhbDetailUrl;
+    }
+
+    public String getLhbListUrl() {
+        return lhbListUrl;
+    }
+
+    public void setLhbDetailUrl(String lhbDetailUrl) {
+        this.lhbDetailUrl = lhbDetailUrl;
+    }
+
+    public void setLhbListUrl(String lhbListUrl) {
+        this.lhbListUrl = lhbListUrl;
+    }
+
+    public String getDivisionAllUrl() {
+        return divisionAllUrl;
+    }
+
+    public String getDivisionSearchUrl() {
+        return divisionSearchUrl;
+    }
+
+    public void setDivisionAllUrl(String divisionAllUrl) {
+        this.divisionAllUrl = divisionAllUrl;
+    }
+
+    public void setDivisionSearchUrl(String divisionSearchUrl) {
+        this.divisionSearchUrl = divisionSearchUrl;
+    }
+
     public String getFromUser() {
         return fromUser;
     }

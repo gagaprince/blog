@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.prince.myproj.shares.dao.DivisionDao">
+    <resultMap id="DivisionResultMap" type="DivisionBean">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="code" property="code" jdbcType="INTEGER" />
+        <result column="province" property="province" jdbcType="VARCHAR" />
+        <result column="company" property="company" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <insert id="save"
+            parameterType="DivisionBean"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into division(
+        <trim suffixOverrides=",">
+            <if test="id != null"> id ,</if>
+            <if test="name != null"> name ,</if>
+            <if test="code != null"> code ,</if>
+            <if test="province != null"> province ,</if>
+            <if test="company != null"> company ,</if>
+        </trim>
+        )values(
+        <trim suffixOverrides=",">
+            <if test="id != null"> #{id} ,</if>
+            <if test="name != null"> #{name} ,</if>
+            <if test="code != null"> #{code} ,</if>
+            <if test="province != null"> #{province} ,</if>
+            <if test="company != null"> #{company} ,</if>
+        </trim>
+        )
+    </insert>
+
+    <select id="getDivisionByCode" parameterType="map" resultMap="DivisionResultMap">
+        select * from division s
+        <where>
+            1=1
+            <if test="code != null">
+                and s.code = #{code}
+            </if>
+        </where>
+    </select>
+
+</mapper>
