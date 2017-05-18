@@ -17,8 +17,23 @@ public class DateUtil {
     }
 
     public String getNowDate(String fomateStr){
+        return parseDateStr(new Date(),fomateStr);
+    }
+
+    public String parseDateStr(Date date,String fomateStr){
         SimpleDateFormat df = new SimpleDateFormat(fomateStr);//设置日期格式
-        return df.format(new Date());
+        return df.format(date);
+    }
+
+    public Date parseDate(String date,String fomateStr){
+        SimpleDateFormat sdf = new SimpleDateFormat(fomateStr);
+        Date returnDate = null;
+        try {
+            returnDate = sdf.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return returnDate;
     }
 
     public String getAddDate(String date,String fomateStr,long time){

@@ -5,8 +5,11 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.prince.myproj.shares.dao.DivisionDao;
 import com.prince.myproj.shares.models.DivisionBean;
+import com.prince.myproj.shares.models.DragonTigerBean;
 import com.prince.myproj.shares.models.ShareConfig;
+import com.prince.myproj.util.DateUtil;
 import com.prince.util.httputil.HttpUtil;
+import org.apache.commons.codec.StringDecoder;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -16,10 +19,7 @@ import org.springframework.stereotype.Service;
 
 import org.apache.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by zidong.wang on 2017/5/18.
@@ -34,6 +34,8 @@ public class DragonTigerService {
 
     @Autowired
     private DivisionDao divisionDao;
+
+    private DateUtil dateUtil = new DateUtil();
 
     public void spiderDivisionTask(){
         logger.info("开始抓取division 信息：");
@@ -59,7 +61,7 @@ public class DragonTigerService {
     }
     private boolean isExsitInDivisionDb(DivisionBean divisionBean){
         Map<String,Object> map = new HashMap<String, Object>();
-        map.put("code",divisionBean.getCode());
+        map.put("code", divisionBean.getCode());
         DivisionBean divisionSelect = divisionDao.getDivisionByCode(map);
         if(divisionSelect!=null){
             return true;
@@ -126,4 +128,127 @@ public class DragonTigerService {
         return divisionBeans;
     }
 
+    public void spiderLHBHistory(){
+        String nowDate = dateUtil.getNowDate("yyyy-MM-dd");
+    }
+
+    public void spiderLHBToday(){
+        String nowDate = dateUtil.getNowDate("yyyy-MM-dd");
+        spiderLBHByDate(nowDate);
+    }
+
+    private void spiderLBHByDate(String date){
+        String listUrl = config.getLhbListUrl();
+        listUrl += "pagesize=200,page=1,sortRule=-1,sortType=,startDate="+date+",endDate="+date+",gpfw=0,js=.html?rt=24918370";
+        logger.info(listUrl);
+        List<DragonTigerBean> dragonTigerBeans = getDragonListFromListUrl(listUrl,date);
+
+        for (int i=0;i<dragonTigerBeans.size();i++){
+            DragonTigerBean dragonTigerBean = dragonTigerBeans.get(i);
+            parseDragonDetail(dragonTigerBean);
+
+
+            logger.info("保存 "+dragonTigerBean.getShareName()+" buy1Division:"+dragonTigerBean.getBuy1Division()+" buy1val:"+dragonTigerBean.getBuy1Val());
+
+            //保存
+        }
+
+
+    }
+
+    private List<DragonTigerBean> getDragonListFromListUrl(String listUrl,String date){
+        List<DragonTigerBean> dragonTigerBeanList = new ArrayList<DragonTigerBean>();
+
+        HttpUtil httpUtil = HttpUtil.getInstance();
+        String jsonHtml = httpUtil.getContentByUrl(listUrl);
+//        logger.info(jsonHtml);
+
+        JSONObject jsonDragonData  = JSON.parseObject(jsonHtml);
+        JSONArray jsonDragonList = jsonDragonData.getJSONArray("data");
+
+
+
+        Date insertDate = dateUtil.parseDate(date, "yyyy-MM-dd");
+
+        for(int i=0;i<jsonDragonList.size()&&i<1;i++){
+            JSONObject jsonDragon = jsonDragonList.getJSONObject(i);
+            DragonTigerBean dragonTigerBean = new DragonTigerBean();
+            dragonTigerBean.setCurrentDate(insertDate);
+            dragonTigerBean.setShareCode(jsonDragon.getString("SCode"));
+            dragonTigerBean.setShareName(jsonDragon.getString("SName"));
+            dragonTigerBean.setReason(jsonDragon.getString("Ctypedes"));
+            dragonTigerBean.setJd(jsonDragon.getString("JD"));
+
+            //ogger.info(dragonTigerBean.getShareName()+" "+dragonTigerBean.getShareCode()+" "+dragonTigerBean.getReason());
+
+            dragonTigerBeanList.add(dragonTigerBean);
+        }
+
+
+        return dragonTigerBeanList;
+    }
+    private void parseDragonDetail(DragonTigerBean dragonTigerBean){
+        String date = dateUtil.parseDateStr(dragonTigerBean.getCurrentDate(), "yyyy-MM-dd");
+        String code = dragonTigerBean.getShareCode();
+
+        String detailUrl = config.getLhbDetailUrl();
+        detailUrl += date+","+code+".html";
+
+        logger.info(detailUrl);
+        HttpUtil httpUtil = HttpUtil.getInstance();
+
+        String htmlContent = httpUtil.getContentByUrl(detailUrl);
+
+//        logger.info(htmlContent);
+
+        Document doc = Jsoup.parse(htmlContent);
+        Element tableBuy = doc.getElementById("tab-2");
+        Element tbodyBuy = tableBuy.getElementsByTag("tbody").get(0);
+
+        Elements trBuys = tbodyBuy.getElementsByTag("tr");
+        for(int i=0;i<trBuys.size();i++){
+            Element trBuy = trBuys.get(i);
+            Element aBuy = trBuy.getElementsByTag("a").get(1);
+            String link = aBuy.attr("href");
+            String divisionCode = link.substring(link.lastIndexOf('/') + 1, link.lastIndexOf('.'));
+
+
+            Elements tds = trBuy.getElementsByTag("td");
+            Element td = tds.get(2);
+
+            String val = td.html();
+
+            logger.info(divisionCode+" "+val);
+            dragonTigerBean.setBuyByIndex(i,divisionCode,val);
+        }
+
+
+
+        Element tableSell = doc.getElementById("tab-4");
+
+        Element tbodySell = tableSell.getElementsByTag("tbody").get(0);
+
+        Elements trSells = tbodySell.getElementsByTag("tr");
+        for(int i=0;i<trSells.size();i++){
+            Element trSell = trSells.get(i);
+            Elements aSells = trSell.getElementsByTag("a");
+            if(aSells.size()>0){
+                Element aSell =aSells.get(1);
+                String link = aSell.attr("href");
+                String divisionCode = link.substring(link.lastIndexOf('/') + 1, link.lastIndexOf('.'));
+
+
+                Elements tds = trSell.getElementsByTag("td");
+                Element td = tds.get(4);
+
+                String val = td.html();
+
+                logger.info(divisionCode+" "+val);
+                dragonTigerBean.setSellByIndex(i,divisionCode,val);
+            }
+
+        }
+
+
+    }
 }

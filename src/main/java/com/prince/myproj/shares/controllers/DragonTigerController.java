@@ -31,6 +31,18 @@ public class DragonTigerController {
     @ResponseBody
     public String spiderDivision(HttpServletRequest request){
         dragonTigerService.spiderDivisionTask();
-        return "soiderDivision ok!";
+        return "spiderDivision ok!";
+    }
+    @RequestMapping(value="/spiderLHBHistory",method = RequestMethod.GET)
+    @ResponseBody
+    public String spiderLHBHistory(HttpServletRequest request){
+        return "spiderLHBHistory ok";
+    }
+
+    @RequestMapping(value="/spiderLHBToday",method = RequestMethod.GET)
+    @ResponseBody
+    public String spiderLHBToday(HttpServletRequest request){
+        dragonTigerService.spiderLHBToday();
+        return "spiderLHBToday ok";
     }
 }

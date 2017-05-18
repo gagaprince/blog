@@ -31,6 +31,87 @@ public class DragonTigerBean {
     private float sell5Val;
 
     private Date currentDate;
+    private String reason;
+    private String jd;
+    private String shareName;
+
+    public void setBuyByIndex(int index,String code,String val){
+        int codeInt = Integer.parseInt(code);
+        float valFloat = Float.parseFloat(val);
+        switch (index){
+            case 0:
+                this.setBuy1Division(codeInt);
+                this.setBuy1Val(valFloat);
+                break;
+            case 1:
+                this.setBuy2Division(codeInt);
+                this.setBuy2Val(valFloat);
+                break;
+            case 2:
+                this.setBuy3Division(codeInt);
+                this.setBuy3Val(valFloat);
+                break;
+            case 3:
+                this.setBuy4Division(codeInt);
+                this.setBuy4Val(valFloat);
+                break;
+            case 4:
+                this.setBuy5Division(codeInt);
+                this.setBuy5Val(valFloat);
+                break;
+        }
+    }
+
+    public void setSellByIndex(int index,String code,String val){
+        int codeInt = Integer.parseInt(code);
+        float valFloat = Float.parseFloat(val);
+        switch (index){
+            case 0:
+                this.setSell1Division(codeInt);
+                this.setSell1Val(valFloat);
+                break;
+            case 1:
+                this.setSell2Division(codeInt);
+                this.setSell2Val(valFloat);
+                break;
+            case 2:
+                this.setSell3Division(codeInt);
+                this.setSell3Val(valFloat);
+                break;
+            case 3:
+                this.setSell4Division(codeInt);
+                this.setSell4Val(valFloat);
+                break;
+            case 4:
+                this.setSell5Division(codeInt);
+                this.setSell5Val(valFloat);
+                break;
+        }
+    }
+
+    public String getJd() {
+        return jd;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public String getShareName() {
+        return shareName;
+    }
+
+    public void setJd(String jd) {
+        this.jd = jd;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    public void setShareName(String shareName) {
+        this.shareName = shareName;
+    }
 
     public Date getCurrentDate() {
         return currentDate;
