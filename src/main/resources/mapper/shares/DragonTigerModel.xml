@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.prince.myproj.shares.dao.DragonTigerDao">
+    <resultMap id="DragonTigerResultMap" type="DragonTigerBean">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="share_code" property="shareCode" jdbcType="VARCHAR" />
+        <result column="buy1_division" property="buy1Division" jdbcType="INTEGER" />
+        <result column="buy2_division" property="buy2Division" jdbcType="INTEGER" />
+        <result column="buy3_division" property="buy3Division" jdbcType="INTEGER" />
+        <result column="buy4_division" property="buy4Division" jdbcType="INTEGER" />
+        <result column="buy5_division" property="buy5Division" jdbcType="INTEGER" />
+        <result column="sell1_division" property="sell1Division" jdbcType="INTEGER" />
+        <result column="sell2_division" property="sell2Division" jdbcType="INTEGER" />
+        <result column="sell3_division" property="sell3Division" jdbcType="INTEGER" />
+        <result column="sell4_division" property="sell4Division" jdbcType="INTEGER" />
+        <result column="sell5_division" property="sell5Division" jdbcType="INTEGER" />
+        <result column="buy1_val" property="buy1Val" jdbcType="FLOAT" />
+        <result column="buy2_val" property="buy2Val" jdbcType="FLOAT" />
+        <result column="buy3_val" property="buy3Val" jdbcType="FLOAT" />
+        <result column="buy4_val" property="buy4Val" jdbcType="FLOAT" />
+        <result column="buy5_val" property="buy5Val" jdbcType="FLOAT" />
+        <result column="sell1_val" property="sell1Val" jdbcType="FLOAT" />
+        <result column="sell2_val" property="sell2Val" jdbcType="FLOAT" />
+        <result column="sell3_val" property="sell3Val" jdbcType="FLOAT" />
+        <result column="sell4_val" property="sell4Val" jdbcType="FLOAT" />
+        <result column="sell5_val" property="sell5Val" jdbcType="FLOAT" />
+        <result column="current_date" property="currentDate" jdbcType="DATE" />
+        <result column="reason" property="reason" jdbcType="VARCHAR" />
+        <result column="jd" property="jd" jdbcType="VARCHAR" />
+        <result column="share_name" property="shareName" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <insert id="save"
+            parameterType="DragonTigerBean"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into dragon_tiger(
+        <trim suffixOverrides=",">
+            <if test="id != null"> id ,</if>
+            <if test="shareCode != null"> share_code ,</if>
+            <if test="buy1Division != null"> buy1_division ,</if>
+            <if test="buy2Division != null"> buy2_division ,</if>
+            <if test="buy3Division != null"> buy3_division ,</if>
+            <if test="buy4Division != null"> buy4_division ,</if>
+            <if test="buy5Division != null"> buy5_division ,</if>
+            <if test="sell1Division != null"> sell1_division ,</if>
+            <if test="sell2Division != null"> sell2_division ,</if>
+            <if test="sell3Division != null"> sell3_division ,</if>
+            <if test="sell4Division != null"> sell4_division ,</if>
+            <if test="sell5Division != null"> sell5_division ,</if>
+            <if test="buy1Val != null"> buy1_val ,</if>
+            <if test="buy2Val != null"> buy2_val ,</if>
+            <if test="buy3Val != null"> buy3_val ,</if>
+            <if test="buy4Val != null"> buy4_val ,</if>
+            <if test="buy5Val != null"> buy5_val ,</if>
+            <if test="sell1Val != null"> sell1_val ,</if>
+            <if test="sell2Val != null"> sell2_val ,</if>
+            <if test="sell3Val != null"> sell3_val ,</if>
+            <if test="sell4Val != null"> sell4_val ,</if>
+            <if test="sell5Val != null"> sell5_val ,</if>
+            <if test="currentDate != null"> `current_date` ,</if>
+            <if test="reason != null"> reason ,</if>
+            <if test="jd != null"> jd ,</if>
+            <if test="shareName != null"> share_name ,</if>
+        </trim>
+        )values(
+        <trim suffixOverrides=",">
+            <if test="id != null"> #{id} ,</if>
+            <if test="shareCode != null"> #{shareCode} ,</if>
+            <if test="buy1Division != null"> #{buy1Division} ,</if>
+            <if test="buy2Division != null"> #{buy2Division} ,</if>
+            <if test="buy3Division != null"> #{buy3Division} ,</if>
+            <if test="buy4Division != null"> #{buy4Division} ,</if>
+            <if test="buy5Division != null"> #{buy5Division} ,</if>
+            <if test="sell1Division != null"> #{sell1Division} ,</if>
+            <if test="sell2Division != null"> #{sell2Division} ,</if>
+            <if test="sell3Division != null"> #{sell3Division} ,</if>
+            <if test="sell4Division != null"> #{sell4Division} ,</if>
+            <if test="sell5Division != null"> #{sell5Division} ,</if>
+            <if test="buy1Val != null"> #{buy1Val} ,</if>
+            <if test="buy2Val != null"> #{buy2Val} ,</if>
+            <if test="buy3Val != null"> #{buy3Val} ,</if>
+            <if test="buy4Val != null"> #{buy4Val} ,</if>
+            <if test="buy5Val != null"> #{buy5Val} ,</if>
+            <if test="sell1Val != null"> #{sell1Val} ,</if>
+            <if test="sell2Val != null"> #{sell2Val} ,</if>
+            <if test="sell3Val != null"> #{sell3Val} ,</if>
+            <if test="sell4Val != null"> #{sell4Val} ,</if>
+            <if test="sell5Val != null"> #{sell5Val} ,</if>
+            <if test="currentDate != null"> #{currentDate} ,</if>
+            <if test="reason != null"> #{reason} ,</if>
+            <if test="jd != null"> #{jd} ,</if>
+            <if test="shareName != null"> #{shareName} ,</if>
+        </trim>
+        )
+    </insert>
+
+    <select id="getDivisionByCodeAndDate" parameterType="map" resultMap="DragonTigerResultMap">
+        select * from dragon_tiger s
+        <where>
+            1=1
+            <if test="shareCode != null">
+                and s.share_code = #{shareCode}
+            </if>
+            <if test="currentDate != null">
+                and s.current_date = #{currentDate}
+            </if>
+        </where>
+    </select>
+
+</mapper>

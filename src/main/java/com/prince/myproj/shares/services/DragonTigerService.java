@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.prince.myproj.shares.dao.DivisionDao;
+import com.prince.myproj.shares.dao.DragonTigerDao;
 import com.prince.myproj.shares.models.DivisionBean;
 import com.prince.myproj.shares.models.DragonTigerBean;
 import com.prince.myproj.shares.models.ShareConfig;
@@ -34,6 +35,9 @@ public class DragonTigerService {
 
     @Autowired
     private DivisionDao divisionDao;
+
+    @Autowired
+    private DragonTigerDao dragonTigerDao;
 
     private DateUtil dateUtil = new DateUtil();
 
@@ -91,8 +95,8 @@ public class DragonTigerService {
             String companyCode = link.substring(link.lastIndexOf('/') + 1, link.lastIndexOf('.'));
 
             Map<String,Object> companyMap = new HashMap<String, Object>();
-            companyMap.put("name",name);
-            companyMap.put("code",companyCode);
+            companyMap.put("name", name);
+            companyMap.put("code", companyCode);
 
             companys.add(companyMap);
 
@@ -129,7 +133,12 @@ public class DragonTigerService {
     }
 
     public void spiderLHBHistory(){
+
         String nowDate = dateUtil.getNowDate("yyyy-MM-dd");
+        for(int i=1;i<31;i++){
+            String searchDate = dateUtil.getAddDate(nowDate, "yyyy-MM-dd", -24L * 3600 * 1000 * i);
+            spiderLBHByDate(searchDate);
+        }
     }
 
     public void spiderLHBToday(){
@@ -145,12 +154,20 @@ public class DragonTigerService {
 
         for (int i=0;i<dragonTigerBeans.size();i++){
             DragonTigerBean dragonTigerBean = dragonTigerBeans.get(i);
-            parseDragonDetail(dragonTigerBean);
+            try{
+                parseDragonDetail(dragonTigerBean);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
 
 
-            logger.info("保存 "+dragonTigerBean.getShareName()+" buy1Division:"+dragonTigerBean.getBuy1Division()+" buy1val:"+dragonTigerBean.getBuy1Val());
+
+            logger.info("保存 " + dragonTigerBean.getShareName() + " buy1Division:" + dragonTigerBean.getBuy1Division() + " buy1val:" + dragonTigerBean.getBuy1Val());
 
             //保存
+            if(!isExsitInDragonTigerDb(dragonTigerBean)){
+                dragonTigerDao.save(dragonTigerBean);
+            }
         }
 
 
@@ -167,13 +184,10 @@ public class DragonTigerService {
         JSONArray jsonDragonList = jsonDragonData.getJSONArray("data");
 
 
-
-        Date insertDate = dateUtil.parseDate(date, "yyyy-MM-dd");
-
-        for(int i=0;i<jsonDragonList.size()&&i<1;i++){
+        for(int i=0;i<jsonDragonList.size();i++){
             JSONObject jsonDragon = jsonDragonList.getJSONObject(i);
             DragonTigerBean dragonTigerBean = new DragonTigerBean();
-            dragonTigerBean.setCurrentDate(insertDate);
+            dragonTigerBean.setCurrentDate(date);
             dragonTigerBean.setShareCode(jsonDragon.getString("SCode"));
             dragonTigerBean.setShareName(jsonDragon.getString("SName"));
             dragonTigerBean.setReason(jsonDragon.getString("Ctypedes"));
@@ -188,7 +202,7 @@ public class DragonTigerService {
         return dragonTigerBeanList;
     }
     private void parseDragonDetail(DragonTigerBean dragonTigerBean){
-        String date = dateUtil.parseDateStr(dragonTigerBean.getCurrentDate(), "yyyy-MM-dd");
+        String date = dragonTigerBean.getCurrentDate();
         String code = dragonTigerBean.getShareCode();
 
         String detailUrl = config.getLhbDetailUrl();
@@ -249,6 +263,17 @@ public class DragonTigerService {
 
         }
 
+
+    }
+    private boolean isExsitInDragonTigerDb(DragonTigerBean dragonTigerBean){
+        Map<String,Object> map = new HashMap<String, Object>();
+        map.put("shareCode", dragonTigerBean.getShareCode());
+        map.put("currentDate", dragonTigerBean.getCurrentDate());
+        DragonTigerBean dragonSelect = dragonTigerDao.getDivisionByCodeAndDate(map);
+        if(dragonSelect!=null){
+            return true;
+        }
+        return false;
 
     }
 }

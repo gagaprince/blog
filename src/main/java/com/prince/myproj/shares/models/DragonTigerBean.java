@@ -30,13 +30,17 @@ public class DragonTigerBean {
     private int sell5Division;
     private float sell5Val;
 
-    private Date currentDate;
+    private String currentDate;
     private String reason;
     private String jd;
     private String shareName;
 
     public void setBuyByIndex(int index,String code,String val){
-        int codeInt = Integer.parseInt(code);
+        int codeInt = -1;
+        if(!"jgmmtj".equals(code)){
+            codeInt = Integer.parseInt(code);
+        }
+
         float valFloat = Float.parseFloat(val);
         switch (index){
             case 0:
@@ -63,7 +67,10 @@ public class DragonTigerBean {
     }
 
     public void setSellByIndex(int index,String code,String val){
-        int codeInt = Integer.parseInt(code);
+        int codeInt = -1;
+        if(!"jgmmtj".equals(code)){
+            codeInt = Integer.parseInt(code);
+        }
         float valFloat = Float.parseFloat(val);
         switch (index){
             case 0:
@@ -113,7 +120,7 @@ public class DragonTigerBean {
         this.shareName = shareName;
     }
 
-    public Date getCurrentDate() {
+    public String getCurrentDate() {
         return currentDate;
     }
 
@@ -249,7 +256,7 @@ public class DragonTigerBean {
         this.buy5Val = buy5Val;
     }
 
-    public void setCurrentDate(Date currentDate) {
+    public void setCurrentDate(String currentDate) {
         this.currentDate = currentDate;
     }
 

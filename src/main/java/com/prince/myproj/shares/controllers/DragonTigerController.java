@@ -36,6 +36,7 @@ public class DragonTigerController {
     @RequestMapping(value="/spiderLHBHistory",method = RequestMethod.GET)
     @ResponseBody
     public String spiderLHBHistory(HttpServletRequest request){
+        dragonTigerService.spiderLHBHistory();
         return "spiderLHBHistory ok";
     }
 
