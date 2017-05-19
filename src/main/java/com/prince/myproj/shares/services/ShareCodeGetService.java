@@ -13,6 +13,9 @@ import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by zidong.wang on 2016/5/17.
@@ -63,14 +66,31 @@ public class ShareCodeGetService {
             String codeAll = codeJson.getString(0);
             String code = codeJson.getString(1);
             String name = codeJson.getString(2);
-            logger.info("codeAll:"+codeAll+" code:"+code+" name:"+name);
+            logger.info("codeAll:" + codeAll + " code:" + code + " name:" + name);
             SharesSingleModel sharesSingleModel = new SharesSingleModel();
             sharesSingleModel.setCode(code);
             sharesSingleModel.setCodeAll(codeAll);
             sharesSingleModel.setName(name);
 
-            sharesDao.save(sharesSingleModel);
+            if(!isExistSharesInDb(codeAll)){
+                sharesDao.save(sharesSingleModel);
+            }
+
         }
+    }
+
+    private boolean isExistSharesInDb(String codeAll){
+        HashMap<String,Object> paramMap = new HashMap<String, Object>();
+
+        List<String> codeList = new ArrayList<String>();
+        codeList.add(codeAll);
+        paramMap.put("codes", codeList);
+        List<SharesSingleModel> sharesSingleModels = sharesDao.getSharesIncodes(paramMap);
+        if(sharesSingleModels.size()>0){
+            return true;
+        }
+
+        return false;
     }
 
 }
