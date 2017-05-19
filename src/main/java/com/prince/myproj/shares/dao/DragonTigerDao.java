@@ -3,6 +3,7 @@ package com.prince.myproj.shares.dao;
 import com.prince.myproj.shares.models.DivisionBean;
 import com.prince.myproj.shares.models.DragonTigerBean;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -10,7 +11,8 @@ import java.util.Map;
  */
 public interface DragonTigerDao {
     public void save(DragonTigerBean model);
-    public DragonTigerBean getDivisionByCodeAndDate(Map<String, Object> keyMap);
+    public DragonTigerBean getDragonTigerByCodeAndDate(Map<String, Object> keyMap);
+    public List<DragonTigerBean> getDragonTigerByDate(Map<String,String> map);
 
 }
 

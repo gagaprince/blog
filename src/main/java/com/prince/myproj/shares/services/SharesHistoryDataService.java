@@ -49,7 +49,7 @@ public class SharesHistoryDataService {
     //一键下载缺失的数据
     public void downloadTable(){
         long start = 0;
-        long end = 3000;
+        long end = 4000;
 
 
         String dateStart = giveMeLastDate().replaceAll("-", "");

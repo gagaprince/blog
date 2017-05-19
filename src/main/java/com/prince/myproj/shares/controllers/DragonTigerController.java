@@ -1,6 +1,7 @@
 package com.prince.myproj.shares.controllers;
 
 import com.alibaba.fastjson.JSON;
+import com.prince.myproj.shares.models.SharesSingleModel;
 import com.prince.myproj.shares.models.WaveModel;
 import com.prince.myproj.shares.services.DragonTigerService;
 import org.apache.log4j.Logger;
@@ -36,7 +37,8 @@ public class DragonTigerController {
     @RequestMapping(value="/spiderLHBHistory",method = RequestMethod.GET)
     @ResponseBody
     public String spiderLHBHistory(HttpServletRequest request){
-        dragonTigerService.spiderLHBHistory();
+        String date = request.getParameter("date");
+        dragonTigerService.spiderLHBHistory(date);
         return "spiderLHBHistory ok";
     }
 
@@ -46,4 +48,21 @@ public class DragonTigerController {
         dragonTigerService.spiderLHBToday();
         return "spiderLHBToday ok";
     }
+
+    @RequestMapping(value="/caculateByLHB",method = RequestMethod.GET)
+    @ResponseBody
+    public String caculateByLHB(HttpServletRequest request){//根据龙虎榜选出好票
+        String date = request.getParameter("date");
+        List<SharesSingleModel> singleModels = dragonTigerService.caculateByLHB(date);
+        return JSON.toJSONString(singleModels);
+    }
+
+    @RequestMapping(value="/validateCaculateByLHB",method = RequestMethod.GET)
+    @ResponseBody
+    public String validateCaculateByLHB(HttpServletRequest request){//检验预测的正确性 使用历史数据验证
+        String date = request.getParameter("date");
+        dragonTigerService.validateCaculateByLHB(date);
+        return  "";
+    }
+
 }

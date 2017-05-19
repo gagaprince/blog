@@ -43,6 +43,9 @@
             <if test="name != null">
                 and s.name = #{name}
             </if>
+            <if test="code != null">
+                and s.code = #{code}
+            </if>
         </where>
         <if test="fromIndex != null and toIndex != null">
         limit #{fromIndex}, #{toIndex}

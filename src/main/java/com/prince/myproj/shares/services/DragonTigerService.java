@@ -5,9 +5,9 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.prince.myproj.shares.dao.DivisionDao;
 import com.prince.myproj.shares.dao.DragonTigerDao;
-import com.prince.myproj.shares.models.DivisionBean;
-import com.prince.myproj.shares.models.DragonTigerBean;
-import com.prince.myproj.shares.models.ShareConfig;
+import com.prince.myproj.shares.dao.SharesDao;
+import com.prince.myproj.shares.dao.SharesHistoryDao;
+import com.prince.myproj.shares.models.*;
 import com.prince.myproj.util.DateUtil;
 import com.prince.util.httputil.HttpUtil;
 import org.apache.commons.codec.StringDecoder;
@@ -35,6 +35,10 @@ public class DragonTigerService {
 
     @Autowired
     private DivisionDao divisionDao;
+    @Autowired
+    private SharesDao sharesDao;
+    @Autowired
+    private SharesHistoryDao sharesHistoryDao;
 
     @Autowired
     private DragonTigerDao dragonTigerDao;
@@ -132,10 +136,12 @@ public class DragonTigerService {
         return divisionBeans;
     }
 
-    public void spiderLHBHistory(){
-
-        String nowDate = dateUtil.getNowDate("yyyy-MM-dd");
-        for(int i=1;i<31;i++){
+    public void spiderLHBHistory(String date){
+        if(date==null){
+            date = dateUtil.getNowDate("yyyy-MM-dd");
+        }
+        String nowDate = date;
+        for(int i=1;i<150;i++){
             String searchDate = dateUtil.getAddDate(nowDate, "yyyy-MM-dd", -24L * 3600 * 1000 * i);
             spiderLBHByDate(searchDate);
         }
@@ -150,7 +156,7 @@ public class DragonTigerService {
         String listUrl = config.getLhbListUrl();
         listUrl += "pagesize=200,page=1,sortRule=-1,sortType=,startDate="+date+",endDate="+date+",gpfw=0,js=.html?rt=24918370";
         logger.info(listUrl);
-        List<DragonTigerBean> dragonTigerBeans = getDragonListFromListUrl(listUrl,date);
+        List<DragonTigerBean> dragonTigerBeans = getDragonListFromListUrl(listUrl, date);
 
         for (int i=0;i<dragonTigerBeans.size();i++){
             DragonTigerBean dragonTigerBean = dragonTigerBeans.get(i);
@@ -269,11 +275,159 @@ public class DragonTigerService {
         Map<String,Object> map = new HashMap<String, Object>();
         map.put("shareCode", dragonTigerBean.getShareCode());
         map.put("currentDate", dragonTigerBean.getCurrentDate());
-        DragonTigerBean dragonSelect = dragonTigerDao.getDivisionByCodeAndDate(map);
+        DragonTigerBean dragonSelect = dragonTigerDao.getDragonTigerByCodeAndDate(map);
         if(dragonSelect!=null){
             return true;
         }
         return false;
 
+    }
+
+
+    public List<SharesSingleModel> caculateByLHB(String date){
+        if(date==null){
+            date = dateUtil.getNowDate("yyyy-MM-dd");
+        }
+
+
+        List<SharesSingleModel> singleModels = new ArrayList<SharesSingleModel>();
+
+        //拿到当天的龙虎榜数据
+        List<DragonTigerBean> dragonTigerBeans = getDragonTigerListByDate(date);
+
+        //挨个分析每一只
+        for(int i=0;i<dragonTigerBeans.size();i++){
+            DragonTigerBean dragonTigerBean = dragonTigerBeans.get(i);
+//            logger.info(dragonTigerBean.getBuy1Division()+" "+dragonTigerBean.getCurrentDate());
+            SharesSingleModel singleModel = caculateOneSharesByLHB(dragonTigerBean);
+            if(singleModel!=null){
+                singleModels.add(singleModel);
+            }
+        }
+
+
+        return singleModels;
+    }
+
+    private List<DragonTigerBean> getDragonTigerListByDate(String date){
+        Map<String,String> map = new HashMap<String, String>();
+        map.put("date", date);
+        return dragonTigerDao.getDragonTigerByDate(map);
+    }
+
+    private SharesSingleModel caculateOneSharesByLHB(DragonTigerBean dragonTigerBean){
+        float buy1 = dragonTigerBean.getBuy1Val();
+        float buy2 = dragonTigerBean.getBuy2Val();
+        float sell1 = dragonTigerBean.getSell1Val();
+        float sell2 = dragonTigerBean.getSell2Val();
+        String code = dragonTigerBean.getShareCode();
+        SharesSingleModel singleModel = giveMeShareSingleByCode(code);
+        if(singleModel==null){
+            return null;
+        }
+        String date = dragonTigerBean.getCurrentDate();
+        SharesModel sharesModel = giveMeSharesModelByCodeAndDate(singleModel.getCodeAll(),date);
+        if(sharesModel==null){
+            return null;
+        }
+//        logger.info(sharesModel.getCode() + " " + sharesModel.getIncreasePer());
+
+        logger.info(sharesModel.getCode()+" buy1+buy2:"+(buy1+buy2));
+        logger.info(sharesModel.getCode() + " sell1+sell2:" + (sell1 + sell2));
+        if((buy1+buy2)/(sell1+sell2)>2){
+
+            if(sharesModel.getIncreasePer()>9.5){
+                //涨停
+
+                SharesModel sharesModelPre = giveMeSharesModelPreByCodeAndDate(singleModel.getCodeAll(), date);
+                logger.info(sharesModelPre.getDate());
+                logger.info(sharesModel.getCode()+"今日涨停，昨日涨幅："+sharesModelPre.getIncreasePer());
+                if(sharesModelPre.getIncreasePer()<9.5 && sharesModelPre.getIncreasePer()>0){
+                    logger.info("选出："+singleModel.getName()+" "+singleModel.getCodeAll());
+                    return singleModel;
+                }
+            }
+        }
+
+
+        return null;
+    }
+
+
+
+    private SharesSingleModel giveMeShareSingleByCode(String code){
+        Map<String,Object> map = new HashMap<String, Object>();
+        map.put("code", code);
+        List<SharesSingleModel> singleModelHitList = sharesDao.getShares(map);
+        if(singleModelHitList.size()>0){
+            SharesSingleModel  singleModel = singleModelHitList.get(0);
+            return singleModel;
+        }
+        return null;
+    }
+
+    private SharesModel giveMeSharesModelPreByCodeAndDate(String code,String date){
+        String datePre = dateUtil.getAddDate(date,"yyyy-MM-dd",-24*3600000);
+        String dateStart = dateUtil.getAddDate(date,"yyyy-MM-dd",-24L*10*3600000);
+        //查出当天的数据
+        Map<String,Object> map = new HashMap<String, Object>();
+        map.put("code",code);
+        map.put("date",datePre);
+        map.put("beginDate", dateStart);
+        List<SharesModel> sharesModels = sharesHistoryDao.selectModelByCode(map);
+        if(sharesModels.size()>0){
+            return sharesModels.get(0);
+        }
+        return null;
+    }
+
+    private SharesModel giveMeSharesModelByCodeAndDate(String code,String date){
+        //查出当天的数据
+        Map<String,Object> map = new HashMap<String, Object>();
+        map.put("code",code);
+        map.put("date",date);
+        map.put("beginDate", date);
+        List<SharesModel> sharesModels = sharesHistoryDao.selectModelByCode(map);
+        if(sharesModels.size()>0){
+            return sharesModels.get(0);
+        }
+        return null;
+    }
+
+    public void validateCaculateByLHB(String date){
+        List<SharesSingleModel> singleModels = caculateByLHB(date);
+        validateCaculate(singleModels,date);
+
+    }
+
+    /**
+     *
+     * @param sharesSingleModels    验证列表
+     * @param date  当前龙虎榜日期
+     */
+    public List<LHBCacularResult> validateCaculate(List<SharesSingleModel> sharesSingleModels,String date){
+        List<LHBCacularResult> lhbCacularResults = new ArrayList<LHBCacularResult>();
+
+        for(int i=0;i<sharesSingleModels.size();i++){
+            SharesSingleModel singleModel = sharesSingleModels.get(i);
+            lhbCacularResults.add(validateCaculateOne(singleModel,date));
+        }
+
+        return lhbCacularResults;
+    }
+
+    public LHBCacularResult validateCaculateOne(SharesSingleModel sharesSingleModel,String date){
+        LHBCacularResult lhbCacularResult = new LHBCacularResult();
+
+        String code = sharesSingleModel.getCodeAll();
+        //获取 当前代码 date日期之后的数据
+
+
+
+        return lhbCacularResult;
+    }
+
+    private List<SharesModel> giveMeSharesModelsByCodeAfterDate(String code,String date){
+        return null;
     }
 }

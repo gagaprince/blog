@@ -96,7 +96,7 @@
         )
     </insert>
 
-    <select id="getDivisionByCodeAndDate" parameterType="map" resultMap="DragonTigerResultMap">
+    <select id="getDragonTigerByCodeAndDate" parameterType="map" resultMap="DragonTigerResultMap">
         select * from dragon_tiger s
         <where>
             1=1
@@ -105,6 +105,16 @@
             </if>
             <if test="currentDate != null">
                 and s.current_date = #{currentDate}
+            </if>
+        </where>
+    </select>
+
+    <select id="getDragonTigerByDate" parameterType="map" resultMap="DragonTigerResultMap">
+        select * from dragon_tiger s
+        <where>
+            1=1
+            <if test="date != null">
+                and s.current_date = #{date}
             </if>
         </where>
     </select>
