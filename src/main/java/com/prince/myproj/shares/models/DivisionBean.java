@@ -9,6 +9,19 @@ public class DivisionBean {
     private String name;
     private String province;
     private String company;
+    private int successNum;
+
+    public int getSuccessNum() {
+        return successNum;
+    }
+
+    public void setSuccessNum(int successNum) {
+        this.successNum = successNum;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getCompany() {
         return company;

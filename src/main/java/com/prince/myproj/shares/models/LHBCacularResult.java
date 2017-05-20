@@ -14,6 +14,16 @@ public class LHBCacularResult {
     private String sellDate;
     private String desc;
 
+    private DragonTigerBean dragonTigerBean;
+
+    public DragonTigerBean getDragonTigerBean() {
+        return dragonTigerBean;
+    }
+
+    public void setDragonTigerBean(DragonTigerBean dragonTigerBean) {
+        this.dragonTigerBean = dragonTigerBean;
+    }
+
     public String getDesc() {
         return desc;
     }

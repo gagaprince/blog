@@ -304,9 +304,11 @@ public class DragonTigerService {
         for(int i=0;i<dragonTigerBeans.size();i++){
             DragonTigerBean dragonTigerBean = dragonTigerBeans.get(i);
 //            logger.info(dragonTigerBean.getBuy1Division()+" "+dragonTigerBean.getCurrentDate());
-            SharesSingleModel singleModel = caculateOneSharesByLHB(dragonTigerBean);
-            if(singleModel!=null){
-                singleModels.add(singleModel);
+            if(!dragonTigerBean.getShareCode().startsWith("30")) {
+                SharesSingleModel singleModel = caculateOneSharesByLHB(dragonTigerBean);
+                if (singleModel != null) {
+                    singleModels.add(singleModel);
+                }
             }
         }
 
@@ -335,27 +337,89 @@ public class DragonTigerService {
         if(sharesModel==null){
             return null;
         }
+
+
 //        logger.info(sharesModel.getCode() + " " + sharesModel.getIncreasePer());
+        //计算资金流入流出 选取前一天涨幅为正 并且没有涨停的股票
+        //logger.info(sharesModel.getCode()+" buy1+buy2:"+(buy1+buy2));
+        //logger.info(sharesModel.getCode() + " sell1+sell2:" + (sell1 + sell2));
+//        if((buy1+buy2)/(sell1+sell2)>3){
+//            if(sharesModel.getChangePer()<20&&sharesModel.getChangePer()>10) {
+//
+//                if (sharesModel.getIncreasePer() > 9.5) {
+//                    //涨停
+//
+//                    SharesModel sharesModelPre = giveMeSharesModelPreByCodeAndDate(singleModel.getCodeAll(), date);
+//                    logger.info(sharesModelPre.getDate());
+//                    logger.info(sharesModel.getCode() + "今日涨停，昨日涨幅：" + sharesModelPre.getIncreasePer());
+//                    if (sharesModelPre.getIncreasePer() < 9.5) {
+//                        if (checkJG(dragonTigerBean) >= 0) {
+//                            logger.info("选出：" + singleModel.getName() + " " + singleModel.getCodeAll());
+//                            return singleModel;
+//                        } else {
+//                            return null;
+//                        }
+//                    }
+//                } else {
+//                    logger.info("今日未涨停");
+//                    logger.info("选出：" + singleModel.getName() + " " + singleModel.getCodeAll());
+//                    return singleModel;
+//                }
+//            }else if(sharesModel.getChangePer()<10){
+//                if (checkJG(dragonTigerBean) > 0) {
+//                    logger.info("选出：" + singleModel.getName() + " " + singleModel.getCodeAll());
+//                    return singleModel;
+//                }
+//            }
+//        }
 
-        logger.info(sharesModel.getCode()+" buy1+buy2:"+(buy1+buy2));
-        logger.info(sharesModel.getCode() + " sell1+sell2:" + (sell1 + sell2));
-        if((buy1+buy2)/(sell1+sell2)>2){
-
-            if(sharesModel.getIncreasePer()>9.5){
-                //涨停
-
-                SharesModel sharesModelPre = giveMeSharesModelPreByCodeAndDate(singleModel.getCodeAll(), date);
-                logger.info(sharesModelPre.getDate());
-                logger.info(sharesModel.getCode()+"今日涨停，昨日涨幅："+sharesModelPre.getIncreasePer());
-                if(sharesModelPre.getIncreasePer()<9.5 && sharesModelPre.getIncreasePer()>0){
-                    logger.info("选出："+singleModel.getName()+" "+singleModel.getCodeAll());
-                    return singleModel;
-                }
-            }
+        if(checkJG(dragonTigerBean)>0&&dragonTigerBean.getBuy1Division()==-1) {
+            logger.info("选出：" + singleModel.getName() + " " + singleModel.getCodeAll());
+            return singleModel;
         }
 
 
+
         return null;
+    }
+    private int checkJG(DragonTigerBean dragonTigerBean){
+        int buyJG = 0;
+        int sellJG = 0;
+
+
+        if(dragonTigerBean.getBuy1Division()==-1){
+            buyJG++;
+        }
+        if(dragonTigerBean.getBuy2Division()==-1){
+            buyJG++;
+        }
+        if(dragonTigerBean.getBuy3Division()==-1){
+            buyJG++;
+        }
+        if(dragonTigerBean.getBuy4Division()==-1){
+            buyJG++;
+        }
+        if(dragonTigerBean.getBuy5Division()==-1){
+            buyJG++;
+        }
+        if(dragonTigerBean.getSell1Division()==-1){
+            sellJG++;
+        }
+        if(dragonTigerBean.getSell2Division()==-1){
+            sellJG++;
+        }
+        if(dragonTigerBean.getSell3Division()==-1){
+            sellJG++;
+        }
+        if(dragonTigerBean.getSell4Division()==-1){
+            sellJG++;
+        }
+        if(dragonTigerBean.getSell5Division()==-1){
+            sellJG++;
+        }
+
+        return buyJG-sellJG;
+
     }
 
 
@@ -401,7 +465,7 @@ public class DragonTigerService {
 
     public List<LHBCacularResult> validateCaculateByLHB(String date){
         List<SharesSingleModel> singleModels = caculateByLHB(date);
-        List<LHBCacularResult> lhbCacularResults = validateCaculate(singleModels,date);
+        List<LHBCacularResult> lhbCacularResults = validateCaculate(singleModels, date);
         return lhbCacularResults;
     }
 
@@ -505,5 +569,124 @@ public class DragonTigerService {
 
     private List<SharesModel> giveMeSharesModelsByCodeAfterDate(String code,String date){
         return null;
+    }
+
+    public List<DivisionBean> listDivisions(String date,String dayNumStr){
+        if(date==null){
+            date = dateUtil.getNowDate("yyyy-MM-dd");
+        }
+        int dayNum = 30;
+        if(dayNumStr!=null){
+            dayNum = Integer.parseInt(dayNumStr);
+        }
+        List<LHBCacularResult> lhbCacularResults = new ArrayList<LHBCacularResult>();
+        for(int i=0;i<dayNum;i++){
+            date = dateUtil.getAddDate(date,"yyyy-MM-dd",-24L*3600000);
+            List<DragonTigerBean> dragonTigerBeans = getDragonTigerListByDate(date);
+            for(int j=0;j<dragonTigerBeans.size();j++){
+                DragonTigerBean dragonTigerBean = dragonTigerBeans.get(j);
+                SharesSingleModel singleModel = giveMeSharesSingleByLHB(dragonTigerBean);
+                if(singleModel!=null){
+                    LHBCacularResult lhbCacularResult = validateCaculateOne(singleModel,dragonTigerBean.getCurrentDate());
+                    lhbCacularResults.add(lhbCacularResult);
+                    lhbCacularResult.setDragonTigerBean(dragonTigerBean);
+                }
+                logger.info(dragonTigerBean.getShareCode()+" "+dragonTigerBean.getCurrentDate()+" 进入龙虎榜");
+            }
+        }
+
+        Map<Integer,Integer> divisionCodeNumMap = new HashMap<Integer, Integer>();
+        for(int i=0;i<lhbCacularResults.size();i++){
+            LHBCacularResult lhbCacularResult = lhbCacularResults.get(i);
+
+            if(lhbCacularResult.isSuccess()){
+                addDivisionMapByLHBResult(lhbCacularResult,divisionCodeNumMap);
+            }
+
+        }
+
+        return sortDivisionByMap(divisionCodeNumMap);
+    }
+    private List<DivisionBean> sortDivisionByMap(Map<Integer,Integer> divisionCodeNumMap){
+        Set<Integer> keySet = divisionCodeNumMap.keySet();
+        Iterator<Integer> iterator = keySet.iterator();
+        List<DivisionBean> divisionBeans = new ArrayList<DivisionBean>();
+        while (iterator.hasNext()){
+            int divisionCode = iterator.next();
+            DivisionBean divisionBean = giveMeDivisionBeanByCode(divisionCode);
+            if(divisionBean!=null){
+                divisionBean.setSuccessNum(divisionCodeNumMap.get(divisionCode));
+                divisionBeans.add(divisionBean);
+            }
+        }
+        Collections.sort(divisionBeans, new Comparator<DivisionBean>() {
+            public int compare(DivisionBean o1, DivisionBean o2) {
+                return o2.getSuccessNum()-o1.getSuccessNum();
+            }
+        });
+        return divisionBeans;
+    }
+
+    private DivisionBean giveMeDivisionBeanByCode(int divisionCode){
+        Map<String,Object> map = new HashMap<String, Object>();
+        map.put("code", divisionCode);
+        DivisionBean divisionSelect = divisionDao.getDivisionByCode(map);
+        return divisionSelect;
+    }
+
+    //将营业部放入计数map
+    private void addDivisionMapByLHBResult(LHBCacularResult lhbCacularResult,Map<Integer,Integer> divisionCodeNumMap){
+        DragonTigerBean dragonTigerBean = lhbCacularResult.getDragonTigerBean();
+        int divisionCode = dragonTigerBean.getBuy1Division();
+        if(!divisionCodeNumMap.containsKey(divisionCode)){
+            divisionCodeNumMap.put(divisionCode,1);
+        }else{
+            divisionCodeNumMap.put(divisionCode,divisionCodeNumMap.get(divisionCode)+1);
+        }
+
+    }
+
+    private SharesSingleModel giveMeSharesSingleByLHB(DragonTigerBean dragonTigerBean){
+        String code = dragonTigerBean.getShareCode();
+        SharesSingleModel singleModel = giveMeShareSingleByCode(code);
+        return  singleModel;
+    }
+
+    public float caculateSuccessPer(String date,String dayNumStr) {
+        if (date == null) {
+            date = dateUtil.getNowDate("yyyy-MM-dd");
+        }
+        int dayNum = 30;
+        if (dayNumStr != null) {
+            dayNum = Integer.parseInt(dayNumStr);
+        }
+        List<LHBCacularResult> lhbCacularResults = new ArrayList<LHBCacularResult>();
+        for (int i = 0; i < dayNum; i++) {
+            date = dateUtil.getAddDate(date, "yyyy-MM-dd", -24L * 3600000);
+            lhbCacularResults.addAll(validateCaculateByLHB(date));
+        }
+        return cuculateSuccessPerByLHBResultList(lhbCacularResults);
+
+    }
+
+    private float cuculateSuccessPerByLHBResultList(List<LHBCacularResult> lhbCacularResults){
+        float successNum = 0;
+        float failNum = 0;
+        for(int i=0;i<lhbCacularResults.size();i++){
+            LHBCacularResult lhbCacularResult = lhbCacularResults.get(i);
+            if(lhbCacularResult.isSuccess()){
+                successNum ++;
+            }else{
+                if(!lhbCacularResult.getDesc().equals("放弃操作")
+                        &&!lhbCacularResult.getDesc().equals("没有结果")){
+                    failNum ++;
+                }
+            }
+        }
+        if(failNum==0&&successNum==0){
+            return -1;
+        }
+        logger.info("复盘结果 成功预测次数 ："+successNum +" 失败次数："+failNum);
+        return successNum/(successNum+failNum);
     }
 }

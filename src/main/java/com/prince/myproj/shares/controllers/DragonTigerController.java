@@ -40,7 +40,7 @@ public class DragonTigerController {
     public String spiderLHBHistory(HttpServletRequest request){
         String date = request.getParameter("date");
         String dayNum = request.getParameter("dayNum");
-        dragonTigerService.spiderLHBHistory(date,dayNum);
+        dragonTigerService.spiderLHBHistory(date, dayNum);
         return "spiderLHBHistory ok";
     }
 
@@ -65,6 +65,23 @@ public class DragonTigerController {
         String date = request.getParameter("date");
         List<LHBCacularResult> lhbCacularResults = dragonTigerService.validateCaculateByLHB(date);
         return  lhbCacularResults;
+    }
+    @RequestMapping(value="/caculateSuccessPer",method = RequestMethod.GET)
+    @ResponseBody
+    public Object caculateSuccessPer(HttpServletRequest request){
+        String date = request.getParameter("date");
+        String dayNum = request.getParameter("dayNum");
+        float successPer = dragonTigerService.caculateSuccessPer(date,dayNum);
+        return "算法成功率："+successPer;
+    }
+
+    @RequestMapping(value="/listDivisions",method = RequestMethod.GET)
+    @ResponseBody
+    public Object listDivisions(HttpServletRequest request){
+        String date = request.getParameter("date");
+        String dayNum = request.getParameter("dayNum");
+        //列出效果好的营业部
+        return dragonTigerService.listDivisions(date,dayNum);
     }
 
 }
