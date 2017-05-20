@@ -9,6 +9,7 @@ import com.prince.myproj.shares.dao.SharesDao;
 import com.prince.myproj.shares.dao.SharesHistoryDao;
 import com.prince.myproj.shares.models.*;
 import com.prince.myproj.util.DateUtil;
+import com.prince.myproj.weixin.bean.ShareModel;
 import com.prince.util.httputil.HttpUtil;
 import org.apache.commons.codec.StringDecoder;
 import org.jsoup.Jsoup;
@@ -136,12 +137,16 @@ public class DragonTigerService {
         return divisionBeans;
     }
 
-    public void spiderLHBHistory(String date){
+    public void spiderLHBHistory(String date,String dayNum){
         if(date==null){
             date = dateUtil.getNowDate("yyyy-MM-dd");
         }
+        int dayNumRe = 150;
+        if(dayNum!=null){
+            dayNumRe = Integer.parseInt(dayNum);
+        }
         String nowDate = date;
-        for(int i=1;i<150;i++){
+        for(int i=1;i<dayNumRe;i++){
             String searchDate = dateUtil.getAddDate(nowDate, "yyyy-MM-dd", -24L * 3600 * 1000 * i);
             spiderLBHByDate(searchDate);
         }
@@ -394,10 +399,10 @@ public class DragonTigerService {
         return null;
     }
 
-    public void validateCaculateByLHB(String date){
+    public List<LHBCacularResult> validateCaculateByLHB(String date){
         List<SharesSingleModel> singleModels = caculateByLHB(date);
-        validateCaculate(singleModels,date);
-
+        List<LHBCacularResult> lhbCacularResults = validateCaculate(singleModels,date);
+        return lhbCacularResults;
     }
 
     /**
@@ -418,11 +423,82 @@ public class DragonTigerService {
 
     public LHBCacularResult validateCaculateOne(SharesSingleModel sharesSingleModel,String date){
         LHBCacularResult lhbCacularResult = new LHBCacularResult();
+        lhbCacularResult.setShareCode(sharesSingleModel.getCodeAll());
+        lhbCacularResult.setShareName(sharesSingleModel.getName());
 
         String code = sharesSingleModel.getCodeAll();
         //获取 当前代码 date日期之后的数据
+        Map<String,Object> map = new HashMap<String, Object>();
+        map.put("code",code);
+        map.put("date",date);
+        List<SharesModel> shareModels = sharesHistoryDao.selectSharesByCodeAfterDate(map);
+        if(shareModels.size()>2){
+            SharesModel day0 = shareModels.get(0);
+            SharesModel day1 = shareModels.get(1);
+            float cb = day1.getOpen();
+            float closeDay0 = day0.getClose();
+            if((cb-closeDay0)/closeDay0>0.03){
+                lhbCacularResult.setIsSuccess(false);
+                lhbCacularResult.setDesc("放弃操作");
+            }else{
+                lhbCacularResult.setBuy(cb);
+                lhbCacularResult.setBuyDate(day1.getDate());
+                for(int i=2;i<shareModels.size();i++){
+                    SharesModel dayi = shareModels.get(i);
+                    float open = dayi.getOpen();
+                    float increase = (open-cb)/cb;
+                    if(increase<-0.05){
+                        //割肉
+                        lhbCacularResult.setIsSuccess(false);
+                        lhbCacularResult.setIncrease(increase);
+                        lhbCacularResult.setSell(open);
+                        lhbCacularResult.setSellDate(dayi.getDate());
+                        lhbCacularResult.setDesc("止损出局 开盘跌过5%");
+                        break;
+                    }else if(increase>0.05){
+                        //盈利出货
+                        lhbCacularResult.setIsSuccess(true);
+                        lhbCacularResult.setSell(open);
+                        lhbCacularResult.setSellDate(dayi.getDate());
+                        lhbCacularResult.setIncrease(increase);
+                        lhbCacularResult.setDesc("止盈出局 开盘涨过5%");
+                        break;
+                    }else{
+                        //比较最高 最低值
+                        float low = dayi.getLow();
+                        float lowIncrease = (low-cb)/cb;
+                        float high = dayi.getHigh();
+                        float highIncrease = (high-cb)/cb;
+                        if(lowIncrease<-0.05){
+                            //割肉
+                            lhbCacularResult.setIsSuccess(false);
+                            lhbCacularResult.setIncrease(-0.05f);
+                            lhbCacularResult.setSell(cb * 0.95f);
+                            lhbCacularResult.setSellDate(dayi.getDate());
+                            lhbCacularResult.setDesc("止损出局 盘中跌过5%");
+                            break;
+                        }else if(highIncrease>0.05){
+                            //盈利出货
+                            lhbCacularResult.setIsSuccess(true);
+                            lhbCacularResult.setSell(cb * 1.05f);
+                            lhbCacularResult.setSellDate(dayi.getDate());
+                            lhbCacularResult.setIncrease(0.05f);
+                            lhbCacularResult.setDesc("止盈出局 盘中涨过5%");
+                            break;
+                        }
 
+                    }
+                    if(i==shareModels.size()-1){
+                        lhbCacularResult.setIsSuccess(false);
+                        lhbCacularResult.setDesc("没有结果");
+                    }
+                }
+            }
 
+        }else{
+            lhbCacularResult.setIsSuccess(false);
+            lhbCacularResult.setDesc("没有结果");
+        }
 
         return lhbCacularResult;
     }

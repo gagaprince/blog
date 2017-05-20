@@ -12,6 +12,15 @@ public class LHBCacularResult {
     private float sell;
     private String buyDate;
     private String sellDate;
+    private String desc;
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
 
     public String getShareName() {
         return shareName;
@@ -27,6 +36,10 @@ public class LHBCacularResult {
 
     public float getSell() {
         return sell;
+    }
+
+    public boolean isSuccess() {
+        return isSuccess;
     }
 
     public String getBuyDate() {

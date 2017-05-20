@@ -4,6 +4,7 @@ import com.prince.myproj.shares.models.SharesModel;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Created by zidong.wang on 2016/5/18.
@@ -17,6 +18,7 @@ public interface SharesHistoryDao {
     public SharesModel selectLastMeanModel(Map<String,Object> paramMap);//获取最后一天计算了means的model
     public List<SharesModel> selectWithHighLow(Map<String,Object> paramMap);//获取特定涨幅范围的股票列表
 
+    public List<SharesModel> selectSharesByCodeAfterDate(Map<String,Object> paramMap);
 
     public void updateMeans(SharesModel model);
 }
