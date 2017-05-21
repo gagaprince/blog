@@ -17,11 +17,11 @@ public class DateUtil {
     }
 
     public String getNowDate(String fomateStr){
-        return parseDateStr(new Date(),fomateStr);
+        return parseDateStr(new Date(), fomateStr);
     }
 
     public String parseDateStr(Date date,String fomateStr){
-        SimpleDateFormat df = new SimpleDateFormat(fomateStr);//ÉèÖÃÈÕÆÚ¸ñÊ½
+        SimpleDateFormat df = new SimpleDateFormat(fomateStr);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú¸ï¿½Ê½
         return df.format(date);
     }
 
@@ -47,5 +47,18 @@ public class DateUtil {
             e.printStackTrace();
         }
         return "";
+    }
+
+    public int compareDate(String d1,String d2){
+        Date date1 = this.parseDate(d1,"yyyy-MM-dd");
+        Date date2 = this.parseDate(d2,"yyyy-MM-dd");
+
+        if(date1.getTime()>date2.getTime()){
+            return 1;
+        }else if(date1.getTime()==date2.getTime()){
+            return 0;
+        }else{
+            return -1;
+        }
     }
 }

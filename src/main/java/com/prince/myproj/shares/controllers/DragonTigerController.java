@@ -1,19 +1,17 @@
 package com.prince.myproj.shares.controllers;
 
-import com.alibaba.fastjson.JSON;
 import com.prince.myproj.shares.models.LHBCacularResult;
 import com.prince.myproj.shares.models.SharesSingleModel;
-import com.prince.myproj.shares.models.WaveModel;
 import com.prince.myproj.shares.services.DragonTigerService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -71,8 +69,12 @@ public class DragonTigerController {
     public Object caculateSuccessPer(HttpServletRequest request){
         String date = request.getParameter("date");
         String dayNum = request.getParameter("dayNum");
-        float successPer = dragonTigerService.caculateSuccessPer(date,dayNum);
-        return "算法成功率："+successPer;
+        List<LHBCacularResult> lhbCacularResults = dragonTigerService.caculateSuccessPer(date, dayNum);
+        float successPer = dragonTigerService.cuculateSuccessPerByLHBResultList(lhbCacularResults);
+        Map<String,Object> map = new HashMap<String, Object>();
+        map.put("successPer",successPer);
+        map.put("results",lhbCacularResults);
+        return map;
     }
 
     @RequestMapping(value="/listDivisions",method = RequestMethod.GET)
@@ -82,6 +84,32 @@ public class DragonTigerController {
         String dayNum = request.getParameter("dayNum");
         //列出效果好的营业部
         return dragonTigerService.listDivisions(date,dayNum);
+    }
+
+    @RequestMapping(value="/listDragonResultByDate",method = RequestMethod.GET)
+    @ResponseBody
+    public Object listDragonResultByDate(HttpServletRequest request){
+        //列出龙虎榜上榜成功失败列表
+        String date = request.getParameter("date");
+        List<LHBCacularResult> lhbCacularResults = dragonTigerService.listDragonResultByDate(date);
+        Map<String,Object> map = new HashMap<String, Object>();
+        map.put("result",lhbCacularResults);
+        map.put("cacularNum",lhbCacularResults.size());
+        return map;
+//        return null;
+    }
+    @RequestMapping(value="/simulateOp",method = RequestMethod.GET)
+    @ResponseBody
+    public Object simulateOp(HttpServletRequest request){
+        String dateBegin = request.getParameter("dateBegin");
+        String dateEnd = request.getParameter("dateEnd");
+        String initMoneyStr = request.getParameter("money");
+        float initMoney = 200000;
+        if (initMoneyStr != null) {
+            initMoney = Float.parseFloat(initMoneyStr);
+        }
+        return dragonTigerService.simulateOp(dateBegin,dateEnd,initMoney);//模拟操作
+//        return null;
     }
 
 }
