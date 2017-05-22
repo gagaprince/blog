@@ -309,8 +309,8 @@ public class SharesController {
         ResultModel resultModel = new ResultModel();
 
         sharesHistoryDataService.downloadTable();
-//        sharesHistoryDataService.cacularMean();
-//        sharesHistoryDataService.cacularCycLastDay();
+        sharesHistoryDataService.cacularMean();
+        sharesHistoryDataService.cacularCycLastDay();
 //        sharesMailService.sendMail();
 //        sharesMailService.sendMailBuyShares();
 
