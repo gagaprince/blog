@@ -1,5 +1,8 @@
 package com.prince.myproj.shares.services;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.prince.myproj.shares.dao.SharesDao;
 import com.prince.myproj.shares.dao.SharesHistoryDao;
 import com.prince.myproj.shares.dao.SharesTempDao;
@@ -186,6 +189,41 @@ public class SharesHistoryDataService {
         saveOneTableInDBWithFile(model, f, 0);
     }
 
+    //将json字符串放入数据库
+    private void saveOneShareJsonInDB(SharesSingleModel model,String jsonContent){
+        JSONArray jsonArray = JSON.parseArray(jsonContent);
+        JSONObject jsonObject = jsonArray.getJSONObject(0);
+        int status = jsonObject.getInteger("status");
+        if(status==0){
+            logger.info("更新code:"+model.getName());
+            JSONArray hqJsonArray = jsonObject.getJSONArray("hq");
+            for(int i=0;i<hqJsonArray.size();i++){
+                JSONArray shareItemArray = hqJsonArray.getJSONArray(i);
+                SharesModel sharesModel = new SharesModel();
+                sharesModel.setCode(model.getCodeAll());
+                sharesModel.setDate(shareItemArray.getString(0));
+                sharesModel.setOpen(shareItemArray.getFloat(1));
+                sharesModel.setClose(shareItemArray.getFloat(2));
+                sharesModel.setIncreaseVal(shareItemArray.getFloat(3));
+                sharesModel.setIncreasePer(Float.parseFloat(shareItemArray.getString(4).replace("%","")));
+                sharesModel.setLow(shareItemArray.getFloat(5));
+                sharesModel.setHigh(shareItemArray.getFloat(6));
+                sharesModel.setVolume(shareItemArray.getFloat(7));
+                sharesModel.setVolumeVal(shareItemArray.getFloat(8));
+                String change = shareItemArray.getString(9);
+                float changePer = 0;
+                if(!change.equals("-")){
+                    changePer = Float.parseFloat(change.replace("%",""));
+                }
+                sharesModel.setChangePer(changePer);
+                if(!isExitHistory(sharesModel,"history")){
+                    sharesHistoryDao.save(sharesModel);
+                }
+            }
+        }
+
+    }
+
     //将文件分析后  放入数据库
     private void saveOneTableInDBWithFile(SharesSingleModel model,File f,int type){
         if(f.exists()){
@@ -301,8 +339,9 @@ public class SharesHistoryDataService {
         for(int i=0;i<size;i++){
             StringBuffer sb = new StringBuffer("");
             SharesSingleModel model = models.get(i);
-            String codeAll = model.getCodeAll();
-            String path = config.getShareTablePath()+codeAll+".csv";
+//            String codeAll = model.getCodeAll();
+//            String path = config.getShareTablePath()+codeAll+".csv";
+            /*
             if(codeAll.startsWith("sz")){
                 sb.append("&code=1");
             }else{
@@ -310,13 +349,33 @@ public class SharesHistoryDataService {
             }
             sb.append(model.getCode()).append("&start=").append(dateStart)
                     .append("&end=").append(dateEnd);
-            String url = config.getHistoryAddUrl()+sb.toString();
+            String url = config.getHistoryAddUrl()+sb.toString();*/
+            String code = model.getCode();
+
+            String path = config.getShareInterfacePath();
+            if (code.equals("000001") || code.equals("399001") || code.equals("399006")) {
+                sb.append("&code=zs_" + code);
+            } else {
+                sb.append("&code=cn_" + code);
+            }
+            sb.append("&start=").append(dateStart)
+                    .append("&end=").append(dateEnd);
+            sb.append("&stat=1&order=D&period=d");
+            String url = path + sb.toString();
             logger.info(url);
             HttpUtil httpUtil = HttpUtil.getInstance();
-            httpUtil.saveImgByUrl(url, path);
+//            httpUtil.saveImgByUrl(url, path);
+            String jsonContent = httpUtil.getContentByUrl(url);
+//            logger.info(jsonContent);
+            try {
+                saveOneShareJsonInDB(model, jsonContent);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
-            File f = new File(path);
-            saveOneTableInDBWithFile(model, f, 2);
+//
+// File f = new File(path);
+//            saveOneTableInDBWithFile(model, f, 2);
 
         }
 

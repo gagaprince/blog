@@ -341,11 +341,11 @@ public class DragonTigerService {
         }
 
 
-//        logger.info(sharesModel.getCode() + " " + sharesModel.getIncreasePer());
+        logger.info(sharesModel.getCode() + " " + sharesModel.getIncreasePer());
         //计算资金流入流出 选取前一天涨幅为正 并且没有涨停的股票
         //logger.info(sharesModel.getCode()+" buy1+buy2:"+(buy1+buy2));
         //logger.info(sharesModel.getCode() + " sell1+sell2:" + (sell1 + sell2));
-        if((buy1+buy2)/(sell1+sell2)>3){
+        if((buy1+buy2)/(sell1+sell2)>2){
             if(sharesModel.getChangePer()<20&&sharesModel.getChangePer()>10) {
 
                 if (sharesModel.getIncreasePer() > 9.5) {

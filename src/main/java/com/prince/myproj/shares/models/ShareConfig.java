@@ -8,6 +8,7 @@ public class ShareConfig {
     private String realTimeUrl;
     private String shareCodeUrl;
     private String shareTablePath;
+    private String shareInterfacePath;
     private String historyAddUrl;
     private String mailUserName;
     private String mailPassword;
@@ -15,10 +16,10 @@ public class ShareConfig {
     private String toUser;
     private String fromUser;
 
-    private String divisionAllUrl;//¹«Ë¾ÁÐ±í
-    private String divisionSearchUrl;//¸ù¾Ý¹«Ë¾ËÑË÷¹«Ë¾ÏÂµÄdivision
-    private String lhbListUrl;//Áú»¢°ñlistµØÖ·
-    private String lhbDetailUrl;//Áú»¢°ñÏêÇéµØÖ·
+    private String divisionAllUrl;//ï¿½ï¿½Ë¾ï¿½Ð±ï¿½
+    private String divisionSearchUrl;//ï¿½ï¿½ï¿½Ý¹ï¿½Ë¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë¾ï¿½Âµï¿½division
+    private String lhbListUrl;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½listï¿½ï¿½Ö·
+    private String lhbDetailUrl;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö·
 
     public String getLhbDetailUrl() {
         return lhbDetailUrl;
@@ -130,5 +131,13 @@ public class ShareConfig {
 
     public void setRealTimeUrl(String realTimeUrl) {
         this.realTimeUrl = realTimeUrl;
+    }
+
+    public String getShareInterfacePath() {
+        return shareInterfacePath;
+    }
+
+    public void setShareInterfacePath(String shareInterfacePath) {
+        this.shareInterfacePath = shareInterfacePath;
     }
 }
