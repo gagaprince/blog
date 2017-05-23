@@ -466,7 +466,8 @@ public class DragonTigerService {
     }
 
     public List<LHBCacularResult> validateCaculateByLHB(String date){
-        List<SharesSingleModel> singleModels = caculateByLHB(date);
+//        List<SharesSingleModel> singleModels = caculateByLHB(date);
+        List<SharesSingleModel> singleModels = caculateByLHBFromListDragon(date);
         List<LHBCacularResult> lhbCacularResults = validateCaculate(singleModels, date);
         return lhbCacularResults;
     }
@@ -841,6 +842,98 @@ public class DragonTigerService {
             return lhbCacularResult;
         }
         return null;
+    }
+
+    public List<SharesSingleModel> caculateByLHBFromListDragon(String date){
+        List<DragonTigerBean> dragonTigerBeans = listSelectDragon(date);
+        List<SharesSingleModel> singleModels = new ArrayList<SharesSingleModel>();
+        for(int i=0;i<dragonTigerBeans.size();i++){
+            DragonTigerBean dragonTigerBean = dragonTigerBeans.get(i);
+            SharesSingleModel singleModel = giveMeShareSingleByCode(dragonTigerBean.getShareCode());
+            singleModels.add(singleModel);
+        }
+        return singleModels;
+    }
+
+    //主观选择法
+    public List<DragonTigerBean> listSelectDragon(String date){
+        if(date==null){
+            date = dateUtil.getNowDate("yyyy-MM-dd");
+        }
+
+        //拿到当天的龙虎榜数据
+        List<DragonTigerBean> dragonTigerBeans = getDragonTigerListByDate(date);
+        List<DragonTigerBean> selectDragons = new ArrayList<DragonTigerBean>();
+
+        //挨个分析每一只
+        for(int i=0;i<dragonTigerBeans.size();i++){
+            DragonTigerBean dragonTigerBean = dragonTigerBeans.get(i);
+
+            String code = dragonTigerBean.getShareCode();
+            String name = dragonTigerBean.getShareName();
+            //将创业板 st 踢除
+            if(code.startsWith("30")
+                || name.toLowerCase().startsWith("\\*st")
+                || name.toLowerCase().startsWith("st")) {
+                continue;
+            }
+
+            if(!fillterByBS(dragonTigerBean)){//买 大于 卖
+                continue;
+            }
+
+            if(!fillterByJG(dragonTigerBean)){//机构权重 买 大于 卖
+                continue;
+            }
+            if(!fillterByIncreseAndChangePer(dragonTigerBean)){//上升通道
+                continue;
+            }
+            logger.info(dragonTigerBean.getShareCode()+" "+dragonTigerBean.getShareName()+" "+dragonTigerBean.getCurrentDate()+" 被选出" );
+            selectDragons.add(dragonTigerBean);
+
+        }
+
+        return selectDragons;
+    }
+
+    private boolean fillterByBS(DragonTigerBean dragonTigerBean){
+        float allBuy = dragonTigerBean.getAllBuy();
+        float allSell = dragonTigerBean.getAllSell();
+        float mainBuy = dragonTigerBean.getMainBuy();
+        float mainSell = dragonTigerBean.getMainSell();
+        if(allBuy>allSell*2 && mainBuy>mainSell*3){
+            //买入资金有规模效应
+            return true;
+        }
+        return false;
+    }
+    private boolean fillterByJG(DragonTigerBean dragonTigerBean){
+        int buyJGCode = dragonTigerBean.getBuyJGCode();
+        int sellJGCode = dragonTigerBean.getSellJGCode();
+        if(buyJGCode>=sellJGCode){
+            return true;
+        }
+        return false;
+    }
+    private boolean fillterByIncreseAndChangePer(DragonTigerBean dragonTigerBean){
+        //查出 当天 涨幅
+        String code = dragonTigerBean.getShareCode();
+        String date = dragonTigerBean.getCurrentDate();
+        SharesSingleModel singleModel = giveMeShareSingleByCode(code);
+        if(singleModel==null){
+            return false;
+        }
+        SharesModel sharesModel = giveMeSharesModelByCodeAndDate(singleModel.getCodeAll(), date);
+        if(sharesModel==null){
+            return false;
+        }
+        float increasePer = sharesModel.getIncreasePer();
+        float changePer = sharesModel.getChangePer();
+        float close = sharesModel.getClose();
+        if(increasePer>0 && changePer>1 && close>7){
+            return true;
+        }
+        return false;
     }
 
 }
