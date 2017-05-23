@@ -504,12 +504,54 @@ public class DragonTigerService {
             SharesModel day1 = shareModels.get(1);
             float cb = day1.getOpen();
             float closeDay0 = day0.getClose();
+            float changePer0 = day0.getChangePer();
             if((cb-closeDay0)/closeDay0>0.03){
-                lhbCacularResult.setIsSuccess(false);
-                lhbCacularResult.setDesc("放弃操作");
+                cb = day1.getLow();
+                if((cb-closeDay0)/closeDay0>0.03) {
+                    lhbCacularResult.setIsSuccess(false);
+                    lhbCacularResult.setDesc("放弃操作");
+                    return  lhbCacularResult;
+                }else{//如果最低值是小于0.03的可以选择合适机会买入
+                    cb = closeDay0*1.03f;
+                    lhbCacularResult.setBuy(cb);
+                    lhbCacularResult.setBuyDate(day1.getDate());
+                }
             }else{
                 lhbCacularResult.setBuy(cb);
                 lhbCacularResult.setBuyDate(day1.getDate());
+            }
+
+            float changePer1 = day1.getChangePer();
+            if(changePer1-changePer0>0){
+                //换手率升高有出货嫌疑，所以第二天不管是否盈利 立马卖出
+                SharesModel day2 = shareModels.get(2);
+                float open = day2.getOpen();
+                if(open!=0){
+                    float increase = (open - cb) / cb;
+                    lhbCacularResult.setIncrease(increase);
+                    lhbCacularResult.setSell(open);
+                    lhbCacularResult.setSellDate(day2.getDate());
+                    if(increase>0.05){
+                        lhbCacularResult.setIsSuccess(true);
+                        lhbCacularResult.setDesc("止盈出局 开盘涨过5%");
+                    }else if(increase<-0.05){
+                        lhbCacularResult.setIsSuccess(false);
+                        lhbCacularResult.setDesc("止损出局 开盘跌过5%");
+                    }else if(increase>0){
+                        lhbCacularResult.setIsSuccess(true);
+                        lhbCacularResult.setDesc("止盈出局 微利"+increase);
+                    }else{
+                        lhbCacularResult.setIsSuccess(false);
+                        lhbCacularResult.setDesc("止损出局 亏损"+increase);
+                    }
+                }else{
+                    lhbCacularResult.setIsSuccess(false);
+                    lhbCacularResult.setDesc("没有结果");
+                    lhbCacularResult.setSell(cb);
+                    lhbCacularResult.setIncrease(0);
+                    lhbCacularResult.setSellDate(dateUtil.getAddDate(lhbCacularResult.getBuyDate(),"yyyy-MM-dd",1*24*3600000));
+                }
+            }else{
                 for(int i=2;i<shareModels.size()&&i<5;i++){
                     SharesModel dayi = shareModels.get(i);
                     float open = dayi.getOpen();
@@ -567,6 +609,7 @@ public class DragonTigerService {
                     }
                 }
             }
+
 
         }else{
             lhbCacularResult.setIsSuccess(false);
@@ -692,7 +735,7 @@ public class DragonTigerService {
         if(!divisionCodeNumMap.containsKey(divisionCode)){
             divisionCodeNumMap.put(divisionCode,1);
         }else{
-            divisionCodeNumMap.put(divisionCode,divisionCodeNumMap.get(divisionCode)+1);
+            divisionCodeNumMap.put(divisionCode, divisionCodeNumMap.get(divisionCode) + 1);
         }
 
     }
@@ -737,7 +780,7 @@ public class DragonTigerService {
         if(failNum==0&&successNum==0){
             return -1;
         }
-        logger.info("复盘结果 成功预测次数 ："+successNum +" 失败次数："+failNum);
+        logger.info("复盘结果 成功预测次数 ：" + successNum + " 失败次数：" + failNum);
         return successNum/(successNum+failNum);
     }
 
@@ -756,7 +799,7 @@ public class DragonTigerService {
             }else {
                 SharesSingleModel singleModel = giveMeShareSingleByCode(dragonTigerBean.getShareCode());
                 if(singleModel!=null){
-                    LHBCacularResult lhbCacularResult = validateCaculateOne(singleModel,date);
+                    LHBCacularResult lhbCacularResult = validateCaculateOne(singleModel, date);
                     lhbCacularResults.add(lhbCacularResult);
                     lhbCacularResult.setDragonTigerBean(dragonTigerBean);
                 }else{
@@ -810,7 +853,7 @@ public class DragonTigerService {
             }else{
 
                 logger.info("模拟成功，当前日期："+currentDate);
-                currentDate = simulateBean.getEndDate();
+                currentDate = dateUtil.getAddDate(simulateBean.getEndDate(),"yyyy-MM-dd",-24*3600000);
 
                 float simuAllMoney = simulateBean.getAllMoney();
                 allMoney = elseMoney + simuAllMoney;
@@ -828,14 +871,19 @@ public class DragonTigerService {
                             currentOpMoney = allMoney;
                         }
                     }*/
-                    currentOpMoney = 10000;
+                    if(lhbCacularResult.getDesc().indexOf("微利")!=-1){
+
+                    }else{
+                        currentOpMoney = 10000;
+                    }
+
                 }else{
                     currentOpMoney = 10000;
-                    /*currentOpMoney = currentOpMoney*2;
-                    if(currentOpMoney>allMoney){
-                        logger.info("注意风险，要爆仓了！");
-                        currentOpMoney = currentOpMoney/2;//如果爆仓，则使用当前资金的一半左右操作资金
-                    }*/
+//                    currentOpMoney = currentOpMoney*2;
+//                    if(currentOpMoney>allMoney){
+//                        logger.info("注意风险，要爆仓了！");
+//                        currentOpMoney = currentOpMoney/2;//如果爆仓，则使用当前资金的一半左右操作资金
+//                    }
                 }
                 elseMoney = allMoney - currentOpMoney;
 
@@ -854,7 +902,8 @@ public class DragonTigerService {
     private SimulateBean simulateOpByDate(float inMoney,String date){
         //在 date这天，有inMoney这么多钱
         //拿到当前 dateBegin 的 选中的股票
-        List<SharesSingleModel> singleModels = caculateByLHB(date);
+//        List<SharesSingleModel> singleModels = caculateByLHB(date);
+        List<SharesSingleModel> singleModels = caculateByLHBFromListDragon(date);
         LHBCacularResult lhbCacularResult = simulateOpBySingleModels(singleModels, date);
         if(lhbCacularResult!=null){
             logger.info(lhbCacularResult.getDesc());
