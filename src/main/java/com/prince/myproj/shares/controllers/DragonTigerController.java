@@ -1,5 +1,6 @@
 package com.prince.myproj.shares.controllers;
 
+import com.prince.myproj.shares.models.DragonTigerBean;
 import com.prince.myproj.shares.models.LHBCacularResult;
 import com.prince.myproj.shares.models.SharesSingleModel;
 import com.prince.myproj.shares.services.DragonTigerService;
@@ -73,7 +74,7 @@ public class DragonTigerController {
         float successPer = dragonTigerService.cuculateSuccessPerByLHBResultList(lhbCacularResults);
         Map<String,Object> map = new HashMap<String, Object>();
         map.put("successPer",successPer);
-        map.put("results",lhbCacularResults);
+        map.put("results", lhbCacularResults);
         return map;
     }
 
@@ -82,14 +83,14 @@ public class DragonTigerController {
     public Object listDivisions(HttpServletRequest request){
         String date = request.getParameter("date");
         String dayNum = request.getParameter("dayNum");
-        //列出效果好的营业部
+        //
         return dragonTigerService.listDivisions(date,dayNum);
     }
 
     @RequestMapping(value="/listDragonResultByDate",method = RequestMethod.GET)
     @ResponseBody
     public Object listDragonResultByDate(HttpServletRequest request){
-        //列出龙虎榜上榜成功失败列表
+        //
         String date = request.getParameter("date");
         List<LHBCacularResult> lhbCacularResults = dragonTigerService.listDragonResultByDate(date);
         Map<String,Object> map = new HashMap<String, Object>();
@@ -120,6 +121,13 @@ public class DragonTigerController {
         }
         return dragonTigerService.simulateOp(dateBegin,dateEnd,initMoney);//模拟操作
 //        return null;
+    }
+    @RequestMapping(value="/listSelectDragon",method = RequestMethod.GET)
+    @ResponseBody
+    public Object listSelectDragon(HttpServletRequest request){
+        String date = request.getParameter("date");
+        List<DragonTigerBean> dragonTigerBeans = dragonTigerService.listSelectDragon(date);
+        return dragonTigerBeans;
     }
 
 }

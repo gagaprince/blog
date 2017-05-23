@@ -304,4 +304,59 @@ public class DragonTigerBean {
         this.shareCode = shareCode;
     }
 
+    public float getAllBuy(){
+        return  buy1Val+buy2Val+buy3Val+buy4Val+buy5Val;
+    }
+    public float getAllSell(){
+        return sell1Val+sell2Val+sell3Val+sell4Val+sell5Val;
+    }
+
+    public float getMainBuy(){
+        return  buy1Val+buy2Val;
+    }
+
+    public float getMainSell(){
+        return sell1Val+sell2Val;
+    }
+
+    public int getBuyJGCode(){//加权的机构打分
+        int jgNum = 0;
+        if(buy1Division==-1){
+            jgNum+=5;
+        }
+        if(buy2Division==-1){
+            jgNum+=4;
+        }
+        if(buy3Division==-1){
+            jgNum+=3;
+        }
+        if(buy4Division==-1){
+            jgNum+=2;
+        }
+        if(buy5Division==-1){
+            jgNum+=1;
+        }
+        return jgNum;
+    }
+
+    public int getSellJGCode(){//加权的机构打分
+        int jgNum = 0;
+        if(sell1Division==-1){
+            jgNum+=5;
+        }
+        if(sell2Division==-1){
+            jgNum+=4;
+        }
+        if(sell3Division==-1){
+            jgNum+=3;
+        }
+        if(sell4Division==-1){
+            jgNum+=2;
+        }
+        if(sell5Division==-1){
+            jgNum+=1;
+        }
+        return jgNum;
+    }
+
 }
