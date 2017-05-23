@@ -442,7 +442,7 @@ public class DragonTigerService {
         String dateStart = dateUtil.getAddDate(date, "yyyy-MM-dd", -24L * 10 * 3600000);
         //查出当天的数据
         Map<String,Object> map = new HashMap<String, Object>();
-        map.put("code",code);
+        map.put("code", code);
         map.put("date",datePre);
         map.put("beginDate", dateStart);
         List<SharesModel> sharesModels = sharesHistoryDao.selectModelByCode(map);
@@ -564,6 +564,48 @@ public class DragonTigerService {
                         lhbCacularResult.setSellDate(dateUtil.getAddDate(lhbCacularResult.getBuyDate(),"yyyy-MM-dd",3*24*3600000));
 
                     }
+                }
+            }
+
+        }else{
+            lhbCacularResult.setIsSuccess(false);
+            lhbCacularResult.setDesc("没有结果");
+        }
+
+        return lhbCacularResult;
+    }
+
+    public LHBCacularResult validateCaculateOneDay(SharesSingleModel sharesSingleModel,String date){
+        LHBCacularResult lhbCacularResult = new LHBCacularResult();
+        lhbCacularResult.setShareCode(sharesSingleModel.getCodeAll());
+        lhbCacularResult.setShareName(sharesSingleModel.getName());
+
+        String code = sharesSingleModel.getCodeAll();
+        //获取 当前代码 date日期之后的数据
+        Map<String,Object> map = new HashMap<String, Object>();
+        map.put("code",code);
+        map.put("date",date);
+        List<SharesModel> shareModels = sharesHistoryDao.selectSharesByCodeAfterDate(map);
+        if(shareModels.size()>1){
+            SharesModel day0 = shareModels.get(0);
+            SharesModel day1 = shareModels.get(1);
+            float cb = day1.getOpen();
+            float closeDay0 = day0.getClose();
+            if((cb-closeDay0)/closeDay0>0.03){
+                lhbCacularResult.setIsSuccess(false);
+                lhbCacularResult.setDesc("放弃操作");
+            }else{
+                lhbCacularResult.setBuy(cb);
+                lhbCacularResult.setBuyDate(day1.getDate());
+                lhbCacularResult.setSell(day1.getClose());
+                float increase = (day1.getClose() - cb) / cb;
+                lhbCacularResult.setIncrease(increase);
+                if(increase>0.03){
+                    lhbCacularResult.setDesc("值得操作");
+                    lhbCacularResult.setIsSuccess(true);
+                }else{
+                    lhbCacularResult.setDesc("不值得操作");
+                    lhbCacularResult.setIsSuccess(false);
                 }
             }
 
@@ -714,6 +756,32 @@ public class DragonTigerService {
                 SharesSingleModel singleModel = giveMeShareSingleByCode(dragonTigerBean.getShareCode());
                 if(singleModel!=null){
                     LHBCacularResult lhbCacularResult = validateCaculateOne(singleModel,date);
+                    lhbCacularResults.add(lhbCacularResult);
+                    lhbCacularResult.setDragonTigerBean(dragonTigerBean);
+                }else{
+                    logger.info(dragonTigerBean.getShareCode()+"没有找到这只股票");
+                }
+            }
+        }
+        return lhbCacularResults;
+    }
+
+    public List<LHBCacularResult> listDragonResultOneByOne(String date){
+        if(date==null){
+            date = dateUtil.getNowDate("yyyy-MM-dd");
+        }
+        List<DragonTigerBean> dragonTigerBeans = getDragonTigerListByDate(date);
+        List<LHBCacularResult> lhbCacularResults = new ArrayList<LHBCacularResult>();
+        for(int i=0;i<dragonTigerBeans.size();i++){
+            DragonTigerBean dragonTigerBean = dragonTigerBeans.get(i);
+            String shareCode = dragonTigerBean.getShareCode();
+            if(shareCode.startsWith("300")){
+                dragonTigerBeans.remove(i);
+                i--;
+            }else {
+                SharesSingleModel singleModel = giveMeShareSingleByCode(dragonTigerBean.getShareCode());
+                if(singleModel!=null){
+                    LHBCacularResult lhbCacularResult = validateCaculateOneDay(singleModel,date);
                     lhbCacularResults.add(lhbCacularResult);
                     lhbCacularResult.setDragonTigerBean(dragonTigerBean);
                 }else{

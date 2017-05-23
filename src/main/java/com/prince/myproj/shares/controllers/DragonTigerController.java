@@ -98,6 +98,16 @@ public class DragonTigerController {
         return map;
 //        return null;
     }
+
+    @RequestMapping(value="/listDragonResultOneByOne",method = RequestMethod.GET)
+    @ResponseBody
+    public Object listDragonResultOneByOne(HttpServletRequest request){
+        String date = request.getParameter("date");
+        List<LHBCacularResult> lhbCacularResults = dragonTigerService.listDragonResultOneByOne(date);
+
+        return lhbCacularResults;
+    }
+
     @RequestMapping(value="/simulateOp",method = RequestMethod.GET)
     @ResponseBody
     public Object simulateOp(HttpServletRequest request){
