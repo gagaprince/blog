@@ -72,9 +72,13 @@ public class DragonTigerController {
         String dayNum = request.getParameter("dayNum");
         List<LHBCacularResult> lhbCacularResults = dragonTigerService.caculateSuccessPer(date, dayNum);
         float successPer = dragonTigerService.cuculateSuccessPerByLHBResultList(lhbCacularResults);
+        List<LHBCacularResult> lhbCacularResultsForSuccess = dragonTigerService.findSuccessFromResults(lhbCacularResults);
+        List<LHBCacularResult> lhbCacularResultsForFeild = dragonTigerService.findFeildFromResults(lhbCacularResults);
         Map<String,Object> map = new HashMap<String, Object>();
         map.put("successPer",successPer);
-        map.put("results", lhbCacularResults);
+        map.put("successResults", lhbCacularResultsForSuccess);
+        map.put("feildResults", lhbCacularResultsForFeild);
+//        map.put("allResults", lhbCacularResults);
         return map;
     }
 

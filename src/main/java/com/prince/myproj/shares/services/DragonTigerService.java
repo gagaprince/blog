@@ -825,7 +825,7 @@ public class DragonTigerService {
             }else {
                 SharesSingleModel singleModel = giveMeShareSingleByCode(dragonTigerBean.getShareCode());
                 if(singleModel!=null){
-                    LHBCacularResult lhbCacularResult = validateCaculateOneDay(singleModel,date);
+                    LHBCacularResult lhbCacularResult = validateCaculateOneDay(singleModel, date);
                     lhbCacularResults.add(lhbCacularResult);
                     lhbCacularResult.setDragonTigerBean(dragonTigerBean);
                 }else{
@@ -853,7 +853,7 @@ public class DragonTigerService {
             }else{
 
                 logger.info("模拟成功，当前日期："+currentDate);
-                currentDate = dateUtil.getAddDate(simulateBean.getEndDate(),"yyyy-MM-dd",-24*3600000);
+                currentDate = dateUtil.getAddDate(simulateBean.getEndDate(), "yyyy-MM-dd", -24 * 3600000);
 
                 float simuAllMoney = simulateBean.getAllMoney();
                 allMoney = elseMoney + simuAllMoney;
@@ -1051,6 +1051,30 @@ public class DragonTigerService {
             return true;
         }
         return false;
+    }
+
+    public List<LHBCacularResult> findSuccessFromResults(List<LHBCacularResult> lhbCacularResults){
+        List<LHBCacularResult> returnResults = new ArrayList<LHBCacularResult>();
+        for(int i=0;i<lhbCacularResults.size();i++){
+            LHBCacularResult lhbCacularResult = lhbCacularResults.get(i);
+            if(lhbCacularResult.isSuccess()){
+                returnResults.add(lhbCacularResult);
+            }
+        }
+        return returnResults;
+    }
+
+    public List<LHBCacularResult> findFeildFromResults(List<LHBCacularResult> lhbCacularResults){
+        List<LHBCacularResult> returnResults = new ArrayList<LHBCacularResult>();
+        for(int i=0;i<lhbCacularResults.size();i++){
+            LHBCacularResult lhbCacularResult = lhbCacularResults.get(i);
+            if(!lhbCacularResult.isSuccess() &&
+                    !lhbCacularResult.getDesc().equals("放弃操作")
+                    &&!lhbCacularResult.getDesc().equals("没有结果")){
+                returnResults.add(lhbCacularResult);
+            }
+        }
+        return returnResults;
     }
 
 }
