@@ -10,7 +10,8 @@ public enum ErrorCode {
     NOT_NOVEL_ID_ERROR("没有传novelid",3),
     NOT_NOVEL_ERROR("没有查到对应的小说",4),
     NOT_NOVEL_CHAPTER_ERROR("没有查到对应的章节",5),
-    NOT_SEARCHKEY_FOUND("没有搜索词",5)
+    NOT_SEARCHKEY_FOUND("没有搜索词",6),
+    NOT_LOAD_PHOTO("没有正确下载图片",7)
     ;
     private String des;
     private int code;
