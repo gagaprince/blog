@@ -56,8 +56,6 @@ public class Base64Trans {
         String filePath = path+fileUrl;
 //        logger.info(filePath);
 
-
-
         try {
             httpUtil.saveImgByUrl(url,filePath);
             String httpUrl = "/blog/tempPhoto/"+fileUrl;
