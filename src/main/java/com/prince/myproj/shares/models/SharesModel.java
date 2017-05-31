@@ -28,6 +28,8 @@ public class SharesModel {
 
     private float sixMean;//6日均值
     private float tweentyMean;  //21日均值
+    private float thirtyMean;//30日均值
+    private float sixtyMean;//60日均值
 
     private float cyc5; //5日平均成本
     private float cyc13;    //13日平均成本
@@ -36,6 +38,22 @@ public class SharesModel {
     private float cys5;     //5日盈亏率 短线策略
     private float cys13;    //13日盈亏率    中线
     private float cys34;    //34日盈亏率 长线
+
+    public float getSixtyMean() {
+        return sixtyMean;
+    }
+
+    public float getThirtyMean() {
+        return thirtyMean;
+    }
+
+    public void setSixtyMean(float sixtyMean) {
+        this.sixtyMean = sixtyMean;
+    }
+
+    public void setThirtyMean(float thirtyMean) {
+        this.thirtyMean = thirtyMean;
+    }
 
     public float getCyc13() {
         return cyc13;

@@ -15,6 +15,8 @@
         <result column="increase_val" property="increaseVal" jdbcType="FLOAT" />
         <result column="six_mean" property="sixMean" jdbcType="FLOAT" />
         <result column="tweenty_mean" property="tweentyMean" jdbcType="FLOAT" />
+        <result column="sixty_mean" property="sixtyMean" jdbcType="FLOAT" />
+        <result column="thirty_mean" property="thirtyMean" jdbcType="FLOAT" />
         <result column="change_per" property="changePer" jdbcType="FLOAT" />
         <result column="volume_val" property="volumeVal" jdbcType="FLOAT" />
         <result column="total_val" property="totalValue" jdbcType="FLOAT" />
@@ -47,6 +49,8 @@
             <if test="increaseVal != null"> increase_val ,</if>
             <if test="sixMean != null"> six_mean ,</if>
             <if test="tweentyMean != null"> tweenty_mean ,</if>
+            <if test="sixtyMean != null"> sixty_mean ,</if>
+            <if test="thirtyMean != null"> thirty_mean ,</if>
             <if test="changePer != null"> change_per ,</if>
             <if test="volumeVal != null"> volume_val ,</if>
             <if test="totalValue != null"> total_val ,</if>
@@ -67,6 +71,8 @@
             <if test="increaseVal != null"> #{increaseVal} ,</if>
             <if test="sixMean != null"> #{sixMean} ,</if>
             <if test="tweentyMean != null"> #{tweentyMean} ,</if>
+            <if test="sixtyMean != null"> #{sixtyMean} ,</if>
+            <if test="thirtyMean != null"> #{thirtyMean} ,</if>
             <if test="changePer != null"> #{changePer} ,</if>
             <if test="volumeVal != null"> #{volumeVal} ,</if>
             <if test="totalValue != null"> #{totalValue} ,</if>
@@ -213,6 +219,8 @@
         <trim prefix="set" suffixOverrides=",">
             <if test="sixMean != null">six_mean = #{sixMean},</if>
             <if test="tweentyMean != null"> tweenty_mean = #{tweentyMean} ,</if>
+            <if test="sixtyMean != null">sixty_mean = #{sixtyMean},</if>
+            <if test="thirtyMean != null">thirty_mean = #{thirtyMean},</if>
             <if test="cyc5 != null"> cyc5 = #{cyc5} ,</if>
             <if test="cyc13 != null"> cyc13 = #{cyc13} ,</if>
             <if test="cyc34 != null"> cyc34 = #{cyc34} ,</if>

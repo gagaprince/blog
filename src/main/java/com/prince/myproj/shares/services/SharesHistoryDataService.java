@@ -393,7 +393,7 @@ public class SharesHistoryDataService {
         Map<String,Object> paramMap = new HashMap<String, Object>();
         paramMap.put("code", "sh000001");
         SharesModel sharesModel =sharesHistoryDao.selectLastMeanModel(paramMap);
-        String startDate = getDateByMinus(sharesModel.getDate(), -30);
+        String startDate = getDateByMinus(sharesModel.getDate(), -70);
         String endDate = dateUtil.getNowDate("yyyy-MM-dd");
 
         logger.info("startDate:"+startDate);
@@ -416,6 +416,8 @@ public class SharesHistoryDataService {
         List<SharesModel> models = getModelsByStartEndDate(model, startDate, endDate);
         cacularAndSaveMean(models, 6);
         cacularAndSaveMean(models, 21);
+        cacularAndSaveMean(models, 31);
+        cacularAndSaveMean(models, 61);
     }
 
     private void cacularAndSaveMean(List<SharesModel> models,int days){
@@ -464,8 +466,12 @@ public class SharesHistoryDataService {
     private void saveMeanInDb(SharesModel model,float means,int days){
         if(days==6){
             model.setSixMean(means);
-        }else{
+        }else if(days==21){
             model.setTweentyMean(means);
+        }else if(days==31){
+            model.setThirtyMean(means);
+        }else if(days==61){
+            model.setSixtyMean(means);
         }
         if(model.getSixMean()!=null && model.getSixMean()!=0 && model.getTweentyMean()!=null && model.getTweentyMean()!=0){
             logger.info("update  id:"+model.getId() +" code:"+model.getCode()
