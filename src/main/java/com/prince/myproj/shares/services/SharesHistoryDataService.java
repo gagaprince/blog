@@ -475,7 +475,7 @@ public class SharesHistoryDataService {
         }
         if(model.getSixMean()!=null && model.getSixMean()!=0 && model.getTweentyMean()!=null && model.getTweentyMean()!=0){
             logger.info("update  id:"+model.getId() +" code:"+model.getCode()
-                    +" 6daysmean:"+model.getSixMean()+" 21daysmean:"+model.getTweentyMean());
+                    +" 6daysmean:"+model.getSixMean()+" 21daysmean:"+model.getTweentyMean()+" 30daysmean:"+model.getThirtyMean());
             sharesHistoryDao.updateMeans(model);
         }
     }
