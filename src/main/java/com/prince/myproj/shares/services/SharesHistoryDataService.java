@@ -393,7 +393,7 @@ public class SharesHistoryDataService {
         Map<String,Object> paramMap = new HashMap<String, Object>();
         paramMap.put("code", "sh000001");
         SharesModel sharesModel =sharesHistoryDao.selectLastMeanModel(paramMap);
-        String startDate = getDateByMinus(sharesModel.getDate(), -70);
+        String startDate = getDateByMinus(sharesModel.getDate(), -150);
         String endDate = dateUtil.getNowDate("yyyy-MM-dd");
 
         logger.info("startDate:"+startDate);
@@ -408,7 +408,9 @@ public class SharesHistoryDataService {
         int size = sharesModels.size();
         for(int i=0;i<size;i++){
             SharesSingleModel shareModel = sharesModels.get(i);
-            cacularMeanOneModel(shareModel, startDate, endDate);
+//            if(shareModel.getCode().equals("000957")) {
+                cacularMeanOneModel(shareModel, startDate, endDate);
+//            }
         }
     }
 
@@ -425,6 +427,7 @@ public class SharesHistoryDataService {
         float sum = 0;
         int size = models.size();
         int indexBegin=-1;
+        logger.info("days:"+days+" size:"+size);
 
         for(int i=0;i<days-1 && i<size;i++){
             SharesModel model = models.get(i);
@@ -475,7 +478,9 @@ public class SharesHistoryDataService {
         }
         if(model.getSixMean()!=null && model.getSixMean()!=0 && model.getTweentyMean()!=null && model.getTweentyMean()!=0){
             logger.info("update  id:"+model.getId() +" code:"+model.getCode()
-                    +" 6daysmean:"+model.getSixMean()+" 21daysmean:"+model.getTweentyMean()+" 30daysmean:"+model.getThirtyMean());
+                    +" 6daysmean:"+model.getSixMean()+" 21daysmean:"+model.getTweentyMean()+
+                    " 30daysmean:"+model.getThirtyMean()
+                    +" 60daysmean:" +model.getSixtyMean());
             sharesHistoryDao.updateMeans(model);
         }
     }
