@@ -393,7 +393,7 @@ public class SharesHistoryDataService {
         Map<String,Object> paramMap = new HashMap<String, Object>();
         paramMap.put("code", "sh000001");
         SharesModel sharesModel =sharesHistoryDao.selectLastMeanModel(paramMap);
-        String startDate = getDateByMinus(sharesModel.getDate(), -150);
+        String startDate = getDateByMinus(sharesModel.getDate(), -120);
         String endDate = dateUtil.getNowDate("yyyy-MM-dd");
 
         logger.info("startDate:"+startDate);
