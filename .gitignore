@@ -3,6 +3,7 @@
 
 # maven ignore
 target/
+src/main/webapp/blog/tempPhoto/
 
 # eclipse ignore
 .settings/
