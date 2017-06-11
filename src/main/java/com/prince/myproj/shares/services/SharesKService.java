@@ -212,7 +212,9 @@ public class SharesKService {
                         if(cacularAddPer(firstSixMean,lastSixMean)>0.01
                                 &&cacularAddPer(sixMean2,lastSixMean)>0.005 && cacularAddPer(sixMean3,lastSixMean)>0.005){
                             logger.info("选出："+sharesSingleModel.getCodeAll()+" "+sharesSingleModel.getName());
-                            return true;
+                            if(kModel4.getClose()>9){
+                                return true;
+                            }
                         }
                     }
                 }

@@ -56,7 +56,7 @@ public class SharesKController {
         return lhbCacularResults;
 
     }
-    @RequestMapping(value="/cacularSuccessPerByKAndDays",method = RequestMethod.GET)
+    @RequestMapping(value="/cacularSuccessPerByKAndDays")
     @ResponseBody
     public Object cacularSuccessPer(HttpServletRequest request){
         String date = request.getParameter("date");
@@ -72,7 +72,7 @@ public class SharesKController {
         map.put("feildResults", lhbCacularResultsForFeild);
         return map;
     }
-    @RequestMapping(value="/selectSharesByThreeK",method = RequestMethod.GET)
+    @RequestMapping(value="/selectSharesByThreeK")
     @ResponseBody
     public Object selectSharesByThreeK(HttpServletRequest request){
         //根据连续三日红k 量增 选股
@@ -87,7 +87,7 @@ public class SharesKController {
         return map;
 
     }
-    @RequestMapping(value="/cacularSuccessPerFromThreeK",method = RequestMethod.GET)
+    @RequestMapping(value="/cacularSuccessPerFromThreeK")
     @ResponseBody
     public Object cacularSuccessPerFromThreeK(HttpServletRequest request){
         String date = request.getParameter("date");
