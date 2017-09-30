@@ -14,11 +14,11 @@ ls
 
 git pull
 
-echo 'kill blog'
-
 mvn clean -Paliyun package
 
 mv target/ROOT.war /usr/share/tomcat7/webapps/
+
+echo 'kill blog'
 
 ps -ef|grep tomcat7 |grep -v grep|awk '{print $2}'|xargs kill -9
 
