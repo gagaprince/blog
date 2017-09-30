@@ -160,7 +160,19 @@ public class WeiXinService {
 		String url = wxIps.getGetUrl()+"?access_token="+wxIps.getWxAccessToken().getAccessToken();
 		return url;
 	}
-	
+
+	public String getOpenIdByCode(String code){
+		String url = wxConfig.get("login_for_wxapp");
+		logger.info(url);
+		String appid = wxConfig.get("appid");
+		String secret = wxConfig.get("AppSecret");
+		String grant_type = "authorization_code";
+		url = url+"?appid="+appid+"&secret="+secret+"&js_code="+code+"&grant_type="+grant_type;
+		String result = httpUtil.getContentByUrl(url);
+		logger.info(result);
+		return result;
+	}
+
 	public void reloadToken(){
 		wxConfig.setAccessToken(null);
 	}

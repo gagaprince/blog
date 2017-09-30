@@ -116,6 +116,21 @@ public class WXController {
 		return JSON.toJSONString(wxShareConfigModel);
 	}
 
+	@RequestMapping(value = "/loginForOpenId")
+	@ResponseBody
+	public String getOpenIdByCode(HttpServletRequest request){
+		String code = request.getParameter("code");
+		if(code==null){
+			Map<String,Object> map = new HashMap<String,Object>();
+			map.put("errorMsg","code 不能为空");
+			map.put("code",11);
+			return JSON.toJSONString(map);
+		}else{
+			return wxService.getOpenIdByCode(code);
+		}
+	}
+
+
 	private String getRequestBody(HttpServletRequest request) throws IOException {
 		InputStreamReader isr = new InputStreamReader(request.getInputStream());
 		BufferedReader br = new BufferedReader(isr);
