@@ -22,6 +22,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import java.util.*;
+
 /**
  * 用来测试和刷新微信的操作 返回结果
  * @author zidong.wang
