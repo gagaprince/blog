@@ -285,6 +285,7 @@
           </plugin>
 
         </plugins>
+        <finalName>ROOT</finalName>
       </build>
     </profile>
 
