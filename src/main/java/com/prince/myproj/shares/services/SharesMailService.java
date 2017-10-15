@@ -51,7 +51,7 @@ public class SharesMailService {
     public void sendMailPre(){
         Mail mail = new Mail();
         mail.setSubject(getSubject("股票收盘前分析邮件"));
-        mail.setContent(getMailContent("http://localhost:9999/shares/preToday"));
+        mail.setContent(getMailContent("http://localhost:8999/shares/preToday"));
         sendMailWithObj(mail);
     }
 
