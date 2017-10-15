@@ -51,21 +51,21 @@ public class SharesMailService {
     public void sendMailPre(){
         Mail mail = new Mail();
         mail.setSubject(getSubject("股票收盘前分析邮件"));
-        mail.setContent(getMailContent("http://localhost:9999/shares/preToday"));
+        mail.setContent(getMailContent("http://localhost:8999/shares/preToday"));
         sendMailWithObj(mail);
     }
 
     public void sendMailBuyShares(){
         Mail mail = new Mail();
         mail.setSubject(getSubject("股票预测"));
-        mail.setContent(getMailContent("http://localhost:9999/shares/analysisBuyShares?waitday=3&inc=0.04"));
+        mail.setContent(getMailContent("http://localhost:8999/shares/analysisBuyShares?waitday=3&inc=0.04"));
         sendMailWithObj(mail);
     }
 
     public void sendMailPreBuyShares(){
         Mail mail = new Mail();
         mail.setSubject(getSubject("股票收盘前预测"));
-        mail.setContent(getMailContent("http://localhost:9999/shares/analysisBuyShares?waitday=3&inc=0.04&isPre=pre"));
+        mail.setContent(getMailContent("http://localhost:8999/shares/analysisBuyShares?waitday=3&inc=0.04&isPre=pre"));
         sendMailWithObj(mail);
     }
 
@@ -86,7 +86,7 @@ public class SharesMailService {
 
 
     private String getMailContent(){
-        return getMailContent("http://localhost:9999/shares/today");
+        return getMailContent("http://localhost:8999/shares/today");
 
     }
     private String getMailContent(String url){
