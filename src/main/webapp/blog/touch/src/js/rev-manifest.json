@@ -1,0 +1,15 @@
+{
+  "base64.js": "base64-d47e7c8be4.js",
+  "bookshelf.js": "bookshelf-50a3bc3783.js",
+  "faceblind.js": "faceblind-3d3b550b37.js",
+  "index.js": "index-48fe75478b.js",
+  "mmindex.js": "mmindex-fec8e755ce.js",
+  "novelDetail.js": "novelDetail-e9d78e9c49.js",
+  "novelIndexList.js": "novelIndexList-b2a8c3c9ee.js",
+  "novelList.js": "novelList-54a10362b3.js",
+  "novelindex.js": "novelindex-48fe75478b.js",
+  "novelread.js": "novelread-0df09486ad.js",
+  "optj.js": "optj-049bed0679.js",
+  "realtimeShares.js": "realtimeShares-e4c4344eee.js",
+  "selectShares.js": "selectShares-d36a0d5d01.js"
+}
