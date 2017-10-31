@@ -285,7 +285,7 @@
           </plugin>
 
         </plugins>
-        <finalName>ROOT</finalName>
+        <finalName>blog</finalName>
       </build>
     </profile>
 

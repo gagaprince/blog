@@ -16,7 +16,11 @@ git pull
 
 mvn clean -Paliyun package
 
-mv target/ROOT.war /usr/share/tomcat7/webapps/
+rm -rf /usr/share/tomcat7/webapps/blog/ 
+
+rm -rf /usr/share/tomcat7/webapps/blog.war
+
+mv target/blog.war /usr/share/tomcat7/webapps/
 
 echo 'kill blog'
 
