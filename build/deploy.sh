@@ -16,9 +16,11 @@ git pull
 
 mvn clean -Paliyun package
 
-rm -rf /usr/share/tomcat7/webapps/blog/ 
+rm -rf /usr/share/tomcat7/webapps/blog
 
 rm -rf /usr/share/tomcat7/webapps/blog.war
+
+rm -rf /usr/share/tomcat7/webapps/usr#share#tomcat7#webapps
 
 mv target/blog.war /usr/share/tomcat7/webapps/
 
