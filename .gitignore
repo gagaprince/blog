@@ -4,7 +4,7 @@
 # maven ignore
 target/
 src/main/webapp/blog/tempPhoto/
-
+nohup.out
 # eclipse ignore
 .settings/
 .project
