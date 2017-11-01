@@ -24,7 +24,7 @@ rm -rf /usr/share/tomcat7/webapps/usr#share#tomcat7#webapps
 
 killall -9 java
 
-#mv target/blog.war /usr/share/tomcat7/webapps/
+mv target/blog.war /usr/share/tomcat7/webapps/
 
 mv target/blog /usr/share/tomcat7/webapps/blog
 
