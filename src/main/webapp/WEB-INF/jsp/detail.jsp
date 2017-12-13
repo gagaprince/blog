@@ -61,22 +61,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                         <span><a href="/blog/search/${tag}">${tag}</a></span>
                     </c:forEach>
                     </div>
-                    <!-- 多说评论框 start -->
-                        <div class="ds-thread" data-thread-key="${resultMap.daily.id}" data-title="${resultMap.daily.title}" data-url="http://gagalulu.wang${requestScope['javax.servlet.forward.request_uri']}"></div>
-                    <!-- 多说评论框 end -->
-                    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+                    <!--高速版-->
+                    <div id="SOHUCS" sid="${resultMap.daily.id}"></div>
+                    <script charset="utf-8" type="text/javascript" src="http://changyan.sohu.com/upload/changyan.js" ></script>
                     <script type="text/javascript">
-                    var duoshuoQuery = {short_name:"gagalulu"};
-                        (function() {
-                            var ds = document.createElement('script');
-                            ds.type = 'text/javascript';ds.async = true;
-                            ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-                            ds.charset = 'UTF-8';
-                            (document.getElementsByTagName('head')[0]
-                             || document.getElementsByTagName('body')[0]).appendChild(ds);
-                        })();
-                        </script>
-                    <!-- 多说公共JS代码 end -->
+                        window.changyan.api.config({
+                            appid: 'cytmzt3Bc',
+                            conf: 'prod_2d2e1939c5d3d5f6d3a24a59490ea030'
+                        });
+                    </script>
+
                 </div>
 
             </div>
