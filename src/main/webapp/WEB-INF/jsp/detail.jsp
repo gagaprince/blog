@@ -14,6 +14,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <meta name="description" content="${resultMap.daily.description}">
         <link href="/blog/css/styles.css" rel="stylesheet">
         <link href="/blog/css/view.css" rel="stylesheet">
+        <link href="/blog/css/jianshu.css" rel="stylesheet">
         <!-- 返回顶部调用 begin -->
         <link href="/blog/css/lrtk.css" rel="stylesheet">
         <script type="text/javascript" src="/blog/js/jquery.js"></script>
@@ -48,9 +49,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             <div id="index_view">
                 <h1 class="c_titile">${resultMap.daily.title}</h1>
                 <!--<p class="box">发布时间：2013-07-25<span>编辑：DanceSmile</span>阅读（30）</p>-->
-                <ul>
-                    ${resultMap.daily.content}
-                </ul>
+                <div class="article">
+                    <div class="show-content">
+                        ${resultMap.daily.content}
+                    </div>
+                </div>
                 <div class="otherlink">
                     <h2></h2>
                     <div class="detail-tag">

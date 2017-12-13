@@ -1,10 +1,13 @@
 package com.prince.myproj.blog.controllers;
 
 import com.alibaba.fastjson.JSON;
+import com.prince.myproj.blog.models.DailyModel;
 import com.prince.myproj.blog.models.ResultModel;
 import com.prince.myproj.blog.services.SpiderService;
 import com.prince.myproj.blog.services.TestService;
 import com.prince.myproj.blog.spiders.spiderServices.TravelPicService;
+import com.prince.myproj.platform.common.models.AjaxModel;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +23,8 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 @RequestMapping("/blog")
 public class SpiderController {
+    public static final Logger logger = Logger.getLogger(SpiderController.class);
+
     @Autowired
     private SpiderService spiderService;
 
@@ -58,5 +63,27 @@ public class SpiderController {
 //        testService.ana();
         testService.anaNode();
         return "";
+    }
+
+    @RequestMapping("/spider/jianshu")
+    @ResponseBody
+    public AjaxModel spiderJianShu(HttpServletRequest request,HttpServletResponse response){
+
+        String url = request.getParameter("url");
+        String cate = request.getParameter("cate");
+        String bigCate = request.getParameter("bigCate");
+        String tag = request.getParameter("tag");
+
+//        logger.info(cate);
+//        logger.info(bigCate);
+//        logger.info(tag);
+
+        DailyModel dailyModel = new DailyModel();
+        dailyModel.setCate(cate);
+        dailyModel.setBigCate(bigCate);
+        dailyModel.setTag(tag);
+
+        AjaxModel ajaxModel = spiderService.spiderJianShu(url,dailyModel);
+        return ajaxModel;
     }
 }
