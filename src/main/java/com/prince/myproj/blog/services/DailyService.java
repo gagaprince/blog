@@ -7,6 +7,7 @@ import com.prince.myproj.blog.models.DailyModel;
 import com.prince.myproj.blog.models.ListPageModel;
 import com.prince.myproj.blog.models.MusicModel;
 import com.prince.myproj.blog.models.SuggestModel;
+import com.prince.myproj.platform.common.models.AjaxModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -49,7 +50,7 @@ public class DailyService {
         int psize = listPage.getPsize();
         List<DailyModel> dailyList = getDailyListByPage(pno, psize, bigCate);
 
-        long allConunt =getCountByCate("");
+        long allConunt =getCountByCate(bigCate);
         long allPage = (allConunt-1)/psize+1;
         listPage.setAllCount(allConunt);
         listPage.setAllPage(allPage);

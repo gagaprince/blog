@@ -1,11 +1,13 @@
 package com.prince.myproj.blog.services;
 
 import com.prince.myproj.blog.dao.FontLinkDao;
+import com.prince.myproj.blog.models.DailyModel;
 import com.prince.myproj.blog.models.FontLinkModel;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,9 +23,22 @@ public class FontLinkService {
     @Autowired
     private FontLinkDao fontLinkDao;
 
+    @Autowired
+    private DailyService dailyService;
+
     public List<FontLinkModel> giveMeUpdateLink(){
+        List<DailyModel> dailyModels = dailyService.getDailyListByPage(0,10,"");
+        List<FontLinkModel> fontLinkModels = new ArrayList<FontLinkModel>();
         String bigCate = "栏目更新";
-        return giveMeModelsByCateAndSize(bigCate,10);
+        for(int i=0;i<dailyModels.size();i++){
+            DailyModel dailyModel = dailyModels.get(i);
+            FontLinkModel fontLinkModel = new FontLinkModel();
+            fontLinkModel.setBigcate(bigCate);
+            fontLinkModel.setTitle(dailyModel.getTitle());
+            fontLinkModel.setLink("/blog/detail/"+dailyModel.getId());
+            fontLinkModels.add(fontLinkModel);
+        }
+        return fontLinkModels;
     }
     public List<FontLinkModel> giveMePhotoFontLink(){
         String bigCate = "图文并茂";
