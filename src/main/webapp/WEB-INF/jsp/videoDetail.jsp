@@ -10,7 +10,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <c:set var="video" value="${videoResultMap.video}"></c:set>
         <title>${video.title}</title>
         <%@ include file="common/meta.jsp"%>
-        <link href="/blog/css/styles.css" rel="stylesheet">
+        <link href="/blog/css/styles.css?ss" rel="stylesheet">
         <link href="/blog/css/animation.css" rel="stylesheet">
         <!-- 返回顶部调用 begin -->
         <link href="/blog/css/lrtk.css" rel="stylesheet">

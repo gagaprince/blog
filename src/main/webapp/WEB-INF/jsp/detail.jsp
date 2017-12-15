@@ -12,7 +12,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <meta charset="utf-8">
         <meta name="keywords" content="${resultMap.daily.tag}">
         <meta name="description" content="${resultMap.daily.description}">
-        <link href="/blog/css/styles.css" rel="stylesheet">
+        <link href="/blog/css/styles.css?ss" rel="stylesheet">
         <link href="/blog/css/view.css" rel="stylesheet">
         <link href="/blog/css/jianshu.css" rel="stylesheet">
         <!-- 返回顶部调用 begin -->
