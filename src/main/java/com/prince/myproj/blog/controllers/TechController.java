@@ -6,6 +6,7 @@ import com.prince.myproj.blog.models.ListPageModel;
 import com.prince.myproj.blog.services.DailyService;
 import com.prince.myproj.blog.services.PageService;
 import com.prince.myproj.blog.services.UtilService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +25,7 @@ import java.util.Map;
 @Controller
 @RequestMapping("/blog")
 public class TechController {
+    public static final Logger logger = Logger.getLogger(TechController.class);
 
     @Autowired
     private UtilService utilService;
@@ -77,6 +79,7 @@ public class TechController {
     }
 
     private void preparedSmallTech(ListPageModel listPageModel,String cate,Model model){
+        logger.info(cate);
         List<DailyModel> dailyModels = dailyService.getDailyListByPage(listPageModel, cate,false);
         dailyService.filterDailys(dailyModels);
         Map<String,Object> techResultMap = new HashMap<String, Object>();
