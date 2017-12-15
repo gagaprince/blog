@@ -11,7 +11,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <meta name="baidu_union_verify" content="8dcbc42830416c07c5a1164f8d7d9de1">
         <%@ include file="common/meta.jsp"%>
         <title>gagaprince的世界</title>
-        <link href="/blog/css/styles.css" rel="stylesheet">
+        <link href="/blog/css/styles.css?111" rel="stylesheet">
         <link href="/blog/css/animation.css" rel="stylesheet">
         <!-- 返回顶部调用 begin -->
         <script type="text/javascript" src="/blog/js/jquery.js"></script>

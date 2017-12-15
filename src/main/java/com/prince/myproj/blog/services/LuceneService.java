@@ -70,7 +70,7 @@ public class LuceneService {
     }
 
     public List<BlogIndexModel> preparedDailyIndex(){
-        List<DailyModel> dailyModels = dailyService.getDailyListByPage(0, 10000, "");
+        List<DailyModel> dailyModels = dailyService.getDailyListByPage(0, 10000, "",true);
         List<BlogIndexModel> blogIndexModels = new ArrayList<BlogIndexModel>();
         int size = dailyModels.size();
         for(int i=0;i<size;i++){

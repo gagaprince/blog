@@ -43,6 +43,7 @@ public class SliderCommonAdvice {
                 List<FontLinkModel> updateModels = fontLinkService.giveMeUpdateLink();
                 List<FontLinkModel> photoFontModels = fontLinkService.giveMePhotoFontLink();
                 List<FontLinkModel> hotClickModels = fontLinkService.giveMeHotClick();
+                List<FontLinkModel> cateModels = fontLinkService.giveMeCateCountList();
 
 
                 logger.info("updataModels:"+updateModels);
@@ -52,8 +53,8 @@ public class SliderCommonAdvice {
                 Map<String,Object> sliderResult = new HashMap<String, Object>();
                 sliderResult.put("updateModels",updateModels);
                 sliderResult.put("photoFontModels",photoFontModels);
-
                 sliderResult.put("hotClickModels",hotClickModels);
+                sliderResult.put("cateModels",cateModels);
                 request.setAttribute("sliderResult",sliderResult);
             }
         }

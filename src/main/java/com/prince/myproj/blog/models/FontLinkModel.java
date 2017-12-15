@@ -7,11 +7,24 @@ public class FontLinkModel {
     private int id;
     private String title;
     private String link;
+    private int count;//获取分类的count
     private String cover;
     private String bigCate;
     private String smallcate;
     private String createTime;
     private long rank;
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setBigCate(String bigCate) {
+        this.bigCate = bigCate;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
 
     public String getCover() {
         return cover;

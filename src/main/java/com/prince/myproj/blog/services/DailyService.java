@@ -3,10 +3,7 @@ package com.prince.myproj.blog.services;
 import com.prince.myproj.blog.dao.DailyDao;
 import com.prince.myproj.blog.dao.MusicDao;
 import com.prince.myproj.blog.dao.SuggestDao;
-import com.prince.myproj.blog.models.DailyModel;
-import com.prince.myproj.blog.models.ListPageModel;
-import com.prince.myproj.blog.models.MusicModel;
-import com.prince.myproj.blog.models.SuggestModel;
+import com.prince.myproj.blog.models.*;
 import com.prince.myproj.platform.common.models.AjaxModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,25 +29,29 @@ public class DailyService {
 
 
 
-    public List<DailyModel> getDailyListByPage(int pno,int psize,String bigCate){
+    public List<DailyModel> getDailyListByPage(int pno,int psize,String bigCate,boolean isBig){
         int begin = pno*psize;
         int end = psize;//limit 是 长度
         Map<String,Object> seMap = new HashMap<String, Object>();
         seMap.put("fromIndex",begin);
         seMap.put("toIndex",end);
         if(!"".equals(bigCate)){
-            seMap.put("bigCate",bigCate);
+            if(isBig){
+                seMap.put("bigCate",bigCate);
+            }else {
+                seMap.put("cate",bigCate);
+            }
         }
         List<DailyModel> dailyList = dailyDao.getDailyList(seMap);
         return dailyList;
     }
 
-    public List<DailyModel> getDailyListByPage(ListPageModel listPage,String bigCate){
+    public List<DailyModel> getDailyListByPage(ListPageModel listPage,String bigCate,boolean isBig){
         int pno = listPage.getPno();
         int psize = listPage.getPsize();
-        List<DailyModel> dailyList = getDailyListByPage(pno, psize, bigCate);
+        List<DailyModel> dailyList = getDailyListByPage(pno, psize, bigCate,isBig);
 
-        long allConunt =getCountByCate(bigCate);
+        long allConunt =getCountByCate(bigCate,isBig);
         long allPage = (allConunt-1)/psize+1;
         listPage.setAllCount(allConunt);
         listPage.setAllPage(allPage);
@@ -58,10 +59,14 @@ public class DailyService {
         return dailyList;
     }
 
-    private long getCountByCate(String cate){
+    private long getCountByCate(String cate,boolean isBig){
         Map<String,String> cateMap = new HashMap<String, String>();
         if(!"".equals(cate)){
-            cateMap.put("bigCate",cate);
+            if(isBig){
+                cateMap.put("bigCate",cate);
+            }else {
+                cateMap.put("cate",cate);
+            }
         }
         long count = dailyDao.getAllCount(cateMap);
         return count;
@@ -87,6 +92,10 @@ public class DailyService {
             daily.setContent(utilService.replaceTag(daily.getContent()));
             daily.setContent(utilService.replaceBr(utilService.spliceString(daily.getContent(),120,4)));
         }
+    }
+
+    public List<DailyCateModel> getCateList(){
+        return dailyDao.getCateList(null);
     }
 
 }

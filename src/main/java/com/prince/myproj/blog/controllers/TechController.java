@@ -38,14 +38,14 @@ public class TechController {
     public String viewToTech(HttpServletRequest request,HttpServletResponse response ,Model model,@PathVariable String bigCate){
         //导向对应博客
 
-        ListPageModel listPageModel = pageService.preparedListPage(request, 7);
+        ListPageModel listPageModel = pageService.preparedListPage(request, 10);
         preparedTech(listPageModel,bigCate,model);
         return bigCate;
     }
     @RequestMapping("/cate/{bigCate}/{pno}")
     @FooterCommon
     public String viewToTech2(HttpServletRequest request,HttpServletResponse response ,Model model,@PathVariable String bigCate,@PathVariable int pno){
-        ListPageModel listPageModel = pageService.preparedListPage(pno,7);
+        ListPageModel listPageModel = pageService.preparedListPage(pno,10);
         preparedTech(listPageModel,bigCate,model);
         return bigCate;
     }
@@ -58,9 +58,27 @@ public class TechController {
     }
 
     private void preparedTech(ListPageModel listPageModel,String bigCate,Model model){
-        List<DailyModel> dailyModels = dailyService.getDailyListByPage(listPageModel, bigCate);
+        List<DailyModel> dailyModels = dailyService.getDailyListByPage(listPageModel, bigCate,true);
         dailyService.filterDailys(dailyModels);
 
+        Map<String,Object> techResultMap = new HashMap<String, Object>();
+        techResultMap.put("dailys",dailyModels);
+        techResultMap.put("listpage",listPageModel);
+
+        model.addAttribute("techResultMap",techResultMap);
+    }
+
+    @RequestMapping("/smallCate/{cate}/{pno}")
+    @FooterCommon
+    public String viewToSmallCate(HttpServletRequest request,HttpServletResponse response ,Model model,@PathVariable String cate,@PathVariable int pno){
+        ListPageModel listPageModel = pageService.preparedListPage(pno,10);
+        preparedSmallTech(listPageModel,cate,model);
+        return "tech";
+    }
+
+    private void preparedSmallTech(ListPageModel listPageModel,String cate,Model model){
+        List<DailyModel> dailyModels = dailyService.getDailyListByPage(listPageModel, cate,false);
+        dailyService.filterDailys(dailyModels);
         Map<String,Object> techResultMap = new HashMap<String, Object>();
         techResultMap.put("dailys",dailyModels);
         techResultMap.put("listpage",listPageModel);

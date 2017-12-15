@@ -31,9 +31,29 @@
             <h2>栏目更新</h2>
             <ol>
                 <c:forEach var="updateModel" items="${sliderResult.updateModels}" varStatus="status">
-                    <li><span><strong>${status.index+1}</strong></span><a href="${updateModel.link}">${updateModel.title}</a></li>
+                    <c:if test="${status.index<9}">
+                        <li><span><strong>0${status.index+1}</strong></span><a href="${updateModel.link}">${updateModel.title}</a></li>
+                    </c:if>
+                    <c:if test="${status.index>=9}">
+                        <li><span><strong>${status.index+1}</strong></span><a href="${updateModel.link}">${updateModel.title}</a></li>
+                    </c:if>
                 </c:forEach>
                 </ol>
+        </div>
+    </c:if>
+    <c:if test="${not empty sliderResult.cateModels}">
+        <div class="tuijian">
+            <h2>文章分类</h2>
+            <ol>
+                <c:forEach var="cateModel" items="${sliderResult.cateModels}" varStatus="status">
+                    <c:if test="${status.index < 9}">
+                        <li><span><strong>0${status.index+1}</strong></span><a href="${cateModel.link}"><span>${cateModel.title}</span> <span class="cate-co">(${cateModel.count})</span></a></li>
+                    </c:if>
+                    <c:if test="${status.index >= 9}">
+                        <li><span><strong>${status.index+1}</strong></span><a href="${cateModel.link}">${cateModel.title} (${cateModel.count})</a></li>
+                    </c:if>
+                </c:forEach>
+            </ol>
         </div>
     </c:if>
     <c:if test="${not empty sliderResult.photoFontModels}">

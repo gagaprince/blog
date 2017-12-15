@@ -1,5 +1,6 @@
 package com.prince.myproj.blog.dao;
 
+import com.prince.myproj.blog.models.DailyCateModel;
 import com.prince.myproj.blog.models.DailyModel;
 
 import java.util.List;
@@ -15,4 +16,5 @@ public interface DailyDao {
     public List<DailyModel> getSimpleDailyList(Map<String,Object> cateMap);
     public DailyModel getDailyById(Map<String,Long> idMap);
     public long getAllCount(Map<String,String> cateMap);
+    public List<DailyCateModel> getCateList(Map<String,Object> map);
 }

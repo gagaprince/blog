@@ -121,7 +121,14 @@
             <if test="bigCate != null">
                 and s.bigcate = #{bigCate}
             </if>
+            <if test="cate != null">
+                and s.cate = #{cate}
+            </if>
         </where>
+    </select>
+
+    <select id="getCateList" parameterType="map" resultType="com.prince.myproj.blog.models.DailyCateModel">
+        select cate as cateName,count(1) as count from daily group by cate ORDER BY count desc
     </select>
 
 </mapper>

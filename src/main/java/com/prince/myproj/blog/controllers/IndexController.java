@@ -66,7 +66,7 @@ public class IndexController {
         Map<String,Object> indexResult = new HashMap<String, Object>();
 
         SuggestModel suggestModel = suggestService.getRandomSuggestModel();
-        List<DailyModel> dailys = dailyService.getDailyListByPage(listPage, "");
+        List<DailyModel> dailys = dailyService.getDailyListByPage(listPage, "",true);
         dailyService.filterDailys(dailys);
 
         MusicModel musicModel = dailyService.getRandomMusic();

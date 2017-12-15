@@ -1,6 +1,7 @@
 package com.prince.myproj.blog.services;
 
 import com.prince.myproj.blog.dao.FontLinkDao;
+import com.prince.myproj.blog.models.DailyCateModel;
 import com.prince.myproj.blog.models.DailyModel;
 import com.prince.myproj.blog.models.FontLinkModel;
 import org.apache.log4j.Logger;
@@ -27,7 +28,7 @@ public class FontLinkService {
     private DailyService dailyService;
 
     public List<FontLinkModel> giveMeUpdateLink(){
-        List<DailyModel> dailyModels = dailyService.getDailyListByPage(0,10,"");
+        List<DailyModel> dailyModels = dailyService.getDailyListByPage(0,10,"",true);
         List<FontLinkModel> fontLinkModels = new ArrayList<FontLinkModel>();
         String bigCate = "栏目更新";
         for(int i=0;i<dailyModels.size();i++){
@@ -40,6 +41,20 @@ public class FontLinkService {
         }
         return fontLinkModels;
     }
+    public List<FontLinkModel> giveMeCateCountList(){
+        List<FontLinkModel> fontLinkModels = new ArrayList<FontLinkModel>();
+        List<DailyCateModel> dailyCateModels = dailyService.getCateList();
+        for(int i=0;i<dailyCateModels.size();i++){
+            DailyCateModel dailyCateModel = dailyCateModels.get(i);
+            FontLinkModel fontLinkModel = new FontLinkModel();
+            fontLinkModel.setTitle(dailyCateModel.getCateName());
+            fontLinkModel.setCount(dailyCateModel.getCount());
+            fontLinkModel.setLink("/blog/smallCate/"+dailyCateModel.getCateName()+"/0");
+            fontLinkModels.add(fontLinkModel);
+        }
+        return fontLinkModels;
+    }
+
     public List<FontLinkModel> giveMePhotoFontLink(){
         String bigCate = "图文并茂";
         return giveMeModelsByCateAndSize(bigCate,3);
