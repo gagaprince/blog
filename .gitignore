@@ -12,6 +12,7 @@ nohup.out
 
 # idea ignore
 .idea/
+logs/
 *.ipr
 *.iml
 *.iws
