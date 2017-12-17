@@ -72,4 +72,39 @@ public class SpiderService {
 
         ueService.saveOrUpdate(dailyModel);
     }
+
+    public AjaxModel spiderCsdn(String url,DailyModel tempModel){
+        AjaxModel ajaxModel = new AjaxModel();
+        logger.info(url);
+        HttpUtil httpUtil = HttpUtil.getInstance();
+        String content = httpUtil.getContentByUrl(url);
+        parseCSDNContent(content,tempModel);
+        ajaxModel.setStatus(ErrorCode.SUCCESS);
+        return ajaxModel;
+    }
+
+    private void parseCSDNContent(String content,DailyModel dailyModel){
+        Document doc = Jsoup.parse(content);
+        Element conEle = doc.getElementById("article_content");
+        conEle.getElementsByTag("img").attr("style","");
+//        conEle.getElementsByClass("pre-numbering").remove();
+        conEle.getElementsByTag("script").remove();
+//        logger.info(conEle.html());
+        String dailyContent = conEle.html();
+
+        Element titleEle = doc.getElementsByTag("title").get(0);
+        String title = titleEle.html();
+//        logger.info(title);
+        Element desEle = doc.getElementsByAttributeValue("name","description").get(0);
+        String description = desEle.attr("content");
+//        logger.info(description);
+
+        dailyModel.setTitle(title);
+        dailyModel.setContent(dailyContent);
+        dailyModel.setCreateTime(new Date());
+        dailyModel.setDescription(description);
+
+        ueService.saveOrUpdate(dailyModel);
+    }
+
 }

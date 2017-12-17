@@ -50,7 +50,7 @@
                         <li><span><strong>0${status.index+1}</strong></span><a href="${cateModel.link}"><span>${cateModel.title}</span> <span class="cate-co">(${cateModel.count})</span></a></li>
                     </c:if>
                     <c:if test="${status.index >= 9}">
-                        <li><span><strong>${status.index+1}</strong></span><a href="${cateModel.link}">${cateModel.title} (${cateModel.count})</a></li>
+                        <li><span><strong>${status.index+1}</strong></span><a href="${cateModel.link}"><span>${cateModel.title}</span> <span class="cate-co">(${cateModel.count})</span></a></li>
                     </c:if>
                 </c:forEach>
             </ol>

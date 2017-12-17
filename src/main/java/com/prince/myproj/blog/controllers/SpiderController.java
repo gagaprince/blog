@@ -83,7 +83,12 @@ public class SpiderController {
         dailyModel.setBigCate(bigCate);
         dailyModel.setTag(tag);
 
-        AjaxModel ajaxModel = spiderService.spiderJianShu(url,dailyModel);
+        AjaxModel ajaxModel = null;
+        if(url.indexOf("blog.csdn")!=-1){
+            ajaxModel = spiderService.spiderCsdn(url,dailyModel);
+        }else{
+            ajaxModel = spiderService.spiderJianShu(url,dailyModel);
+        }
         return ajaxModel;
     }
 }
