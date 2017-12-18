@@ -39,18 +39,20 @@
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
         <property name="basePackage" value="com.prince.myproj.blog.dao ,
         com.prince.myproj.shares.dao ,
-        com.prince.myproj.platform.novel.dao"></property>
+        com.prince.myproj.platform.novel.dao,
+        com.prince.myproj.platform.av.dao"></property>
     </bean>
 
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"></property>
-        <property name="typeAliasesPackage" value="com.prince.myproj.blog.models ,com.prince.myproj.shares.models,com.prince.myproj.platform.novel.models"></property>
+        <property name="typeAliasesPackage" value="com.prince.myproj.blog.models ,com.prince.myproj.shares.models,com.prince.myproj.platform.novel.models,com.prince.myproj.platform.av.models"></property>
         <property name="configLocation" value="classpath:mybatis-config.xml"></property>
         <property name="mapperLocations">
             <array>
                 <value>classpath:mapper/blog/*.xml</value>
                 <value>classpath:mapper/shares/*.xml</value>
                 <value>classpath:mapper/platform/novel/*.xml</value>
+                <value>classpath:mapper/platform/av/*.xml</value>
             </array>
         </property>
     </bean>
