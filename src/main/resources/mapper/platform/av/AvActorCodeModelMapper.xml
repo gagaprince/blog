@@ -27,6 +27,7 @@
     from av_actor_code
     where id = #{id,jdbcType=BIGINT}
   </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
     <!--
       WARNING - @mbggenerated

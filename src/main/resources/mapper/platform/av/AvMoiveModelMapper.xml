@@ -37,6 +37,14 @@
     from av_moive
     where id = #{id,jdbcType=BIGINT}
   </select>
+
+  <select id="selectByCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from av_moive
+    where code = #{code}
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     <!--
       WARNING - @mbggenerated

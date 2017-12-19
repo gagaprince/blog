@@ -27,6 +27,14 @@
     from av_cate
     where id = #{id,jdbcType=INTEGER}
   </select>
+
+  <select id="selectByCate" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from av_cate
+    where cate = #{cate}
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     <!--
       WARNING - @mbggenerated
