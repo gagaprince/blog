@@ -35,6 +35,12 @@ public class AVService {
         return ajaxModel;
     }
 
+    public AjaxModel spiderAvMoives(){
+        AjaxModel ajaxModel = new AjaxModel();
+        ajaxModel.setStatus(ErrorCode.SUCCESS);
+        return ajaxModel;
+    }
+
     public AjaxModel spiderAvActors(){
         AjaxModel ajaxModel = new AjaxModel();
         ajaxModel.setStatus(ErrorCode.SUCCESS);
