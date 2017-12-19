@@ -60,7 +60,7 @@ public class AVService {
     private void spiderAvMoiveList(){
         List<AvActorModel> avActorModels = avActorModelMapper.selectAll(null);
         logger.info(avActorModels.size());
-        for(int i=0;i<avActorModels.size() && i<1;i++){
+        for(int i=0;i<avActorModels.size();i++){
             AvActorModel avActorModel = avActorModels.get(i);
             spiderMoivesByActor(avActorModel);
         }
@@ -108,10 +108,11 @@ public class AVService {
 
         String code = getElementText(doc, "video_id");
         logger.info(code);
-        AvMoiveModel avMoiveModel = avMoiveModelMapper.selectByCode(code);
-        if(avMoiveModel!=null){
-            return avMoiveModel;
+        List<AvMoiveModel> avMoiveModels = avMoiveModelMapper.selectByCode(code);
+        if(avMoiveModels.size()>0){
+            return avMoiveModels.get(0);
         }
+        AvMoiveModel avMoiveModel = null;
 
         Element titleEle = doc.getElementsByClass("post-title").first().getElementsByTag("a").first();
         String title = titleEle.html();
@@ -137,6 +138,7 @@ public class AVService {
         logger.info(bigImg);
 
         avMoiveModel = new AvMoiveModel();
+        avMoiveModel.setTitle(title);
         avMoiveModel.setBigImg(bigImg);
         avMoiveModel.setCode(code);
         avMoiveModel.setCreateTime(new Date());
@@ -144,6 +146,8 @@ public class AVService {
         avMoiveModel.setLength(Integer.parseInt(length));
         avMoiveModel.setMaker(maker);
         avMoiveModel.setRunner(runner);
+        avMoiveModel.setSmallImg(smallImg);
+        avMoiveModel.setSourceUrl(link);
         avMoiveModel.setRunDate(dateUtil.parseDate(date, "yyyy-MM-dd"));
 
 
@@ -157,18 +161,22 @@ public class AVService {
 
     private void parseCateAndActor(AvMoiveModel avMoiveModel,Document doc){
         String host = "http://ja14b.com";
-        Elements tags = doc.getElementsByClass("tag");
+        Elements tags = doc.getElementsByClass("genre");
         for(int i=0;i<tags.size();i++){
-            Element tag = tags.get(i);
+            Element tag = tags.get(i).getElementsByTag("a").first();
             String cateName = tag.html();
             String sourceUrl = host+"/cn/"+tag.attr("href");
-            AvCateModel avCateModel = avCateModelMapper.selectByCate(cateName);
-            if(avCateModel==null){
+            List<AvCateModel> avCateModels = avCateModelMapper.selectByCate(cateName);
+            AvCateModel avCateModel=null;
+            if(avCateModels.size()==0){
                 avCateModel = new AvCateModel();
                 avCateModel.setCate(cateName);
                 avCateModel.setSourceUrl(sourceUrl);
                 avCateModelMapper.insertSelective(avCateModel);
+            }else{
+                avCateModel = avCateModels.get(0);
             }
+            logger.info(avCateModel);
             AvCateCodeModel avCateCodeModel = new AvCateCodeModel();
             avCateCodeModel.setCateId((long)avCateModel.getId());
             avCateCodeModel.setCode(avMoiveModel.getCode());
@@ -182,12 +190,15 @@ public class AVService {
             logger.info("演员：");
             logger.info(name);
             String sourceUrl = star.attr("href");
-            AvActorModel avActorModel = avActorModelMapper.selectByName(name);
-            if(avActorModel == null){
+            List<AvActorModel> avActorModels = avActorModelMapper.selectByName(name);
+            AvActorModel avActorModel = null;
+            if(avActorModels.size()==0){
                 avActorModel = new AvActorModel();
                 avActorModel.setActor(name);
                 avActorModel.setSourceUrl(sourceUrl);
                 avActorModelMapper.insertSelective(avActorModel);
+            }else {
+                avActorModel = avActorModels.get(0);
             }
 
             AvActorCodeModel avActorCodeModel = new AvActorCodeModel();

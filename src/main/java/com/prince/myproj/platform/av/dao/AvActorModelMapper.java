@@ -55,5 +55,5 @@ public interface AvActorModelMapper {
     int updateByPrimaryKey(AvActorModel record);
 
     List<AvActorModel> selectAll(Map<String,String> map);
-    AvActorModel selectByName(String name);
+    List<AvActorModel> selectByName(String name);
 }
