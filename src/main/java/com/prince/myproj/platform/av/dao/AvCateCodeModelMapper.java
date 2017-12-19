@@ -50,4 +50,6 @@ public interface AvCateCodeModelMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(AvCateCodeModel record);
+
+    AvCateCodeModel selectByCode(String code);
 }

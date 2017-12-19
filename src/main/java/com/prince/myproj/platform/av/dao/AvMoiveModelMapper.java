@@ -50,4 +50,6 @@ public interface AvMoiveModelMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(AvMoiveModel record);
+
+    AvMoiveModel selectByCode(String code);
 }

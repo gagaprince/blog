@@ -50,4 +50,6 @@ public interface AvCateModelMapper {
      * @mbggenerated
      */
     int updateByPrimaryKey(AvCateModel record);
+
+    AvCateModel selectByCate(String cate);
 }

@@ -33,4 +33,11 @@ public class AVController {
         AjaxModel ajaxModel = avService.spiderAvActors();
         return ajaxModel;
     }
+
+    @RequestMapping(value = "/spiderAvMoives")
+    @ResponseBody
+    public AjaxModel spiderAvMoives(HttpServletRequest request){
+        AjaxModel ajaxModel = avService.spiderAvMoives();
+        return ajaxModel;
+    }
 }
