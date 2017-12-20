@@ -2,6 +2,7 @@ package com.prince.myproj.platform.av.controllers;
 
 import com.prince.myproj.platform.av.services.AVService;
 import com.prince.myproj.platform.common.models.AjaxModel;
+import com.prince.myproj.util.StringUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,7 +38,8 @@ public class AVController {
     @RequestMapping(value = "/spiderAvMoives")
     @ResponseBody
     public AjaxModel spiderAvMoives(HttpServletRequest request){
-        AjaxModel ajaxModel = avService.spiderAvMoives();
+        int begin = StringUtil.parseIntFromRequest(request,"begin",1);
+        AjaxModel ajaxModel = avService.spiderAvMoives(begin);
         return ajaxModel;
     }
 }

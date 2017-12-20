@@ -50,18 +50,27 @@ public class AVService {
         return ajaxModel;
     }
 
-    public AjaxModel spiderAvMoives(){
+    public AjaxModel spiderAvMoives(int begin){
         AjaxModel ajaxModel = new AjaxModel();
         ajaxModel.setStatus(ErrorCode.SUCCESS);
-        spiderAvMoiveList();
+        spiderAvMoiveList(begin);
         return ajaxModel;
     }
 
-    private void spiderAvMoiveList(){
+    private void spiderAvMoiveList(int begin){
         List<AvActorModel> avActorModels = avActorModelMapper.selectAll(null);
         logger.info(avActorModels.size());
+        boolean beginSpider = false;
         for(int i=0;i<avActorModels.size();i++){
             AvActorModel avActorModel = avActorModels.get(i);
+            if(!beginSpider) {
+                if(avActorModel.getId()==begin){
+                    beginSpider = true;
+                }else {
+                    continue;
+                }
+            }
+            logger.info("当前采集演员：" + avActorModel.getActor());
             spiderMoivesByActor(avActorModel);
         }
     }
@@ -81,7 +90,12 @@ public class AVService {
                 Element a = ele.getElementsByTag("a").first();
                 Element img = ele.getElementsByTag("img").first();
                 String smallImg = img.attr("src");
-                logger.info(img.attr("src"));
+                Element codeEle = ele.getElementsByClass("id").first();
+                String code = codeEle.html();
+                List<AvMoiveModel> avMoiveModels = avMoiveModelMapper.selectByCode(code);
+                if(avMoiveModels.size()>0){
+                    continue;
+                }
                 String detailLink = host+"/cn/"+a.attr("href");
 //                detailLink = "http://ja14b.com/cn/?v=javlikljqy";
                 try {
@@ -101,17 +115,15 @@ public class AVService {
     }
 
     private AvMoiveModel spiderMoive(String link , String smallImg){
+        logger.info("****************************************");
+        logger.info("当前采集详情 链接："+link);
         String content = httpUtil.getContentByUrl(link);
-        logger.info(content);
+//        logger.info(content);
 
         Document doc = Jsoup.parse(content);
 
         String code = getElementText(doc, "video_id");
         logger.info(code);
-        List<AvMoiveModel> avMoiveModels = avMoiveModelMapper.selectByCode(code);
-        if(avMoiveModels.size()>0){
-            return avMoiveModels.get(0);
-        }
         AvMoiveModel avMoiveModel = null;
 
         Element titleEle = doc.getElementsByClass("post-title").first().getElementsByTag("a").first();
